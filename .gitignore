@@ -30,3 +30,23 @@
 
 # Debug files
 *.dSYM/
+
+# Linux
+*.swp
+*.lock
+*.log
+
+# Quartus II
+*.ini
+eclipse/
+*bsf
+*.cmp
+*.html
+*.sopcinfo
+*nios_system/
+*.rpt
+*software/
+*.qsys_edit/
+
+# Personal
+scratch/
