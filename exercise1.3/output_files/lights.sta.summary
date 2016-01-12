@@ -1,0 +1,125 @@
+------------------------------------------------------------
+TimeQuest Timing Analyzer Summary
+------------------------------------------------------------
+
+Type  : Slow Model Setup 'clock50Mhz'
+Slack : 6.222
+TNS   : 0.000
+
+Type  : Slow Model Setup 'inst3|NiosII|up_clocks_0|DE_Clock_Generator_System|pll|clk[0]'
+Slack : 6.462
+TNS   : 0.000
+
+Type  : Slow Model Setup 'Video_Controller800x480:inst4|VGA_Controller_256Pallette:inst6|V_Clock'
+Slack : 34.132
+TNS   : 0.000
+
+Type  : Slow Model Setup 'inst13'
+Slack : 34.706
+TNS   : 0.000
+
+Type  : Slow Model Hold 'clock50Mhz'
+Slack : -2.558
+TNS   : -27.454
+
+Type  : Slow Model Hold 'Video_Controller800x480:inst4|VGA_Controller_256Pallette:inst6|V_Clock'
+Slack : 0.391
+TNS   : 0.000
+
+Type  : Slow Model Hold 'inst13'
+Slack : 0.391
+TNS   : 0.000
+
+Type  : Slow Model Hold 'inst3|NiosII|up_clocks_0|DE_Clock_Generator_System|pll|clk[0]'
+Slack : 0.391
+TNS   : 0.000
+
+Type  : Slow Model Recovery 'inst3|NiosII|up_clocks_0|DE_Clock_Generator_System|pll|clk[0]'
+Slack : 5.535
+TNS   : 0.000
+
+Type  : Slow Model Removal 'inst3|NiosII|up_clocks_0|DE_Clock_Generator_System|pll|clk[0]'
+Slack : 1.700
+TNS   : 0.000
+
+Type  : Slow Model Minimum Pulse Width 'clock50Mhz'
+Slack : 7.873
+TNS   : 0.000
+
+Type  : Slow Model Minimum Pulse Width 'inst3|NiosII|up_clocks_0|DE_Clock_Generator_System|pll|clk[0]'
+Slack : 7.873
+TNS   : 0.000
+
+Type  : Slow Model Minimum Pulse Width 'Video_Controller800x480:inst4|VGA_Controller_256Pallette:inst6|V_Clock'
+Slack : 19.000
+TNS   : 0.000
+
+Type  : Slow Model Minimum Pulse Width 'inst13'
+Slack : 19.000
+TNS   : 0.000
+
+Type  : Slow Model Minimum Pulse Width 'altera_reserved_tck'
+Slack : 97.778
+TNS   : 0.000
+
+Type  : Fast Model Setup 'clock50Mhz'
+Slack : 8.366
+TNS   : 0.000
+
+Type  : Fast Model Setup 'inst3|NiosII|up_clocks_0|DE_Clock_Generator_System|pll|clk[0]'
+Slack : 8.376
+TNS   : 0.000
+
+Type  : Fast Model Setup 'Video_Controller800x480:inst4|VGA_Controller_256Pallette:inst6|V_Clock'
+Slack : 37.379
+TNS   : 0.000
+
+Type  : Fast Model Setup 'inst13'
+Slack : 37.583
+TNS   : 0.000
+
+Type  : Fast Model Hold 'clock50Mhz'
+Slack : -1.599
+TNS   : -37.826
+
+Type  : Fast Model Hold 'Video_Controller800x480:inst4|VGA_Controller_256Pallette:inst6|V_Clock'
+Slack : 0.215
+TNS   : 0.000
+
+Type  : Fast Model Hold 'inst13'
+Slack : 0.215
+TNS   : 0.000
+
+Type  : Fast Model Hold 'inst3|NiosII|up_clocks_0|DE_Clock_Generator_System|pll|clk[0]'
+Slack : 0.215
+TNS   : 0.000
+
+Type  : Fast Model Recovery 'inst3|NiosII|up_clocks_0|DE_Clock_Generator_System|pll|clk[0]'
+Slack : 7.538
+TNS   : 0.000
+
+Type  : Fast Model Removal 'inst3|NiosII|up_clocks_0|DE_Clock_Generator_System|pll|clk[0]'
+Slack : 0.904
+TNS   : 0.000
+
+Type  : Fast Model Minimum Pulse Width 'clock50Mhz'
+Slack : 7.873
+TNS   : 0.000
+
+Type  : Fast Model Minimum Pulse Width 'inst3|NiosII|up_clocks_0|DE_Clock_Generator_System|pll|clk[0]'
+Slack : 7.873
+TNS   : 0.000
+
+Type  : Fast Model Minimum Pulse Width 'Video_Controller800x480:inst4|VGA_Controller_256Pallette:inst6|V_Clock'
+Slack : 19.000
+TNS   : 0.000
+
+Type  : Fast Model Minimum Pulse Width 'inst13'
+Slack : 19.000
+TNS   : 0.000
+
+Type  : Fast Model Minimum Pulse Width 'altera_reserved_tck'
+Slack : 97.778
+TNS   : 0.000
+
+------------------------------------------------------------
