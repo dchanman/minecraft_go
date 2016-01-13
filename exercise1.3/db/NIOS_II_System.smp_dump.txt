@@ -1,4 +1,88 @@
 
+State Machine - |SystemTopLevel|OnChipM68xxIO:inst2|ACIA_6850:inst14|DCDState
+Name DCDState.DCD_State_Reset DCDState.DCD_State_Int DCDState.DCD_State_Idle 
+DCDState.DCD_State_Idle 0 0 0 
+DCDState.DCD_State_Int 0 1 1 
+DCDState.DCD_State_Reset 1 0 1 
+
+State Machine - |SystemTopLevel|OnChipM68xxIO:inst2|ACIA_6850:inst14|ACIA_TX:TxDev|TxState
+Name TxState.Tx2Stop_State TxState.TxParity_State TxState.TxData_State TxState.TxStart_State TxState.Tx1Stop_State 
+TxState.Tx1Stop_State 0 0 0 0 0 
+TxState.TxStart_State 0 0 0 1 1 
+TxState.TxData_State 0 0 1 0 1 
+TxState.TxParity_State 0 1 0 0 1 
+TxState.Tx2Stop_State 1 0 0 0 1 
+
+State Machine - |SystemTopLevel|OnChipM68xxIO:inst2|ACIA_6850:inst14|ACIA_RX:RxDev|RxState
+Name RxState.RxStop_state RxState.RxParity_state RxState.RxData_state RxState.RxStart_State 
+RxState.RxStart_State 0 0 0 0 
+RxState.RxData_state 0 0 1 1 
+RxState.RxParity_state 0 1 0 1 
+RxState.RxStop_state 1 0 0 1 
+
+State Machine - |SystemTopLevel|OnChipM68xxIO:inst2|ACIA_6850:inst11|DCDState
+Name DCDState.DCD_State_Reset DCDState.DCD_State_Int DCDState.DCD_State_Idle 
+DCDState.DCD_State_Idle 0 0 0 
+DCDState.DCD_State_Int 0 1 1 
+DCDState.DCD_State_Reset 1 0 1 
+
+State Machine - |SystemTopLevel|OnChipM68xxIO:inst2|ACIA_6850:inst11|ACIA_TX:TxDev|TxState
+Name TxState.Tx2Stop_State TxState.TxParity_State TxState.TxData_State TxState.TxStart_State TxState.Tx1Stop_State 
+TxState.Tx1Stop_State 0 0 0 0 0 
+TxState.TxStart_State 0 0 0 1 1 
+TxState.TxData_State 0 0 1 0 1 
+TxState.TxParity_State 0 1 0 0 1 
+TxState.Tx2Stop_State 1 0 0 0 1 
+
+State Machine - |SystemTopLevel|OnChipM68xxIO:inst2|ACIA_6850:inst11|ACIA_RX:RxDev|RxState
+Name RxState.RxStop_state RxState.RxParity_state RxState.RxData_state RxState.RxStart_State 
+RxState.RxStart_State 0 0 0 0 
+RxState.RxData_state 0 0 1 1 
+RxState.RxParity_state 0 1 0 1 
+RxState.RxStop_state 1 0 0 1 
+
+State Machine - |SystemTopLevel|OnChipM68xxIO:inst2|ACIA_6850:inst8|DCDState
+Name DCDState.DCD_State_Reset DCDState.DCD_State_Int DCDState.DCD_State_Idle 
+DCDState.DCD_State_Idle 0 0 0 
+DCDState.DCD_State_Int 0 1 1 
+DCDState.DCD_State_Reset 1 0 1 
+
+State Machine - |SystemTopLevel|OnChipM68xxIO:inst2|ACIA_6850:inst8|ACIA_TX:TxDev|TxState
+Name TxState.Tx2Stop_State TxState.TxParity_State TxState.TxData_State TxState.TxStart_State TxState.Tx1Stop_State 
+TxState.Tx1Stop_State 0 0 0 0 0 
+TxState.TxStart_State 0 0 0 1 1 
+TxState.TxData_State 0 0 1 0 1 
+TxState.TxParity_State 0 1 0 0 1 
+TxState.Tx2Stop_State 1 0 0 0 1 
+
+State Machine - |SystemTopLevel|OnChipM68xxIO:inst2|ACIA_6850:inst8|ACIA_RX:RxDev|RxState
+Name RxState.RxStop_state RxState.RxParity_state RxState.RxData_state RxState.RxStart_State 
+RxState.RxStart_State 0 0 0 0 
+RxState.RxData_state 0 0 1 1 
+RxState.RxParity_state 0 1 0 1 
+RxState.RxStop_state 1 0 0 1 
+
+State Machine - |SystemTopLevel|OnChipM68xxIO:inst2|ACIA_6850:inst2|DCDState
+Name DCDState.DCD_State_Reset DCDState.DCD_State_Int DCDState.DCD_State_Idle 
+DCDState.DCD_State_Idle 0 0 0 
+DCDState.DCD_State_Int 0 1 1 
+DCDState.DCD_State_Reset 1 0 1 
+
+State Machine - |SystemTopLevel|OnChipM68xxIO:inst2|ACIA_6850:inst2|ACIA_TX:TxDev|TxState
+Name TxState.Tx2Stop_State TxState.TxParity_State TxState.TxData_State TxState.TxStart_State TxState.Tx1Stop_State 
+TxState.Tx1Stop_State 0 0 0 0 0 
+TxState.TxStart_State 0 0 0 1 1 
+TxState.TxData_State 0 0 1 0 1 
+TxState.TxParity_State 0 1 0 0 1 
+TxState.Tx2Stop_State 1 0 0 0 1 
+
+State Machine - |SystemTopLevel|OnChipM68xxIO:inst2|ACIA_6850:inst2|ACIA_RX:RxDev|RxState
+Name RxState.RxStop_state RxState.RxParity_state RxState.RxData_state RxState.RxStart_State 
+RxState.RxStart_State 0 0 0 0 
+RxState.RxData_state 0 0 1 1 
+RxState.RxParity_state 0 1 0 1 
+RxState.RxStop_state 1 0 0 1 
+
 State Machine - |SystemTopLevel|NIOS_II_SYSTEM:inst3|nios_system:NiosII|nios_system_character_lcd_0:character_lcd_0|s_lcd_controller
 Name s_lcd_controller.LCD_STATE_6_COMPLETE s_lcd_controller.LCD_STATE_5_TRANSFER s_lcd_controller.LCD_STATE_4_BEGIN_TRANSFER s_lcd_controller.LCD_STATE_3_CHECK_BUSY s_lcd_controller.LCD_STATE_2_START_CHECK_BUSY s_lcd_controller.LCD_STATE_1_INITIALIZE s_lcd_controller.LCD_STATE_0_IDLE 
 s_lcd_controller.LCD_STATE_0_IDLE 0 0 0 0 0 0 0 

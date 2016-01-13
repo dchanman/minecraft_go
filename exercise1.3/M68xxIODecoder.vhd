@@ -81,7 +81,6 @@ Begin
 					RS232_Baud_Enable <= '1' ;
 				end if ;
 			end if ;
-		end if ;		
 		
 --------------------------------------------------------------------------------------------------------------------------------		
 -- add other decoders for 3 more 6850 ACIA and 3 more baud rate generators, 
@@ -101,7 +100,22 @@ Begin
 -- decoder for the Baud Rate generator. 1 internal (write only) register at address 0x8400_0214 on D7-D0 
 -- and ByteSelect_L = 0
 	
--- your VHDL code for 2nd serial port and baud rate generator decoder goes here
+-- if address in range hex 8400_021X i.e. 8400_0210 - 8400_021F  i.e. 16 bytes in total even though not all used
+
+			if((Address(15 downto 4) = X"021") and ByteSelect_L = '0') then	
+	
+-- if address is hex 8400_0210 or 8400_0212
+
+			   if((Address(3 downto 0) = X"0") OR (Address(3 downto 0) = X"2")) then	
+					GPS_Port_Enable <= '1' ;		-- enable the ACIA device
+			   end if ;
+				
+-- if address is hex 8400_0214 enable baud rate generator 
+
+				if(Address(3 downto 0) = X"4") then				
+					GPS_Baud_Enable <= '1' ;
+				end if ;
+			end if ;
 	
 -- decoder for the 3rd 6850 chip (Bluetooth)- 4 internal registers at addresses 0x8400_0220 and 0x8400_0222
 -- Status Register (read only) and Command Register (write only) are at location 0x8400_220
@@ -113,7 +127,22 @@ Begin
 -- decoder for the Baud Rate generator. 1 internal (write only) register at address 0x8400_0224 on D7-D0 
 -- and ByteSelect_L = 0
 
--- your VHDL code for 3rd serial port and baud rate generator goes here		
+-- if address in range hex 8400_022X i.e. 8400_0220 - 8400_022F  i.e. 16 bytes in total even though not all used
+
+			if((Address(15 downto 4) = X"022") and ByteSelect_L = '0') then	
+	
+-- if address is hex 8400_0220 or 8400_0222
+
+			   if((Address(3 downto 0) = X"0") OR (Address(3 downto 0) = X"2")) then	
+					Bluetooth_Port_Enable <= '1' ;		-- enable the ACIA device
+			   end if ;
+				
+-- if address is hex 8400_0224 enable baud rate generator 
+
+				if(Address(3 downto 0) = X"4") then				
+					Bluetooth_Baud_Enable <= '1' ;
+				end if ;
+			end if ;	
 		
 -- decoder for the 4th 6850 chip (Touch Screen)- 4 internal byte wide registers at addresses 0x8400_0230 and 0x8400_0232
 -- Status Register (read only) and Command Register (write only) are at location 0x8400_230
@@ -124,7 +153,23 @@ Begin
 -- decoder for the Baud Rate generator. 1 internal (write only) register at address 0x8400_0234 data on D7-D0 
 -- and ByteSelect_L = 0
 		
--- your VHDL code for 4th serial port and baud rate generator goes here
+-- if address in range hex 8400_023X i.e. 8400_0230 - 8400_023F  i.e. 16 bytes in total even though not all used
+
+			if((Address(15 downto 4) = X"023") and ByteSelect_L = '0') then	
+	
+-- if address is hex 8400_0230 or 8400_0232
+
+			   if((Address(3 downto 0) = X"0") OR (Address(3 downto 0) = X"2")) then	
+					TouchScreen_Port_Enable <= '1' ;		-- enable the ACIA device
+			   end if ;
+				
+-- if address is hex 8400_0234 enable baud rate generator 
+
+				if(Address(3 downto 0) = X"4") then				
+					Touchscreen_Baud_Enable <= '1' ;
+				end if ;
+			end if ;
+		end if ;		
 
 	end process;
 END ;
