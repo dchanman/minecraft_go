@@ -45,7 +45,7 @@ eclipse/
 *.sopcinfo
 *nios_system/
 *.rpt
-*software/
+#*software/
 *.qsys_edit/
 
 # Personal
