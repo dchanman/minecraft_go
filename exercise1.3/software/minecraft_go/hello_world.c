@@ -31,14 +31,22 @@ static int rs232_put_char(int c);
 static int rs232_get_char(void);
 static int rs232_test_for_received_data(void);
 
-int main()
-{
-  printf("Hello from Nios II!\n");
+int main() {
+	printf("Minecraft GO Base Platform\n");
 
-  rs232_init();
-  rs232_put_char('a');
+	rs232_init();
 
-  return 0;
+	/* Test program to check communication to Hyperterminal/GtkTerm */
+	int recv = 'a';
+	while (1) {
+
+		rs232_put_char(recv);
+
+		recv = rs232_get_char();
+		printf("Received <%c> <0x%x>\n", recv, recv);
+	}
+
+	return 0;
 }
 
 /**
@@ -47,8 +55,7 @@ int main()
  * Call this function at the start of the program prior to reading
  * or writing data via the RS232 port.
  */
-static void rs232_init(void)
-{
+static void rs232_init(void) {
 	// set up 6850 Control Register to utilise a divide by 16 clock,
 	// set RTS low, use 8 bits of data, no parity, 1 stop bit,
 	// transmitter interrupt disabled
@@ -67,10 +74,10 @@ static void rs232_init(void)
 	RS232_BAUD = 0x01;
 }
 
-static int rs232_put_char(int c)
-{
+static int rs232_put_char(int c) {
 	/* Poll Tx bit in 6850 status register. Wait for it to become '1' */
-	while (RS232_STATUS & RS232_STATUS_MASK_TX_BIT != 1);
+	while ((RS232_STATUS & RS232_STATUS_MASK_TX_BIT) == 0)
+		/* Wait */;
 
 	//* Write 'c' to the 6850 TxData register to output the character */
 	RS232_TX_DATA = c;
@@ -78,10 +85,10 @@ static int rs232_put_char(int c)
 	return c;
 }
 
-static int rs232_get_char(void)
-{
+static int rs232_get_char(void) {
 	/* Poll Rx bit in 6850 status register. Wait for it to become '1' */
-	while (RS232_STATUS & RS232_STATUS_MASK_RX_BIT);
+	while ((RS232_STATUS & RS232_STATUS_MASK_RX_BIT) == 0)
+		/* Wait */;
 
 	/* Read received character from 6850 RxData register. */
 	return RS232_RX_DATA;
@@ -92,9 +99,8 @@ static int rs232_get_char(void)
  * It doesn't wait for one, or read it. It simply tests to see
  * if there is one available to read.
  */
-static int rs232_test_for_received_data(void)
-{
+static int rs232_test_for_received_data(void) {
 	/* Test Rx bit in 6850 serial comms chip status register */
 	/* If RX bit is set, return TRUE, otherwise return FALSE */
-	return (RS232_STATUS & RS232_STATUS_MASK_RX_BIT);
+	return ((RS232_STATUS & RS232_STATUS_MASK_RX_BIT) ? 1 : 0);
 }
