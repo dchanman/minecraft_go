@@ -26,9 +26,11 @@
 #define RS232_STATUS_MASK_TX_BIT	(0x02)
 #define RS232_STATUS_MASK_RX_BIT	(0x01)
 
+#define CPEN_EXIT_OK 0
+
 static void rs232_init(void);
-static int rs232_put_char(int c);
-static int rs232_get_char(void);
+static int rs232_put_char(const uint8_t c);
+static int rs232_get_char(uint8_t *data);
 static int rs232_test_for_received_data(void);
 
 int main() {
@@ -37,13 +39,12 @@ int main() {
 	rs232_init();
 
 	/* Test program to check communication to Hyperterminal/GtkTerm */
-	int recv = 'a';
+	uint8_t recv;
 	while (1) {
+		rs232_get_char(&recv);
+		printf("Received <%c> <0x%x>\n", recv, recv);
 
 		rs232_put_char(recv);
-
-		recv = rs232_get_char();
-		printf("Received <%c> <0x%x>\n", recv, recv);
 	}
 
 	return 0;
@@ -74,7 +75,7 @@ static void rs232_init(void) {
 	RS232_BAUD = 0x01;
 }
 
-static int rs232_put_char(int c) {
+static int rs232_put_char(const uint8_t c) {
 	/* Poll Tx bit in 6850 status register. Wait for it to become '1' */
 	while ((RS232_STATUS & RS232_STATUS_MASK_TX_BIT) == 0)
 		/* Wait */;
@@ -82,16 +83,18 @@ static int rs232_put_char(int c) {
 	//* Write 'c' to the 6850 TxData register to output the character */
 	RS232_TX_DATA = c;
 
-	return c;
+	return CPEN_EXIT_OK;
 }
 
-static int rs232_get_char(void) {
+static int rs232_get_char(uint8_t *data) {
 	/* Poll Rx bit in 6850 status register. Wait for it to become '1' */
 	while ((RS232_STATUS & RS232_STATUS_MASK_RX_BIT) == 0)
 		/* Wait */;
 
 	/* Read received character from 6850 RxData register. */
-	return RS232_RX_DATA;
+	*data = RS232_RX_DATA;
+
+	return CPEN_EXIT_OK;
 }
 
 /**
