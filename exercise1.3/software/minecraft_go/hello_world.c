@@ -66,9 +66,9 @@ static void rs232_init(void) {
 	 * * RTS low, Transmitting Interrupt Disabled (CR6/CR5 = 00)
 	 * * Receive Interrupt Enable - Set to 0 arbitrarily (CR7 = 0)
 	 *
-	 * 0b10001001 = 0x89
+	 * 0b00010101 = 0x15
 	 */
-	RS232_CONTROL = 0x89;
+	RS232_CONTROL = 0x15;
 
 	// program baud rate generator to use 115k baud
 	RS232_BAUD = 0x01;
