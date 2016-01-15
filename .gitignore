@@ -47,6 +47,18 @@ eclipse/
 *.rpt
 #*software/
 *.qsys_edit/
+*bak
+*.cdb
+*.hdb
+*.force_relink
+serv_req_info.txt
+
+
+# Eclipse
+obj/
+*.map
+*.objdump
+*.bsp
 
 # Personal
 scratch/
