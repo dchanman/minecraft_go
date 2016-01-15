@@ -4,7 +4,7 @@
 
 # List of include directories for -I compiler option (-I added when used).
 # Includes the BSP.
-ALT_INCLUDE_DIRS :=
+ALT_INCLUDE_DIRS := include
 
 # List of library directories for -L linker option (-L added when used).
 # Includes the BSP.
@@ -142,7 +142,9 @@ ACDS_VERSION := 13.0sp1
 ELF := minecraft_go.elf
 
 # Paths to C, C++, and assembly source files.
-C_SRCS := hello_world.c
+C_SRCS += src/serial.c
+C_SRCS += src/rs232.c
+C_SRCS += src/main.c
 CXX_SRCS :=
 ASM_SRCS :=
 
