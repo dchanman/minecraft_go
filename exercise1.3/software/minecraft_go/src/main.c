@@ -19,7 +19,7 @@
 #include "rs232.h"
 
 int main() {
-	printf("Minecraft GO Base Platform!!\n");
+	printf("Minecraft GO\n");
 
 	rs232_init();
 
