@@ -17,11 +17,11 @@ void serial_init(unsigned volatile char * DEV_CONTROL, unsigned volatile char * 
 	 * * Divide by 16 clock (CR1/CR0 = 01)
 	 * * 8-bit data, no parity, 1 stop bit (CR4/CR3/CR2 = 101)
 	 * * RTS low, Transmitting Interrupt Disabled (CR6/CR5 = 00)
-	 * * Receive Interrupt Enable - Set to 0 arbitrarily (CR7 = 0)
+	 * * Receive Interrupt Enable - Set to 1 arbitrarily (CR7 = 1)
 	 *
-	 * 0b00010101 = 0x15
+	 * 0b10010101 = 0x95
 	 */
-	*DEV_CONTROL = 0x15;
+	*DEV_CONTROL = 0x95;
 
 	// program baud rate generator to use 115k baud
 	*DEV_BAUD = 0x01;
