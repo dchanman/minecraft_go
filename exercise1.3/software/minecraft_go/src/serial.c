@@ -33,13 +33,21 @@ void serial_init(unsigned volatile char * DEV) {
 	*DEV_BAUD = 0x01;
 }
 
-void serial_put_char(const unsigned volatile char * DEV, const unsigned char c) {
+void serial_put_char(unsigned volatile char * DEV, const unsigned char c) {
 	/* Poll Tx bit in 6850 status register. Wait for it to become '1' */
 	while ((*DEV_STATUS & SERIAL_STATUS_MASK_TX_BIT) == 0)
 		/* Wait */;
 
 	//* Write 'c' to the 6850 TxData register to output the character */
 	*DEV_TX_DATA = c;
+}
+
+void serial_put_n_char(unsigned volatile char * DEV, const unsigned char * msg, const int msg_length) {
+	int count;
+
+	for (count = 0; count < msg_length; count++) {
+		serial_put_char(DEV, msg[count]);
+	}
 }
 
 unsigned char serial_get_char(const unsigned volatile char * DEV) {
@@ -51,10 +59,17 @@ unsigned char serial_get_char(const unsigned volatile char * DEV) {
 	return (*DEV_RX_DATA);
 }
 
+void serial_get_n_char(const unsigned volatile char * DEV, unsigned char * recv_msg, const int recv_msg_length) {
+	int count;
+
+	for (count = 0; count < recv_msg_length; count++) {
+		recv_msg[count] = serial_get_char(DEV);
+	}
+}
+
 int serial_test_for_received_data(const unsigned volatile char * DEV) {
 	/* Test Rx bit in 6850 serial comms chip status register */
 	/* If RX bit is set, return TRUE, otherwise return FALSE */
 	return ((*DEV_STATUS & SERIAL_STATUS_MASK_RX_BIT) ? 1 : 0);
 }
 
-int serial_put_n_char(const unsigned volatile char * DEV, const )
