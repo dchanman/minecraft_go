@@ -1,36 +1,19 @@
-/*
- * "Hello World" example.
- *
- * This example prints 'Hello from Nios II' to the STDOUT stream. It runs on
- * the Nios II 'standard', 'full_featured', 'fast', and 'low_cost' example
- * designs. It runs with or without the MicroC/OS-II RTOS and requires a STDOUT
- * device in your system's hardware.
- * The memory footprint of this hosted application is ~69 kbytes by default
- * using the standard reference design.
- *
- * For a reduced footprint version of this template, and an explanation of how
- * to reduce the memory footprint for a given application, see the
- * "small_hello_world" template.
- *
- */
-
 #include <stdint.h>
 #include <stdio.h>
-#include "rs232.h"
+
+/* Comment this #define out when we're done testing */
+#define TESTING
+
+#ifdef TESTING
+#include "rs232_test.h"
+#endif
 
 int main() {
 	printf("Minecraft GO\n");
 
-	rs232_init();
-
-	/* Test program to check communication to Hyperterminal/GtkTerm */
-	unsigned char recv;
-	while (1) {
-		recv = rs232_get_char();
-		printf("Received <%c> <0x%x>\n", recv, recv);
-
-		rs232_put_char(recv);
-	}
+	/* Uncomment the feature you want to test */
+	//rs232_test_multi_char();
+	rs232_test_single_char();
 
 	return 0;
 }

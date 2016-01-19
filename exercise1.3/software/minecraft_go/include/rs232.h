@@ -22,9 +22,22 @@ void rs232_init(void);
 void rs232_put_char(const unsigned char c);
 
 /**
+ * Writes a buffer to the rs232 serial port
+ */
+void rs232_put_n_char(const unsigned char * msg, const int msg_length);
+
+/**
  * Reads a single character from the rs232 serial port
  */
 unsigned char rs232_get_char();
+
+/**
+ * Fills a buffer with reads from the rs232 serial port.
+ *
+ * Note that calling this function is BLOCKING. This means that this function will
+ * not return until the entire buffer is filled.
+ */
+void rs232_get_n_char(unsigned char * recv_msg, const int recv_msg_length);
 
 /**
  * Poll the 6850 to determine if any character has been received.
