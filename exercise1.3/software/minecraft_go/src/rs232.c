@@ -12,7 +12,7 @@
 #define RS232	((volatile unsigned char *)(0x84000200))
 
 void rs232_init() {
-	serial_init(RS232);
+	serial_init(RS232, BAUD_RATE_115K);
 }
 
 void rs232_put_char(const unsigned char c) {
