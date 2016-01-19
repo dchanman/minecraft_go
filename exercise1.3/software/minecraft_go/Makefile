@@ -144,6 +144,7 @@ ELF := minecraft_go.elf
 # Paths to C, C++, and assembly source files.
 C_SRCS += src/serial.c
 C_SRCS += src/rs232.c
+C_SRCS += src/GPS.c
 C_SRCS += src/main.c
 CXX_SRCS :=
 ASM_SRCS :=

@@ -17,13 +17,22 @@
 #include <stdint.h>
 #include <stdio.h>
 #include "rs232.h"
+#include "GPS.h"
 
 int main() {
 	printf("Minecraft GO\n");
 
+	GPS_init();
+
+	GPS_send_command(GSP_SNAPSHOT_NOW);
+
+	char * result = GPS_retrive_data_line(1000);
+
+	printf("%s \n",result);
+
+	/*
 	rs232_init();
 
-	/* Test program to check communication to Hyperterminal/GtkTerm */
 	unsigned char recv;
 	while (1) {
 		recv = rs232_get_char();
@@ -31,6 +40,7 @@ int main() {
 
 		rs232_put_char(recv);
 	}
+	*/
 
 	return 0;
 }
