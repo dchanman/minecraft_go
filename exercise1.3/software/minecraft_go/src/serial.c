@@ -17,7 +17,7 @@
 #define DEV_RX_DATA	(DEV + 2)
 #define DEV_BAUD	(DEV + 4)
 
-void serial_init(unsigned volatile char * DEV) {
+void serial_init(unsigned volatile char * DEV, const baud_rate_t BAUD_RATE) {
 	/**
 	 * Set up 6850 Control Register to use
 	 * * Divide by 16 clock (CR1/CR0 = 01)
@@ -30,7 +30,7 @@ void serial_init(unsigned volatile char * DEV) {
 	*DEV_CONTROL = 0x95;
 
 	// program baud rate generator to use 115k baud
-	*DEV_BAUD = 0x01;
+	*DEV_BAUD = BAUD_RATE;
 }
 
 void serial_put_char(unsigned volatile char * DEV, const unsigned char c) {
