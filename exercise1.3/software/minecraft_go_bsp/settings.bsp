@@ -2,8 +2,8 @@
 <sch:Settings xmlns:sch="http://www.altera.com/embeddedsw/bsp/schema">
         <BspType>hal</BspType>
         <BspVersion>default</BspVersion>
-        <BspGeneratedTimeStamp>Jan 14, 2016 5:59:34 PM</BspGeneratedTimeStamp>
-        <BspGeneratedUnixTimeStamp>1452823174566</BspGeneratedUnixTimeStamp>
+        <BspGeneratedTimeStamp>Jan 19, 2016 7:15:19 PM</BspGeneratedTimeStamp>
+        <BspGeneratedUnixTimeStamp>1453259719798</BspGeneratedUnixTimeStamp>
         <BspGeneratedLocation>/home/derek/projects/cpen391-21/exercise1.3/software/minecraft_go_bsp</BspGeneratedLocation>
         <BspSettingsFile>settings.bsp</BspSettingsFile>
         <SopcDesignFile>../../nios_system.sopcinfo</SopcDesignFile>
@@ -944,6 +944,12 @@
                 <slaveDescriptor>pio_4</slaveDescriptor>
                 <addressRange>0x00001110 - 0x0000111F</addressRange>
                 <addressSpan>16</addressSpan>
+                <attributes/>
+        </MemoryMap>
+        <MemoryMap>
+                <slaveDescriptor>altera_up_sd_card_avalon_interface_0</slaveDescriptor>
+                <addressRange>0x00202400 - 0x002027FF</addressRange>
+                <addressSpan>1024</addressSpan>
                 <attributes/>
         </MemoryMap>
         <MemoryMap>
