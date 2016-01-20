@@ -145,6 +145,7 @@ ELF := minecraft_go.elf
 C_SRCS += src/serial.c
 C_SRCS += src/rs232.c
 C_SRCS += src/main.c
+C_SRCS += test/rs232_test.c
 CXX_SRCS :=
 ASM_SRCS :=
 

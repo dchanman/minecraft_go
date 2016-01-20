@@ -9,24 +9,28 @@
 #include "rs232.h"
 #include "serial.h"
 
-#define RS232_CONTROL	((volatile unsigned char *)(0x84000200))
-#define RS232_STATUS	((volatile unsigned char *)(0x84000200))
-#define RS232_TX_DATA	((volatile unsigned char *)(0x84000202))
-#define RS232_RX_DATA	((volatile unsigned char *)(0x84000202))
-#define RS232_BAUD		((volatile unsigned char *)(0x84000204))
+#define RS232	((volatile unsigned char *)(0x84000200))
 
 void rs232_init() {
-	serial_init(RS232_CONTROL, RS232_BAUD);
+	serial_init(RS232, BAUD_RATE_115K);
 }
 
 void rs232_put_char(const unsigned char c) {
-	serial_put_char(RS232_STATUS, RS232_TX_DATA, c);
+	serial_put_char(RS232, c);
+}
+
+void rs232_put_n_char(const unsigned char * msg, const int msg_length) {
+	serial_put_n_char(RS232, msg, msg_length);
 }
 
 unsigned char rs232_get_char() {
-	return serial_get_char(RS232_STATUS, RS232_RX_DATA);
+	return serial_get_char(RS232);
+}
+
+void rs232_get_n_char(unsigned char * recv_msg, const int recv_msg_length) {
+	return serial_get_n_char(RS232, recv_msg, recv_msg_length);
 }
 
 int rs232_test_for_received_data() {
-	return serial_test_for_received_data(RS232_STATUS);
+	return serial_test_for_received_data(RS232);
 }
