@@ -4,7 +4,7 @@
  * Machine generated for CPU 'nios2_qsys_0' in SOPC Builder design 'nios_system'
  * SOPC Builder design path: ../../nios_system.sopcinfo
  *
- * Generated: Wed Jan 13 15:23:20 PST 2016
+ * Generated: Tue Jan 19 19:09:54 PST 2016
  */
 
 /*
@@ -136,6 +136,7 @@
 #define __ALTERA_UP_AVALON_CHARACTER_LCD
 #define __ALTERA_UP_AVALON_RS232
 #define __ALTERA_UP_AVALON_TO_EXTERNAL_BUS_BRIDGE
+#define __ALTERA_UP_SD_CARD_AVALON_INTERFACE
 
 
 /*
@@ -172,6 +173,20 @@
 #define ALT_STDOUT_PRESENT
 #define ALT_STDOUT_TYPE "altera_avalon_jtag_uart"
 #define ALT_SYSTEM_NAME "nios_system"
+
+
+/*
+ * altera_up_sd_card_avalon_interface_0 configuration
+ *
+ */
+
+#define ALTERA_UP_SD_CARD_AVALON_INTERFACE_0_BASE 0x202400
+#define ALTERA_UP_SD_CARD_AVALON_INTERFACE_0_IRQ -1
+#define ALTERA_UP_SD_CARD_AVALON_INTERFACE_0_IRQ_INTERRUPT_CONTROLLER_ID -1
+#define ALTERA_UP_SD_CARD_AVALON_INTERFACE_0_NAME "/dev/altera_up_sd_card_avalon_interface_0"
+#define ALTERA_UP_SD_CARD_AVALON_INTERFACE_0_SPAN 1024
+#define ALTERA_UP_SD_CARD_AVALON_INTERFACE_0_TYPE "Altera_UP_SD_Card_Avalon_Interface"
+#define ALT_MODULE_CLASS_altera_up_sd_card_avalon_interface_0 Altera_UP_SD_Card_Avalon_Interface
 
 
 /*

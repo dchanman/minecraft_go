@@ -5,7 +5,7 @@
 #define TESTING
 
 #ifdef TESTING
-#include "rs232_test.h"
+#include "test.h"
 #endif
 
 int main() {
@@ -13,7 +13,9 @@ int main() {
 
 	/* Uncomment the feature you want to test */
 	//rs232_test_multi_char();
-	rs232_test_single_char();
+	//rs232_test_single_char();
+	//sdcard_test_open();
+	sdcard_test();
 
 	return 0;
 }
