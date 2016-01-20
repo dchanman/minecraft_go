@@ -24,25 +24,51 @@ int main() {
 
 	GPS_init();
 
-	GPS_send_command(GSP_SNAPSHOT_NOW);
 
-	char * result = GPS_retrive_data_line(1000);
-
-	printf("%s \n",result);
-
+	GPS_send_command(GPS_START_DATA_LOG);
 	/*
-	rs232_init();
-
-	unsigned char recv;
-	while (1) {
-		recv = rs232_get_char();
-		printf("Received <%c> <0x%x>\n", recv, recv);
-
-		rs232_put_char(recv);
+	int times = 100;
+	int i;
+	char * result;
+	for(i = 0; i < times; i++){
+		result = GPS_retrive_data_line(1000);
+		printf("%s \n",result);
 	}
 	*/
 
+
+
+	GPS_send_command(GPS_DATA_DUMP_PARTIAL);
+	int buffer_size = 100;
+	char ** test_data = GPS_retrive_data_dump(buffer_size);
+
+	int i;
+	for(i = 0; i < buffer_size; i++){
+		printf("%s \n", test_data[i]);
+	}
+
+
+	/* For finding checksum
+	char array[9] = {'P','M','T','K','1','8','5',',','0'};
+
+	checksum(array, 9);
+	*/
+
+	printf("DONE\n");
 	return 0;
 }
+
+void print_test_data(char ** test_data){
+	int counter = 0;
+	char curr_char;
+
+	do {
+		curr_char = test_data[counter][0];
+		counter++;
+		printf("%s \n", test_data[counter]);
+
+	} while (curr_char == '$');
+}
+
 
 

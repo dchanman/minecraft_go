@@ -7,6 +7,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "general.h"
 #include "GPS.h"
 #include "serial.h"
@@ -71,13 +72,25 @@ char * GPS_retrive_data_line(int buffer_size){
 }
 
 
-/* Incomplete
-char ** GPS_retrive_data_dump(){
-	char *result[];
+char ** GPS_retrive_data_dump(max_size){
+	char **result = malloc(max_size * sizeof( char* ));
+	int i;
 
-	result[1] = "Hello";
+	for (i = 0; i < max_size; i++) {
+		char * current_string = GPS_retrive_data_line(1000);
+
+		if (strstr(current_string, GPS_DATA_DUMP_END) != NULL)
+			break;
+
+		result[i] = current_string;
+
+		if (i == max_size - 1)
+			printf("Warning: Data dump reached max buffer size!\n");
+	}
+
+	return result;
 }
-*/
+
     
 // see http://stackoverflow.com/questions/2182002/convert-big-endian-to-
 // little-endian-in-c-without-using-provided-func
@@ -115,4 +128,15 @@ char *FloatToLongitudeConversion(int x) // output format is (-)xxx.yyyy
     float f = *ptr;
     sprintf(buff, "%3.4f", f);
     return buff;
+}
+
+void checksum(char string[], int size) {
+  int i;
+  char result = string[0];
+  for(i = 1; i < size; i++){
+	printf("XORing: %c %d ", string[i], string[i]);
+    result ^= string[i];
+  }
+
+  printf("Checksum: %x \n", result);
 }
