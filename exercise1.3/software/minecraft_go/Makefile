@@ -147,6 +147,7 @@ C_SRCS += src/rs232.c
 C_SRCS += src/main.c
 C_SRCS += test/rs232_test.c
 C_SRCS += test/sdcard_test.c
+C_SRCS += src/sdcard.c
 CXX_SRCS :=
 ASM_SRCS :=
 
