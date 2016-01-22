@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <altera_up_sd_card_avalon_interface.h>
+#include "sdcard.h"
 
 void sdcard_test() {
 	short int filehandle;
