@@ -91,6 +91,67 @@ char ** GPS_retrive_data_dump(max_size){
 	return result;
 }
 
+int GPS_get_GGA_data(char *GGA_line, struct GGA_DATA *holder){
+	const char delimiter[2] = ",";
+	char * token = strtok(GGA_line, delimiter);
+
+	if ( strcmp(token, GGA_IDENTIFIER) != 0) {
+		//printf("Line is not in GGA format!\n");
+		return 0;
+	}
+
+	int count = 0;
+	while( token != NULL ) {
+		switch(count){
+			case 1:
+				memcpy(holder->UTC_time, token, strlen(token));
+				holder->UTC_time[10] = '\0';
+				break;
+			case 2:
+				memcpy(holder->latitude, token, strlen(token));
+				holder->latitude[9] = '\0';
+				break;
+			case 3:
+				memcpy(holder->N_S, token, strlen(token));
+				holder->N_S[1] = '\0';
+				break;
+			case 4:
+				memcpy(holder->longitude, token, strlen(token));
+				holder->longitude[10] = '\0';
+				break;
+			case 5:
+				memcpy(holder->E_W, token, strlen(token));
+				holder->E_W[1] = '\0';
+				break;
+			case 7:
+				memcpy(holder->satellites, token, strlen(token));
+				holder->satellites[2] = '\0';
+				break;
+			default:
+				break; // leave the other fields for now
+		}
+
+		//printf("Current token: %s \n", token);
+		token = strtok(NULL, delimiter);
+
+		count++;
+	}
+
+	return 1;
+}
+
+void GPS_checksum(char *string, int size) {
+  int i;
+  char result = string[0];
+  for(i = 1; i < size; i++){
+	printf("XORing: %c %d ", string[i], string[i]);
+    result ^= string[i];
+  }
+
+  printf("Checksum: %x \n", result);
+}
+
+//------------------------- FOR PARSING DATA DUMP
     
 // see http://stackoverflow.com/questions/2182002/convert-big-endian-to-
 // little-endian-in-c-without-using-provided-func

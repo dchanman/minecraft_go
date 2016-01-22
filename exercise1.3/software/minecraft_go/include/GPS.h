@@ -20,10 +20,23 @@
 #define GPS_DATA_DUMP_PARTIAL "$PMTK622,1*29\r\n"
 #define GPS_DATA_DUMP_END "$PMTKLOX,2*47\r\n"
 
+#define GGA_IDENTIFIER "$GPGGA"
+
+struct GGA_DATA {
+   char  UTC_time[11];
+   char  latitude[10];
+   char  N_S[2];
+   char  longitude[11];
+   char  E_W[2];
+   char  satellites[3];
+};
 
 char * GPS_retrive_data_line(int);
 void GPS_send_command(const char *);
 void GPS_init();
-void checksum(char[], int);
+int GPS_get_GGA_data(char *, struct GGA_DATA * );
+void GPS_checksum(char *, int);
+
+
 
 #endif /* GSP_H_ */
