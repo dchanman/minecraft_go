@@ -51,7 +51,7 @@ int sdcard_open(short int * filehandle, char * filename)
 		/* Maybe the file exists, try opening it instead */
 		*filehandle = alt_up_sd_card_fopen(filename, false);
 		if (*filehandle == -1) {
-			printf("Error: Could not open file <%s>\n");
+			printf("Error: Could not open file <%s>\n", filename);
 			return 1;
 		} else {
 			printf("Opened file <%s>\n", filename);
