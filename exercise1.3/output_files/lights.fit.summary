@@ -1,15 +1,27 @@
+<<<<<<< HEAD
 Fitter Status : Successful - Tue Jan 19 19:14:04 2016
+=======
+Fitter Status : Successful - Tue Jan 19 17:07:36 2016
+>>>>>>> origin/master
 Quartus II 64-Bit Version : 13.0.1 Build 232 06/12/2013 SP 1 SJ Web Edition
 Revision Name : lights
 Top-level Entity Name : SystemTopLevel
 Family : Cyclone II
 Device : EP2C35F672C6
 Timing Models : Final
+<<<<<<< HEAD
 Total logic elements : 9,410 / 33,216 ( 28 % )
     Total combinational functions : 8,204 / 33,216 ( 25 % )
     Dedicated logic registers : 5,342 / 33,216 ( 16 % )
 Total registers : 5410
 Total pins : 242 / 475 ( 51 % )
+=======
+Total logic elements : 7,789 / 33,216 ( 23 % )
+    Total combinational functions : 6,808 / 33,216 ( 20 % )
+    Dedicated logic registers : 4,416 / 33,216 ( 13 % )
+Total registers : 4484
+Total pins : 238 / 475 ( 50 % )
+>>>>>>> origin/master
 Total virtual pins : 0
 Total memory bits : 215,424 / 483,840 ( 45 % )
 Embedded Multiplier 9-bit elements : 4 / 70 ( 6 % )

@@ -10,5 +10,6 @@
 
 #define EXIT_OK 0
 
+void GPS_test();
 
 #endif /* GENERAL_H_ */
