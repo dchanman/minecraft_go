@@ -6,6 +6,7 @@
 
 #ifdef TESTING
 #include "rs232_test.h"
+#include "general.h"
 #endif
 
 int main() {
@@ -13,9 +14,13 @@ int main() {
 
 	/* Uncomment the feature you want to test */
 	//rs232_test_multi_char();
-	rs232_test_single_char();
+	//rs232_test_single_char();
+	GPS_test();
 
+	printf("DONE\n");
 	return 0;
 }
+
+
 
 
