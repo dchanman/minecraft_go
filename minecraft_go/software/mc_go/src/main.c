@@ -15,7 +15,8 @@ int main() {
 	//rs232_test_multi_char();
 	//rs232_test_single_char();
 	//sdcard_test_open();
-	sdcard_test();
+	//sdcard_test();
+	gps_test();
 
 	return 0;
 }
