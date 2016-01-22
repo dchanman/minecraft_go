@@ -59,7 +59,7 @@
  */
 
 #include "altera_nios2_qsys_irq.h"
-#include "Altera_UP_SD_Card_Avalon_Interface.h"
+#include "altera_up_sd_card_avalon_interface.h"
 #include "altera_avalon_jtag_uart.h"
 #include "altera_avalon_timer.h"
 #include "altera_up_avalon_character_lcd.h"
