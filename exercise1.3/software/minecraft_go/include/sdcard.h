@@ -15,6 +15,8 @@ int sdcard_init();
 
 /**
  * Opens a file on the sdcard for reading or writing.
+ * Note that opening a file will open it to the BEGINNING of the file, and
+ * writing any data will overwrite any existing data
  *
  * IMPORTANT: Be sure to close your file when you're done!
  *

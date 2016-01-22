@@ -14,7 +14,8 @@ int main() {
 	/* Uncomment the feature you want to test */
 	//rs232_test_multi_char();
 	//rs232_test_single_char();
-	sdcard_test_open();
+	//sdcard_test_open();
+	sdcard_test();
 
 	return 0;
 }

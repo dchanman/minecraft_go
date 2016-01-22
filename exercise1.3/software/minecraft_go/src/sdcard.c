@@ -38,20 +38,26 @@ int sdcard_open(short int * filehandle, char * filename)
 		return 1;
 	}
 
-	if (*filehandle != -1) {
-		printf("Error: There is already a file open\n");
-		return 1;
-	}
-
 	if (!alt_up_sd_card_is_FAT16()) {
 		printf("Error: SDCard is not FAT16 format\n");
 		return 1;
 	}
 
+	/* Try to create the file */
 	*filehandle = alt_up_sd_card_fopen(filename, true);
 	if (*filehandle == -1) {
-		printf("Error: Could not open file <%s>\n", filename);
-		return 1;
+		printf("Error: Could not create file <%s>, trying to open file instead...\n", filename);
+
+		/* Maybe the file exists, try opening it instead */
+		*filehandle = alt_up_sd_card_fopen(filename, false);
+		if (*filehandle == -1) {
+			printf("Error: Could not open file <%s>\n");
+			return 1;
+		} else {
+			printf("Opened file <%s>\n", filename);
+		}
+	} else {
+		printf("Created file <%s>\n", filename);
 	}
 
 	return 0;
@@ -75,6 +81,7 @@ int sdcard_close(short int * filehandle)
 	}
 
 	*filehandle = -1;
+	printf("Closed SDCard file\n");
 
 	return 0;
 }
@@ -100,6 +107,7 @@ int sdcard_write(const short int * filehandle, const char * data, const int data
 	}
 
 	/* Write data to the SDCard */
+	printf("Writing data <%s> length <%d>\n", data, data_length);
 	for (i = 0; i < data_length; i++) {
 		if (alt_up_sd_card_write(*filehandle, data[i]) == false) {
 			printf("Error: Could not write to file. Aborting write\n");
