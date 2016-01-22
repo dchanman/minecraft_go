@@ -12,6 +12,14 @@
    element $${FILENAME}
    {
    }
+   element altera_up_sd_card_avalon_interface_0
+   {
+      datum _sortIndex
+      {
+         value = "19";
+         type = "int";
+      }
+   }
    element jtag_uart_0.avalon_jtag_slave
    {
       datum _lockedAddress
@@ -48,6 +56,19 @@
       datum baseAddress
       {
          value = "4112";
+         type = "String";
+      }
+   }
+   element altera_up_sd_card_avalon_interface_0.avalon_sdcard_slave
+   {
+      datum _lockedAddress
+      {
+         value = "1";
+         type = "boolean";
+      }
+      datum baseAddress
+      {
+         value = "2106368";
          type = "String";
       }
    }
@@ -202,6 +223,58 @@
          type = "int";
       }
    }
+   element new_sdram_controller_0.s1
+   {
+      datum _lockedAddress
+      {
+         value = "1";
+         type = "boolean";
+      }
+      datum baseAddress
+      {
+         value = "16777216";
+         type = "String";
+      }
+   }
+   element onchip_memory2_0.s1
+   {
+      datum _lockedAddress
+      {
+         value = "1";
+         type = "boolean";
+      }
+      datum baseAddress
+      {
+         value = "0";
+         type = "String";
+      }
+   }
+   element pio_6.s1
+   {
+      datum _lockedAddress
+      {
+         value = "1";
+         type = "boolean";
+      }
+      datum baseAddress
+      {
+         value = "4272";
+         type = "String";
+      }
+   }
+   element pio_5.s1
+   {
+      datum _lockedAddress
+      {
+         value = "1";
+         type = "boolean";
+      }
+      datum baseAddress
+      {
+         value = "4352";
+         type = "String";
+      }
+   }
    element pio_3.s1
    {
       datum _lockedAddress
@@ -215,7 +288,7 @@
          type = "String";
       }
    }
-   element timer_0.s1
+   element pio_2.s1
    {
       datum _lockedAddress
       {
@@ -224,33 +297,7 @@
       }
       datum baseAddress
       {
-         value = "4320";
-         type = "String";
-      }
-   }
-   element pio_7.s1
-   {
-      datum _lockedAddress
-      {
-         value = "1";
-         type = "boolean";
-      }
-      datum baseAddress
-      {
-         value = "4256";
-         type = "String";
-      }
-   }
-   element new_sdram_controller_0.s1
-   {
-      datum _lockedAddress
-      {
-         value = "1";
-         type = "boolean";
-      }
-      datum baseAddress
-      {
-         value = "16777216";
+         value = "4144";
          type = "String";
       }
    }
@@ -280,7 +327,7 @@
          type = "String";
       }
    }
-   element pio_4.s1
+   element pio_7.s1
    {
       datum _lockedAddress
       {
@@ -289,46 +336,7 @@
       }
       datum baseAddress
       {
-         value = "4368";
-         type = "String";
-      }
-   }
-   element pio_6.s1
-   {
-      datum _lockedAddress
-      {
-         value = "1";
-         type = "boolean";
-      }
-      datum baseAddress
-      {
-         value = "4272";
-         type = "String";
-      }
-   }
-   element onchip_memory2_0.s1
-   {
-      datum _lockedAddress
-      {
-         value = "1";
-         type = "boolean";
-      }
-      datum baseAddress
-      {
-         value = "0";
-         type = "String";
-      }
-   }
-   element pio_2.s1
-   {
-      datum _lockedAddress
-      {
-         value = "1";
-         type = "boolean";
-      }
-      datum baseAddress
-      {
-         value = "4144";
+         value = "4256";
          type = "String";
       }
    }
@@ -345,7 +353,7 @@
          type = "String";
       }
    }
-   element pio_5.s1
+   element pio_4.s1
    {
       datum _lockedAddress
       {
@@ -354,7 +362,20 @@
       }
       datum baseAddress
       {
-         value = "4352";
+         value = "4368";
+         type = "String";
+      }
+   }
+   element timer_0.s1
+   {
+      datum _lockedAddress
+      {
+         value = "1";
+         type = "boolean";
+      }
+      datum baseAddress
+      {
+         value = "4320";
          type = "String";
       }
    }
@@ -405,7 +426,7 @@
  <parameter name="projectName" value="NIOS_II_System.qpf" />
  <parameter name="sopcBorderPoints" value="false" />
  <parameter name="systemHash" value="1" />
- <parameter name="timeStamp" value="1402348483164" />
+ <parameter name="timeStamp" value="1453259266779" />
  <parameter name="useTestBenchNamingPattern" value="false" />
  <instanceScript></instanceScript>
  <interface name="clk" internal="clk_0.clk_in" type="clock" dir="end" />
@@ -473,6 +494,11 @@
  <interface
    name="hex6_7"
    internal="pio_7.external_connection"
+   type="conduit"
+   dir="end" />
+ <interface
+   name="sdcard"
+   internal="altera_up_sd_card_avalon_interface_0.conduit_end"
    type="conduit"
    dir="end" />
  <module kind="clock_source" version="13.0" enabled="1" name="clk_0">
@@ -586,8 +612,8 @@
   <parameter name="tightlyCoupledInstructionMaster1AddrWidth" value="1" />
   <parameter name="tightlyCoupledInstructionMaster2AddrWidth" value="1" />
   <parameter name="tightlyCoupledInstructionMaster3AddrWidth" value="1" />
-  <parameter name="instSlaveMapParam"><![CDATA[<address-map><slave name='onchip_memory2_0.s1' start='0x0' end='0x1000' /><slave name='character_lcd_0.avalon_lcd_slave' start='0x1008' end='0x100A' /><slave name='rs232_0.avalon_rs232_slave' start='0x1010' end='0x1018' /><slave name='pio_0.s1' start='0x1050' end='0x1060' /><slave name='pio_3.s1' start='0x1060' end='0x1070' /><slave name='pio_7.s1' start='0x10A0' end='0x10B0' /><slave name='pio_6.s1' start='0x10B0' end='0x10C0' /><slave name='timer_1.s1' start='0x10C0' end='0x10E0' /><slave name='timer_0.s1' start='0x10E0' end='0x1100' /><slave name='pio_5.s1' start='0x1100' end='0x1110' /><slave name='pio_4.s1' start='0x1110' end='0x1120' /><slave name='nios2_qsys_0.jtag_debug_module' start='0x1800' end='0x2000' /><slave name='new_sdram_controller_0.s1' start='0x1000000' end='0x1800000' /><slave name='to_external_bus_bridge_0.avalon_slave' start='0x4000000' end='0x4010000' /></address-map>]]></parameter>
-  <parameter name="dataSlaveMapParam"><![CDATA[<address-map><slave name='onchip_memory2_0.s1' start='0x0' end='0x1000' /><slave name='jtag_uart_0.avalon_jtag_slave' start='0x1000' end='0x1008' /><slave name='character_lcd_0.avalon_lcd_slave' start='0x1008' end='0x100A' /><slave name='rs232_0.avalon_rs232_slave' start='0x1010' end='0x1018' /><slave name='pio_2.s1' start='0x1030' end='0x1040' /><slave name='pio_1.s1' start='0x1040' end='0x1050' /><slave name='pio_0.s1' start='0x1050' end='0x1060' /><slave name='pio_3.s1' start='0x1060' end='0x1070' /><slave name='pio_7.s1' start='0x10A0' end='0x10B0' /><slave name='pio_6.s1' start='0x10B0' end='0x10C0' /><slave name='timer_1.s1' start='0x10C0' end='0x10E0' /><slave name='timer_0.s1' start='0x10E0' end='0x1100' /><slave name='pio_5.s1' start='0x1100' end='0x1110' /><slave name='pio_4.s1' start='0x1110' end='0x1120' /><slave name='nios2_qsys_0.jtag_debug_module' start='0x1800' end='0x2000' /><slave name='new_sdram_controller_0.s1' start='0x1000000' end='0x1800000' /><slave name='to_external_bus_bridge_0.avalon_slave' start='0x4000000' end='0x4010000' /></address-map>]]></parameter>
+  <parameter name="instSlaveMapParam"><![CDATA[<address-map><slave name='onchip_memory2_0.s1' start='0x0' end='0x1000' /><slave name='character_lcd_0.avalon_lcd_slave' start='0x1008' end='0x100A' /><slave name='rs232_0.avalon_rs232_slave' start='0x1010' end='0x1018' /><slave name='pio_0.s1' start='0x1050' end='0x1060' /><slave name='pio_3.s1' start='0x1060' end='0x1070' /><slave name='pio_7.s1' start='0x10A0' end='0x10B0' /><slave name='pio_6.s1' start='0x10B0' end='0x10C0' /><slave name='timer_1.s1' start='0x10C0' end='0x10E0' /><slave name='timer_0.s1' start='0x10E0' end='0x1100' /><slave name='pio_5.s1' start='0x1100' end='0x1110' /><slave name='pio_4.s1' start='0x1110' end='0x1120' /><slave name='nios2_qsys_0.jtag_debug_module' start='0x1800' end='0x2000' /><slave name='altera_up_sd_card_avalon_interface_0.avalon_sdcard_slave' start='0x202400' end='0x202800' /><slave name='new_sdram_controller_0.s1' start='0x1000000' end='0x1800000' /><slave name='to_external_bus_bridge_0.avalon_slave' start='0x4000000' end='0x4010000' /></address-map>]]></parameter>
+  <parameter name="dataSlaveMapParam"><![CDATA[<address-map><slave name='onchip_memory2_0.s1' start='0x0' end='0x1000' /><slave name='jtag_uart_0.avalon_jtag_slave' start='0x1000' end='0x1008' /><slave name='character_lcd_0.avalon_lcd_slave' start='0x1008' end='0x100A' /><slave name='rs232_0.avalon_rs232_slave' start='0x1010' end='0x1018' /><slave name='pio_2.s1' start='0x1030' end='0x1040' /><slave name='pio_1.s1' start='0x1040' end='0x1050' /><slave name='pio_0.s1' start='0x1050' end='0x1060' /><slave name='pio_3.s1' start='0x1060' end='0x1070' /><slave name='pio_7.s1' start='0x10A0' end='0x10B0' /><slave name='pio_6.s1' start='0x10B0' end='0x10C0' /><slave name='timer_1.s1' start='0x10C0' end='0x10E0' /><slave name='timer_0.s1' start='0x10E0' end='0x1100' /><slave name='pio_5.s1' start='0x1100' end='0x1110' /><slave name='pio_4.s1' start='0x1110' end='0x1120' /><slave name='nios2_qsys_0.jtag_debug_module' start='0x1800' end='0x2000' /><slave name='altera_up_sd_card_avalon_interface_0.avalon_sdcard_slave' start='0x202400' end='0x202800' /><slave name='new_sdram_controller_0.s1' start='0x1000000' end='0x1800000' /><slave name='to_external_bus_bridge_0.avalon_slave' start='0x4000000' end='0x4010000' /></address-map>]]></parameter>
   <parameter name="clockFrequency" value="50000000" />
   <parameter name="deviceFamilyName" value="Cyclone II" />
   <parameter name="internalIrqMaskSystemInfo" value="31" />
@@ -675,7 +701,7 @@
   <parameter name="clockRate" value="50000000" />
   <parameter name="componentName">$${FILENAME}_new_sdram_controller_0</parameter>
  </module>
- <module kind="altera_up_clocks" version="13.0" enabled="1" name="up_clocks_0">
+ <module kind="altera_up_clocks" version="12.0" enabled="1" name="up_clocks_0">
   <parameter name="board" value="DE2" />
   <parameter name="sys_clk_freq" value="50" />
   <parameter name="sdram_clk" value="true" />
@@ -687,7 +713,7 @@
  </module>
  <module
    kind="altera_up_avalon_to_external_bus_bridge"
-   version="13.0"
+   version="12.0"
    enabled="1"
    name="to_external_bus_bridge_0">
   <parameter name="addr_size" value="64" />
@@ -698,7 +724,7 @@
  </module>
  <module
    kind="altera_up_avalon_rs232"
-   version="13.0"
+   version="12.0"
    enabled="1"
    name="rs232_0">
   <parameter name="avalon_bus_type" value="Memory Mapped" />
@@ -766,7 +792,7 @@
  </module>
  <module
    kind="altera_up_avalon_character_lcd"
-   version="13.0"
+   version="12.0"
    enabled="1"
    name="character_lcd_0">
   <parameter name="cursor" value="Normal" />
@@ -892,6 +918,14 @@
   <parameter name="simDrivenValue" value="0" />
   <parameter name="width" value="8" />
   <parameter name="clockRate" value="50000000" />
+ </module>
+ <module
+   kind="Altera_UP_SD_Card_Avalon_Interface"
+   version="1.0"
+   enabled="1"
+   name="altera_up_sd_card_avalon_interface_0">
+  <parameter name="AUTO_CLOCK_SINK_CLOCK_RATE" value="50000000" />
+  <parameter name="AUTO_DEVICE_FAMILY" value="Cyclone II" />
  </module>
  <connection
    kind="avalon"
@@ -1425,6 +1459,34 @@
  <connection kind="reset" version="13.0" start="clk_0.clk_reset" end="pio_5.reset" />
  <connection kind="reset" version="13.0" start="clk_0.clk_reset" end="pio_6.reset" />
  <connection kind="reset" version="13.0" start="clk_0.clk_reset" end="pio_7.reset" />
+ <connection
+   kind="avalon"
+   version="13.0"
+   start="nios2_qsys_0.data_master"
+   end="altera_up_sd_card_avalon_interface_0.avalon_sdcard_slave">
+  <parameter name="arbitrationPriority" value="1" />
+  <parameter name="baseAddress" value="0x00202400" />
+  <parameter name="defaultConnection" value="false" />
+ </connection>
+ <connection
+   kind="avalon"
+   version="13.0"
+   start="nios2_qsys_0.instruction_master"
+   end="altera_up_sd_card_avalon_interface_0.avalon_sdcard_slave">
+  <parameter name="arbitrationPriority" value="1" />
+  <parameter name="baseAddress" value="0x00202400" />
+  <parameter name="defaultConnection" value="false" />
+ </connection>
+ <connection
+   kind="reset"
+   version="13.0"
+   start="clk_0.clk_reset"
+   end="altera_up_sd_card_avalon_interface_0.clock_sink_reset" />
+ <connection
+   kind="clock"
+   version="13.0"
+   start="up_clocks_0.sys_clk"
+   end="altera_up_sd_card_avalon_interface_0.clock_sink" />
  <interconnectRequirement for="$system" name="qsys_mm.clockCrossingAdapter" value="HANDSHAKE" />
  <interconnectRequirement for="$system" name="qsys_mm.maxAdditionalLatency" value="1" />
 </system>
