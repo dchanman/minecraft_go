@@ -2,8 +2,8 @@
 <sch:Settings xmlns:sch="http://www.altera.com/embeddedsw/bsp/schema">
         <BspType>hal</BspType>
         <BspVersion>default</BspVersion>
-        <BspGeneratedTimeStamp>21-Jan-2016 4:24:30 PM</BspGeneratedTimeStamp>
-        <BspGeneratedUnixTimeStamp>1453422270209</BspGeneratedUnixTimeStamp>
+        <BspGeneratedTimeStamp>21-Jan-2016 6:45:46 PM</BspGeneratedTimeStamp>
+        <BspGeneratedUnixTimeStamp>1453430746665</BspGeneratedUnixTimeStamp>
         <BspGeneratedLocation>C:\Users\Johnson\Documents\GitHub\cpen391-21\exercise1.3\software\minecraft_go_bsp</BspGeneratedLocation>
         <BspSettingsFile>settings.bsp</BspSettingsFile>
         <SopcDesignFile>..\..\nios_system.sopcinfo</SopcDesignFile>

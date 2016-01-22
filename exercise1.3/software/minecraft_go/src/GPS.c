@@ -12,22 +12,20 @@
 #include "GPS.h"
 #include "serial.h"
 
-#define GPS_CONTROL	((volatile unsigned char *)(0x84000210))
+#define GPS	((volatile unsigned char *)(0x84000210))
+/*
 #define GPS_STATUS	((volatile unsigned char *)(0x84000210))
 #define GPS_TX_DATA	((volatile unsigned char *)(0x84000212))
 #define GPS_RX_DATA	((volatile unsigned char *)(0x84000212))
 #define GPS_BAUD	((volatile unsigned char *)(0x84000214))
+*/
 
 void GPS_init() {
-	//serial_init(GPS_CONTROL, GPS_BAUD);
-
-	*GPS_CONTROL = 0x95;
-	*GPS_BAUD = 0x7; // 0b111 to select 9600 baud
-
+	serial_init(GPS, BAUD_RATE_9600);
 }
 
 void GPS_put_char(const unsigned char c) {
-	serial_put_char(GPS_STATUS, GPS_TX_DATA, c);
+	serial_put_char(GPS, c);
 }
 
 void GPS_send_command(const char *command){
@@ -41,7 +39,7 @@ void GPS_send_command(const char *command){
 }
 
 unsigned char GPS_get_char() {
-	return serial_get_char(GPS_STATUS, GPS_RX_DATA);
+	return serial_get_char(GPS);
 }
 
 char * GPS_retrive_data_line(int buffer_size){
