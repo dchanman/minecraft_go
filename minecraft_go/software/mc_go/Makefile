@@ -147,9 +147,11 @@ C_SRCS += src/main.c
 C_SRCS += src/rs232.c
 C_SRCS += src/sdcard.c
 C_SRCS += src/serial.c
+C_SRCS += src/minecraft_rpc.c
 C_SRCS += test/rs232_test.c
 C_SRCS += test/sdcard_test.c
 C_SRCS += test/gps_test.c
+C_SRCS += test/minecraft_rpc_test.c
 CXX_SRCS :=
 ASM_SRCS :=
 
