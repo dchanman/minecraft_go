@@ -46,4 +46,10 @@ void rs232_get_n_char(unsigned char * recv_msg, const int recv_msg_length);
  */
 int rs232_test_for_received_data(void);
 
+/**
+ * Sometimes there's trash values in the serial port. This clears the serial port
+ * buffer by continually reading until it is empty
+ */
+void rs232_clear_buffer();
+
 #endif /* RS232_H_ */

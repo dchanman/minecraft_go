@@ -34,3 +34,9 @@ void rs232_get_n_char(unsigned char * recv_msg, const int recv_msg_length) {
 int rs232_test_for_received_data() {
 	return serial_test_for_received_data(RS232);
 }
+
+void rs232_clear_buffer() {
+	while (rs232_test_for_received_data()) {
+		rs232_get_char();
+	}
+}
