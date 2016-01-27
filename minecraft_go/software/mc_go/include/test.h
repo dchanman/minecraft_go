@@ -13,6 +13,7 @@ int rs232_test_multi_char();
 int sdcard_test_open(void);
 void sdcard_test();
 void gps_test();
+void touchscreen_test();
 void minecraft_rpc_test_rs232_send_and_recv_echo();
 void minecraft_rpc_test_protocol_msg();
 
