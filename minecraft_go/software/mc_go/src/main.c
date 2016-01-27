@@ -18,7 +18,8 @@ int main() {
 	//sdcard_test();
 	//gps_test();
 	//minecraft_rpc_test_main();
-	minecraft_rpc_test_protocol_msg();
+	//minecraft_rpc_test_protocol_msg();
+	touchscreen_test();
 
 	return 0;
 }
