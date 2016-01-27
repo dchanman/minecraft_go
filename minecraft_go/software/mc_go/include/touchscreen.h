@@ -8,32 +8,34 @@
 #ifndef TOUCHSCREEN_H_
 #define TOUCHSCREEN_H_
 
-/* a data type to hold a point/coord */
-typedef struct { int x, y; } Point ;
+typedef struct {
+	int x;
+	int y;
+} Point;
 
-/*****************************************************************************
-** Initialise touch screen controller
-*****************************************************************************/
-void init_touchscreen(void);
+/**
+ * Initialize the touchscreen controller
+ */
+void touchscreen_init(void);
 
-/*****************************************************************************
-** test if screen touched
-*****************************************************************************/
-void screen_touched( void );
+/**
+ * Test if the screen has been touched
+ */
+void touchscreen_screen_touched(void);
 
-/*****************************************************************************
-** wait for screen to be touched
-*****************************************************************************/
-void wait_for_touch();
+/**
+ * Wait for the screen to be touched
+ */
+void touchscreen_wait_for_touch(void);
 
-/*****************************************************************************
-* This function waits for a touch screen press event and returns X,Y coord
-*****************************************************************************/
-Point get_press(void);
+/**
+ * Waits for a touch, then returns an X,Y coordinate
+ */
+Point touchscreen_get_press(void);
 
-/*****************************************************************************
-* This function waits for a touch screen release event and returns X,Y coord
-*****************************************************************************/
-Point get_release(void);
+/**
+ * Waits for a release, then returns an X,Y coordinate
+ */
+Point touchscreen_get_release(void);
 
 #endif /* TOUCHSCREEN_H_ */
