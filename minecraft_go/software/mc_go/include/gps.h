@@ -4,10 +4,15 @@
  *  Created on: 2016-01-17
  *      Author: Johnson
  */
+#include "general.h"
 
 #ifndef GSP_H_
 #define GSP_H_
 
+#define GGA_IDENTIFIER "$GPGGA"
+#define RMC_IDENTIFIER "$GPRMC"
+
+#define GPS_DEFAULT_DATA_LINE_SIZE 300
 
 // GPS Commands
 #define GPS_SNAPSHOT_NOW "$PMTK186,1*20\r\n"
@@ -18,21 +23,46 @@
 #define GPS_DATA_DUMP_PARTIAL "$PMTK622,1*29\r\n"
 #define GPS_DATA_DUMP_END "$PMTKLOX,2*47\r\n"
 
-#define GGA_IDENTIFIER "$GPGGA"
-
-struct gga_data {
+typedef struct GGA_data {
 	char UTC_time[11];
 	char latitude[10];
 	char N_S[2];
 	char longitude[11];
 	char E_W[2];
 	char satellites[3];
-};
+} GGA_data;
 
-char * gps_retrive_data_line(int);
+typedef struct RMC_data {
+	char UTC_time[11]; // hhmmss.sss
+	char latitude[10]; // ddmm.mmmm
+	char N_S[2];
+	char longitude[11]; // dddmm.mmmm
+	char E_W[2];
+	char speed[5]; // knots
+	char date[7]; //ddmmyy
+} RMC_data;
+
+typedef struct Time {
+	int year;
+	int month;
+	int day;
+	int hour;
+	int minute;
+	int second;
+} Time;
+
+Time start_time;
+
+bool gps_retrieve_data_line(char *, int);
+bool gps_retrieve_data_dump(char **, int);
 void gps_send_command(const char *);
 void gps_init();
-int gps_get_gga_data(char *, struct gga_data *);
+bool gps_get_gga_data(char *, GGA_data *);
+bool gps_get_rmc_data(char *, RMC_data *);
+void convertRMCtoTime(RMC_data *, Time *);
+unsigned long getElapsed(Time *, Time *);
+float getSpeedFromRMC(RMC_data *);
+
 void gps_checksum(char *, int);
 
 #endif /* GSP_H_ */

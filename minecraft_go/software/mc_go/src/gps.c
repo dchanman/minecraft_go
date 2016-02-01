@@ -36,15 +36,17 @@ unsigned char gps_get_char() {
 	return serial_get_char(GPS);
 }
 
-char * gps_retrive_data_line(int buffer_size){
-	// maybe make the caller supply buffer for easier prevention of memory leaking?
-	char * buffer = malloc(buffer_size * sizeof(char));
+/*
+ * Retrieves 1 line that is terminated by "\r\n" from GPS device
+ */
+bool gps_retrieve_data_line(char *buffer, int buffer_size){
 	int char_count = 0;
 
 	while (1){
-		if (char_count >= buffer_size - 2){
+		if (char_count >= buffer_size - 1){
 			printf("Warning: Buffer not large enough for GPS data line; Cutting data line prematurely.");
-			break;
+			buffer[char_count] = '\0';
+			return false;
 		}
 
 		char curr_char = gps_get_char();
@@ -59,65 +61,79 @@ char * gps_retrive_data_line(int buffer_size){
 	}
 
 	buffer[char_count] = '\0';
-
-	return buffer;
+	return true;
 }
 
 
-char ** gps_retrive_data_dump(max_size){
-	char **result = malloc(max_size * sizeof( char* ));
+/*
+ * Retrieves the data dump of GPS data logger. Return true if all data from dump
+ * is placed in buffer.
+ *
+ * buffer - 2D array where each index will hold a data line
+ */
+bool gps_retrieve_data_dump(char **buffer, int buffer_size){
+	//char **result = malloc(max_size * sizeof( char* ));
 	int i;
 
-	for (i = 0; i < max_size; i++) {
-		char * current_string = gps_retrive_data_line(1000);
+	for (i = 0; i < buffer_size; i++) {
+		char *data_line_buffer = malloc(GPS_DEFAULT_DATA_LINE_SIZE * sizeof(char));
 
-		if (strstr(current_string, GPS_DATA_DUMP_END) != NULL)
+		gps_retrieve_data_line(data_line_buffer, GPS_DEFAULT_DATA_LINE_SIZE);
+
+		if (strstr(data_line_buffer, GPS_DATA_DUMP_END) != NULL)
 			break;
 
-		result[i] = current_string;
+		buffer[i] = data_line_buffer;
 
-		if (i == max_size - 1)
+		if (i == buffer_size - 1){
 			printf("Warning: Data dump reached max buffer size!\n");
+			return false;
+		}
 	}
 
-	return result;
+	return true;
 }
 
-int gps_get_gga_data(char *GGA_line, struct gga_data *holder){
+bool gps_get_gga_data(char *data_line, GGA_data *buffer){
 	const char delimiter[2] = ",";
-	char * token = strtok(GGA_line, delimiter);
+
+	// to prevent the original data line from being modified
+	char * data_line_copy[strlen(data_line)];
+	strcpy(data_line_copy, data_line);
+
+	char *token = strtok(data_line_copy, delimiter);
 
 	if ( strcmp(token, GGA_IDENTIFIER) != 0) {
 		//printf("Line is not in GGA format!\n");
-		return 0;
+		return false;
 	}
 
 	int count = 0;
 	while( token != NULL ) {
 		switch(count){
 			case 1:
-				memcpy(holder->UTC_time, token, strlen(token));
-				holder->UTC_time[10] = '\0';
+				strcpy(buffer->UTC_time, token);
+				buffer->UTC_time[10] = '\0';
 				break;
 			case 2:
-				memcpy(holder->latitude, token, strlen(token));
-				holder->latitude[9] = '\0';
+				strcpy(buffer->latitude, token);
+				buffer->latitude[9] = '\0';
 				break;
 			case 3:
-				memcpy(holder->N_S, token, strlen(token));
-				holder->N_S[1] = '\0';
+				strcpy(buffer->N_S, token);
+				buffer->N_S[1] = '\0';
 				break;
 			case 4:
-				memcpy(holder->longitude, token, strlen(token));
-				holder->longitude[10] = '\0';
+				strcpy(buffer->longitude, token);
+				buffer->longitude[10] = '\0';
 				break;
 			case 5:
-				memcpy(holder->E_W, token, strlen(token));
-				holder->E_W[1] = '\0';
+				strcpy(buffer->E_W, token);
+				buffer->E_W[1] = '\0';
 				break;
 			case 7:
-				memcpy(holder->satellites, token, strlen(token));
-				holder->satellites[2] = '\0';
+				strcpy(buffer->satellites, token);
+				buffer->satellites[2] = '\0';
 				break;
 			default:
 				break; // leave the other fields for now
@@ -129,8 +145,157 @@ int gps_get_gga_data(char *GGA_line, struct gga_data *holder){
 		count++;
 	}
 
-	return 1;
+	return true;
 }
+
+int gps_get_rmc_data(char *data_line, RMC_data *buffer){
+	const char delimiter[2] = ",";
+
+	// to prevent the original data line from being modified
+	char * data_line_copy[strlen(data_line)];
+	strcpy(data_line_copy, data_line);
+
+	char * token = strtok(data_line_copy, delimiter);
+
+	if ( strcmp(token, RMC_IDENTIFIER) != 0) {
+		//printf("Line is not in GGA format!\n");
+		return false;
+	}
+
+	int count = 0;
+	while( token != NULL ) {
+		switch(count){
+			case 1:
+				strcpy(buffer->UTC_time, token);
+				buffer->UTC_time[10] = '\0';
+				break;
+			case 3:
+				strcpy(buffer->latitude, token);
+				buffer->latitude[9] = '\0';
+				break;
+			case 4:
+				strcpy(buffer->N_S, token);
+				buffer->N_S[1] = '\0';
+				break;
+			case 5:
+				strcpy(buffer->longitude, token);
+				buffer->longitude[10] = '\0';
+				break;
+			case 6:
+				strcpy(buffer->E_W, token);
+				buffer->E_W[1] = '\0';
+				break;
+			case 7:
+				strcpy(buffer->speed, token);
+				buffer->speed[4] = '\0';
+				break;
+			case 9:
+				strcpy(buffer->date, token);
+				buffer->date[6] = '\0';
+				break;
+			default:
+				break; // leave the out other fields
+		}
+
+		//printf("Current token: %s \n", token);
+		token = strtok(NULL, delimiter);
+
+		count++;
+	}
+
+	return true;
+}
+
+
+/*
+ *  Get the most up to date RMC data. Return true if succeed before max_tries.
+ *
+ *  max_tries param is intend to prevent program from staling when GPS is not
+ *  working and a value of 20 should be enough unless we are in the middle of
+ *  a large data dump.
+ */
+bool getCurrentRMCdata(RMC_data *buffer, int max_tries){
+	char *data_line_buffer = malloc(GPS_DEFAULT_DATA_LINE_SIZE * sizeof(char));
+
+	int num_tries = 0;
+	do {
+		num_tries++;
+		gps_retrieve_data_line(data_line_buffer, GPS_DEFAULT_DATA_LINE_SIZE);
+	} while(!gps_get_rmc_data(data_line_buffer, buffer) && num_tries < max_tries);
+
+	free(data_line_buffer);
+
+	return num_tries >= max_tries ? false : true;
+}
+
+
+void convertRMCtoTime(RMC_data *RMC_data, Time *buffer){
+	char RMC_year[3] = {0};
+	strncpy(RMC_year, RMC_data->date+4, 2);
+	buffer->year = atoi(RMC_year);
+
+	char RMC_month[3] = {0};
+	strncpy(RMC_month, RMC_data->date+2, 2);
+	buffer->month = atoi(RMC_month);
+
+	char RMC_day[3] = {0};
+	strncpy(RMC_day, RMC_data->date, 2);
+	buffer->day = atoi(RMC_day);
+
+	char RMC_hour[3] = {0};
+	strncpy(RMC_hour, RMC_data->UTC_time, 2);
+	buffer->hour = atoi(RMC_hour);
+
+	char RMC_minute[3] = {0};
+	strncpy(RMC_minute, RMC_data->UTC_time+2, 2);
+	buffer->minute = atoi(RMC_minute);
+
+	char RMC_second[3] = {0};
+	strncpy(RMC_second, RMC_data->UTC_time+4, 2);
+	buffer->second = atoi(RMC_second);
+}
+
+
+/*
+ *  Return elapsed time in seconds from start till finish
+ *
+ *  For simplicity, assume each year is 365 days, month is 30 days for now.
+ */
+unsigned long getElapsed(Time *start, Time *finish){
+	unsigned long start_in_seconds;
+	unsigned long finish_in_seconds;
+
+	start_in_seconds = start->year * 31536000 +
+					   start->month * 2592000 +
+					   start->day * 86400 +
+					   start->hour * 3600 +
+					   start->second;
+
+	finish_in_seconds = finish->year * 31536000 +
+					    finish->month * 2592000 +
+					    finish->day * 86400 +
+					    finish->hour * 3600 +
+					    finish->second;
+
+	return finish - start;
+}
+
+
+
+/*
+ * Return the speed in km/h (converted from knots)
+ *
+ * Note: GPS can claim speed of up to 0.09km/h even
+ * when not moving due to device limitations
+ */
+float getSpeedFromRMC(RMC_data *RMC_data){
+	float speed_knots = atof(RMC_data->speed);
+
+	return speed_knots * 1.852; // 1 knots = 1.852 km/h
+}
+
+
+
 
 void gps_checksum(char *string, int size) {
   int i;
@@ -143,7 +308,11 @@ void gps_checksum(char *string, int size) {
   printf("Checksum: %x \n", result);
 }
 
-//------------------------- FOR PARSING DATA DUMP
+
+
+
+
+//------------------------- FOR PARSING DATA DUMP-----------------------------//
     
 // see http://stackoverflow.com/questions/2182002/convert-big-endian-to-
 // little-endian-in-c-without-using-provided-func
@@ -183,13 +352,3 @@ char *FloatToLongitudeConversion(int x) // output format is (-)xxx.yyyy
     return buff;
 }
 
-void checksum(char string[], int size) {
-  int i;
-  char result = string[0];
-  for(i = 1; i < size; i++){
-	printf("XORing: %c %d ", string[i], string[i]);
-    result ^= string[i];
-  }
-
-  printf("Checksum: %x \n", result);
-}

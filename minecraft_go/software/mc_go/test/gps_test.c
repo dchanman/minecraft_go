@@ -7,6 +7,8 @@
 
 #include <stdint.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include "rs232.h"
 #include "gps.h"
 
@@ -14,23 +16,49 @@ void gps_test() {
 	gps_init();
 
 	//gps_send_command(GPS_STOP_DATA_LOG);
-	struct gga_data *GGA_holder = malloc(sizeof(struct gga_data));
+	GGA_data *GGA_buffer = malloc(sizeof(GGA_data));
+	RMC_data *RMC_buffer = malloc(sizeof(RMC_data));
 
 	int times = 10;
 	int i;
-	char * result;
+	char *data_line_buffer = malloc(GPS_DEFAULT_DATA_LINE_SIZE * sizeof(char));
 	for (i = 0; i < times; i++) {
-		result = gps_retrive_data_line(1000);
-		printf("%s\n", result);
-		int isGGA = gps_get_gga_data(result, GGA_holder);
+		if (!gps_retrieve_data_line(data_line_buffer, GPS_DEFAULT_DATA_LINE_SIZE)){
+			printf("Buffer to testing data line is too small!\n");
+			break;
+		}
 
-		if (isGGA)
+		//printf("%s\n", data_line_buffer);
+		int isGGA = gps_get_gga_data(data_line_buffer, GGA_buffer);
+		int isRMC = gps_get_rmc_data(data_line_buffer, RMC_buffer);
+
+		if (isGGA) {
+			printf("%s\n", data_line_buffer);
 			printf(
-					"Time: %s Lat: %s N/S: %s Long: %s E/W: %s Satellites: %s \n",
-					GGA_holder->UTC_time, GGA_holder->latitude, GGA_holder->N_S,
-					GGA_holder->longitude, GGA_holder->E_W,
-					GGA_holder->satellites);
+					"GGA PARSED --> Time: %s Lat: %s N/S: %s Long: %s E/W: %s Satellites: %s \n",
+					GGA_buffer->UTC_time, GGA_buffer->latitude, GGA_buffer->N_S,
+					GGA_buffer->longitude, GGA_buffer->E_W,
+					GGA_buffer->satellites);
+		}
+
+		if (isRMC) {
+			printf("%s\n", data_line_buffer);
+			printf(
+					"RMC PARSED --> Time: %s Lat: %s N/S: %s Long: %s E/W: %s Speed: %s Date: %s \n",
+					RMC_buffer->UTC_time, RMC_buffer->latitude, RMC_buffer->N_S,
+					RMC_buffer->longitude, RMC_buffer->E_W,
+					RMC_buffer->speed, RMC_buffer->date);
+		}
+
 	}
+
+	convertRMCtoTime(RMC_buffer, &start_time);
+	printf("Current start time -> Year: %d, Month: %d, Day: %d, Hour: %d, Minute: %d, Second: %d\n",
+				start_time.year, start_time.month, start_time.day,
+				start_time.hour, start_time.minute, start_time.second);
+
+
+	printf("Current speed: %f\n", getSpeedFromRMC(RMC_buffer));
 
 	/*
 	 gps_send_command(GPS_DATA_DUMP_PARTIAL);
@@ -48,6 +76,10 @@ void gps_test() {
 
 	 checksum(array, 9);
 	 */
+
+	free(GGA_buffer);
+	free(RMC_buffer);
+	free(data_line_buffer);
 }
 
 void print_test_data(char ** test_data) {

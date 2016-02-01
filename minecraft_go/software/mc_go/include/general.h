@@ -10,8 +10,11 @@
 
 #define EXIT_OK 0
 
-// "\r\n" is the line terminating pattern for serial communication
 #define CR_CHAR '\r'
 #define LF_CHAR '\n'
+
+typedef int bool;
+#define true 1
+#define false 0
 
 #endif /* GENERAL_H_ */
