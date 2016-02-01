@@ -23,15 +23,9 @@ void touchscreen_init(void) {
 }
 
 void touchscreen_screen_touched(void) {
-	unsigned char buffer[5] = { '\0' };
+	unsigned char buffer[5] = {'\0'};
 
-	while (buffer[0] != 0x80) {
-		buffer[0] = serial_get_char(TOUCHSCREEN);
-	};
-
-	serial_get_n_char(TOUCHSCREEN, buffer + 1, sizeof(buffer) - 1);
-	printf("Received buffer <0x%02x> <0x%02x> <0x%02x> <0x%02x> <0x%02x>\n",
-			buffer[0], buffer[1], buffer[2], buffer[3], buffer[4]);
+	touchscreen_get_report_packet(buffer, TOUCHSCREEN_PRESS);
 
 	printf("Touch Detected!\n\n");
 }
@@ -43,17 +37,9 @@ void touchscreen_wait_for_touch(void) {
 Point touchscreen_get_press(void) {
 	Point p1;
 
-	unsigned char buffer[TOUCHSCREEN_FRAME_SIZE] = { '\0' };
+	unsigned char buffer[TOUCHSCREEN_FRAME_SIZE] = {'\0'};
 
-	/**
-	 * wait for a pen down command then return the X,Y coord of the point
-	 * calibrated correctly so that it maps to a pixel on screen
-	 */
-	while (buffer[0] != 0x80) {
-		buffer[0] = serial_get_char(TOUCHSCREEN);
-	};
-
-	serial_get_n_char(TOUCHSCREEN, buffer + 1, sizeof(buffer) - 1);
+	touchscreen_get_report_packet(buffer, TOUCHSCREEN_PRESS);
 
 	/* Process the high and low bytes of the coordinate values */
 	p1.x = (int) (buffer[2]) << 7;
@@ -62,23 +48,17 @@ Point touchscreen_get_press(void) {
 	p1.y = (int) (buffer[4]) << 7;
 	p1.y += (int) (buffer[3]);
 
+	p1 = touchscreen_pixel_conversion(p1);
+
 	return p1;
 }
 
 Point touchscreen_get_release(void) {
 	Point p2;
 
-	unsigned char buffer[TOUCHSCREEN_FRAME_SIZE] = { '\0' };
+	unsigned char buffer[TOUCHSCREEN_FRAME_SIZE] = {'\0'};
 
-	/**
-	 * wait for a pen up command then return the X,Y coord of the point
-	 * calibrated correctly so that it maps to a pixel on screen
-	 */
-	while (buffer[0] != 0x81) {
-		buffer[0] = serial_get_char(TOUCHSCREEN);
-	};
-
-	serial_get_n_char(TOUCHSCREEN, buffer + 1, sizeof(buffer) - 1);
+	touchscreen_get_report_packet(buffer, TOUCHSCREEN_RELEASE);
 
 	/* Process the high and low bytes of the coordinate values */
 	p2.x = (int) (buffer[2]) << 7;
@@ -87,5 +67,33 @@ Point touchscreen_get_release(void) {
 	p2.y = (int) (buffer[4]) << 7;
 	p2.y += (int) (buffer[3]);
 
+	p2 = touchscreen_pixel_conversion(p2);
+
 	return p2;
+}
+
+void touchscreen_get_report_packet(unsigned char *buffer, unsigned char touchStatus){
+	/**
+	 * wait for a pen up command then return the X,Y coord of the point
+	 * calibrated correctly so that it maps to a pixel on screen
+	*/
+	while (buffer[0] != touchStatus) {
+		buffer[0] = serial_get_char(TOUCHSCREEN);
+	};
+
+	serial_get_n_char(TOUCHSCREEN, buffer + 1, sizeof(buffer));
+	//printf("Received buffer <0x%02x> <0x%02x> <0x%02x> <0x%02x> <0x%02x>\n",
+			//buffer[0], buffer[1], buffer[2], buffer[3], buffer[4]);
+}
+
+Point touchscreen_pixel_conversion(Point p){
+	/*
+	 * convert the from touch report coordinates to pixel coordinates
+	 */
+	p.x = (int)((float)(p.x - REPORT_COORDINATE_MIN) *
+			((float)X_MAX / (float)(REPORT_COORDINATE_MAX - REPORT_COORDINATE_MIN)));
+	p.y = (int)((float)(p.y - REPORT_COORDINATE_MIN) *
+			((float)Y_MAX / (float)(REPORT_COORDINATE_MAX - REPORT_COORDINATE_MIN)));
+
+	return p;
 }
