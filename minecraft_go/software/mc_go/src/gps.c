@@ -229,7 +229,7 @@ bool getCurrentRMCdata(RMC_data *buffer, int max_tries){
 }
 
 
-void convertRMCtoTime(RMC_data *RMC_data, DateTime *buffer){
+void convertRMCtoDateTime(RMC_data *RMC_data, DateTime *buffer){
 	char RMC_year[3] = {0};
 	strncpy(RMC_year, RMC_data->date+4, 2);
 	buffer->year = atoi(RMC_year);
@@ -261,7 +261,7 @@ void convertRMCtoTime(RMC_data *RMC_data, DateTime *buffer){
  *
  *  For simplicity, assume each year is 365 days, month is 30 days for now.
  */
-unsigned long getElapsed(DateTime *start, DateTime *finish){
+unsigned long getElapsedInSeconds(DateTime *start, DateTime *finish){
 	unsigned long start_in_seconds;
 	unsigned long finish_in_seconds;
 
@@ -289,6 +289,34 @@ void convertSecondsToTime(Time *buffer, unsigned long seconds) {
 	buffer->second = (int) left_over % 60;
 }
 
+
+//---------------------------Timer Functions------------------------------//
+void startTimer(DateTime *start_time){
+	RMC_data *RMC_buffer = malloc(sizeof(RMC_data));
+
+	if (!getCurrentRMCdata(RMC_buffer, GPS_DEFAULT_DATA_RETRIEVAL_TRIES))
+		printf("Error: Unable to retrieve RMC data in %d tries.\n", GPS_DEFAULT_DATA_RETRIEVAL_TRIES);
+	else
+		convertRMCtoTime(RMC_buffer, start_time);
+
+	free(RMC_buffer);
+}
+
+unsigned long stopTimer(DateTime *start_time){
+	RMC_data *RMC_buffer = malloc(sizeof(RMC_data));
+	DateTime *finish_time = malloc(sizeof(DateTime));
+
+	if (!getCurrentRMCdata(RMC_buffer, GPS_DEFAULT_DATA_RETRIEVAL_TRIES))
+		printf("Error: Unable to retrieve RMC data in %d tries.\n", GPS_DEFAULT_DATA_RETRIEVAL_TRIES);
+	else
+		convertRMCtoTime(RMC_buffer, finish_time);
+
+	free(RMC_buffer);
+	free(finish_time);
+
+	return getElapsedInSeconds(start_time, finish_time);
+}
+//--------------------------End Timer Functions---------------------------//
 
 
 

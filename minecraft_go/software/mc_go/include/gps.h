@@ -13,6 +13,7 @@
 #define RMC_IDENTIFIER "$GPRMC"
 
 #define GPS_DEFAULT_DATA_LINE_SIZE 300
+#define GPS_DEFAULT_DATA_RETRIEVAL_TRIES 20
 
 // GPS Commands
 #define GPS_SNAPSHOT_NOW "$PMTK186,1*20\r\n"
@@ -57,7 +58,7 @@ typedef struct Time {
 	int second;
 } Time;
 
-DateTime start_time;
+//DateTime start_time;
 
 bool gps_retrieve_data_line(char *, int);
 bool gps_retrieve_data_dump(char **, int);
@@ -66,7 +67,7 @@ void gps_init();
 bool gps_get_gga_data(char *, GGA_data *);
 bool gps_get_rmc_data(char *, RMC_data *);
 void convertRMCtoDateTime(RMC_data *, DateTime *);
-unsigned long getElapsed(DateTime *, DateTime *);
+unsigned long getElapsedInSeconds(DateTime *, DateTime *);
 float getSpeedFromRMC(RMC_data *);
 
 void gps_checksum(char *, int);
