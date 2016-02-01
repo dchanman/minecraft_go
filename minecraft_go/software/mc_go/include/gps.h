@@ -8,8 +8,6 @@
 #ifndef GSP_H_
 #define GSP_H_
 
-#define CR_CHAR '\r'
-#define LF_CHAR '\n'
 
 // GPS Commands
 #define GPS_SNAPSHOT_NOW "$PMTK186,1*20\r\n"
