@@ -42,16 +42,22 @@ typedef struct RMC_data {
 	char date[7]; //ddmmyy
 } RMC_data;
 
-typedef struct Time {
+typedef struct DateTime {
 	int year;
 	int month;
 	int day;
 	int hour;
 	int minute;
 	int second;
+} DateTime;
+
+typedef struct Time {
+	unsigned long hour;
+	int minute;
+	int second;
 } Time;
 
-Time start_time;
+DateTime start_time;
 
 bool gps_retrieve_data_line(char *, int);
 bool gps_retrieve_data_dump(char **, int);
@@ -59,8 +65,8 @@ void gps_send_command(const char *);
 void gps_init();
 bool gps_get_gga_data(char *, GGA_data *);
 bool gps_get_rmc_data(char *, RMC_data *);
-void convertRMCtoTime(RMC_data *, Time *);
-unsigned long getElapsed(Time *, Time *);
+void convertRMCtoDateTime(RMC_data *, DateTime *);
+unsigned long getElapsed(DateTime *, DateTime *);
 float getSpeedFromRMC(RMC_data *);
 
 void gps_checksum(char *, int);

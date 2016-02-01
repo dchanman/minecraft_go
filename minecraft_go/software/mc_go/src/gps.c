@@ -229,7 +229,7 @@ bool getCurrentRMCdata(RMC_data *buffer, int max_tries){
 }
 
 
-void convertRMCtoTime(RMC_data *RMC_data, Time *buffer){
+void convertRMCtoTime(RMC_data *RMC_data, DateTime *buffer){
 	char RMC_year[3] = {0};
 	strncpy(RMC_year, RMC_data->date+4, 2);
 	buffer->year = atoi(RMC_year);
@@ -261,7 +261,7 @@ void convertRMCtoTime(RMC_data *RMC_data, Time *buffer){
  *
  *  For simplicity, assume each year is 365 days, month is 30 days for now.
  */
-unsigned long getElapsed(Time *start, Time *finish){
+unsigned long getElapsed(DateTime *start, DateTime *finish){
 	unsigned long start_in_seconds;
 	unsigned long finish_in_seconds;
 
@@ -279,6 +279,16 @@ unsigned long getElapsed(Time *start, Time *finish){
 
 	return finish - start;
 }
+
+void convertSecondsToTime(Time *buffer, unsigned long seconds) {
+	unsigned long left_over;
+
+	buffer->hour = seconds / 3600;
+	left_over = seconds % 3600;
+	buffer->minute = (int) left_over / 60;
+	buffer->second = (int) left_over % 60;
+}
+
 
 
 
