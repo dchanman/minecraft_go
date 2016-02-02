@@ -52,13 +52,6 @@ void gps_test() {
 
 	}
 
-	DateTime *DateTime_buffer = malloc(sizeof(DateTime));
-
-	convertRMCtoDateTime(RMC_buffer, DateTime_buffer);
-	printf("Current DateTime -> Year: %d, Month: %d, Day: %d, Hour: %d, Minute: %d, Second: %d\n",
-				DateTime_buffer->year, DateTime_buffer->month, DateTime_buffer->day,
-				DateTime_buffer->hour, DateTime_buffer->minute, DateTime_buffer->second);
-
 	Location *Location_buffer = malloc(sizeof(Location));
 
 	convertRMCtoLocation(RMC_buffer, Location_buffer);
@@ -67,7 +60,37 @@ void gps_test() {
 				Location_buffer->Lat_degree, Location_buffer->Lat_minute, Location_buffer->Lat_direction,
 				Location_buffer->Long_degree, Location_buffer->Long_minute, Location_buffer->Long_direction);
 
+	if (!hasArrivedAtDestination(Location_buffer, Location_buffer))
+		printf("Error: hasArriveAtDestination() is not working!\n");
+
 	printf("Current speed: %f\n", getSpeedFromRMC(RMC_buffer));
+
+
+
+	// testing DateTime struc and convertRMCtoDateTime()
+	DateTime *DateTime_buffer = malloc(sizeof(DateTime));
+
+	convertRMCtoDateTime(RMC_buffer, DateTime_buffer);
+	printf("Current DateTime -> Year: %d, Month: %d, Day: %d, Hour: %d, Minute: %d, Second: %d\n",
+				DateTime_buffer->year, DateTime_buffer->month, DateTime_buffer->day,
+				DateTime_buffer->hour, DateTime_buffer->minute, DateTime_buffer->second);
+
+	// testing timer
+	DateTime testStartTime = {16, 2, 2, 0, 0, 0};
+
+	unsigned long testElapsedTime = stopTimer(&testStartTime);
+
+	Time *testTime = malloc(sizeof(Time));
+
+	convertSecondsToTime(testTime, testElapsedTime);
+	printf("Elapsed Time -> Hour: %d, Minute: %d, Second: %d \n", testTime->hour,
+																  testTime->minute,
+																  testTime->second);
+
+
+
+
+
 
 
 	/*

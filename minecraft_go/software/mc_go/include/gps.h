@@ -82,9 +82,10 @@ bool gps_get_gga_data(char *, GGA_data *);
 bool gps_get_rmc_data(char *, RMC_data *);
 void convertRMCtoDateTime(RMC_data *, DateTime *);
 unsigned long getElapsedInSeconds(DateTime *, DateTime *);
+void convertSecondsToTime(Time *, unsigned long);
 float getSpeedFromRMC(RMC_data *);
 void convertRMCtoLocation(RMC_data *, Location *);
-
+bool hasArrivedAtDestination(Location *, Location *);
 
 void gps_checksum(char *, int);
 

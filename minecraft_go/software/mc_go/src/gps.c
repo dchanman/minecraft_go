@@ -270,18 +270,20 @@ unsigned long getElapsedInSeconds(DateTime *start, DateTime *finish){
 					   start->month * 2592000 +
 					   start->day * 86400 +
 					   start->hour * 3600 +
+					   start->minute * 60 +
 					   start->second;
 
 	finish_in_seconds = finish->year * 31536000 +
 					    finish->month * 2592000 +
 					    finish->day * 86400 +
 					    finish->hour * 3600 +
+					    finish->minute * 60 +
 					    finish->second;
 
-	return finish - start;
+	return finish_in_seconds - start_in_seconds;
 }
 
-void convertSecondsToTime(Time *buffer, unsigned long seconds) {
+void convertSecondsToTime(Time *buffer, unsigned long seconds){
 	unsigned long left_over;
 
 	buffer->hour = seconds / 3600;
@@ -310,10 +312,12 @@ unsigned long stopTimer(DateTime *start_time){
 	else
 		convertRMCtoDateTime(RMC_buffer, finish_time);
 
+	unsigned long result = getElapsedInSeconds(start_time, finish_time);
+
 	free(RMC_buffer);
 	free(finish_time);
 
-	return getElapsedInSeconds(start_time, finish_time);
+	return result;
 }
 //--------------------------End Timer Functions---------------------------//
 
