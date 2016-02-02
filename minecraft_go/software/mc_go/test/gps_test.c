@@ -52,13 +52,23 @@ void gps_test() {
 
 	}
 
-	convertRMCtoTime(RMC_buffer, &start_time);
-	printf("Current start time -> Year: %d, Month: %d, Day: %d, Hour: %d, Minute: %d, Second: %d\n",
-				start_time.year, start_time.month, start_time.day,
-				start_time.hour, start_time.minute, start_time.second);
+	DateTime *DateTime_buffer = malloc(sizeof(DateTime));
 
+	convertRMCtoDateTime(RMC_buffer, DateTime_buffer);
+	printf("Current DateTime -> Year: %d, Month: %d, Day: %d, Hour: %d, Minute: %d, Second: %d\n",
+				DateTime_buffer->year, DateTime_buffer->month, DateTime_buffer->day,
+				DateTime_buffer->hour, DateTime_buffer->minute, DateTime_buffer->second);
+
+	Location *Location_buffer = malloc(sizeof(Location));
+
+	convertRMCtoLocation(RMC_buffer, Location_buffer);
+	printf("Current Location -> Lat Degree: %d, Lat Minute: %lf, Lat Direction: %c, "
+							   "Long Degree: %d, Long_Minute: %lf, Long_Direction: %c\n",
+				Location_buffer->Lat_degree, Location_buffer->Lat_minute, Location_buffer->Lat_direction,
+				Location_buffer->Long_degree, Location_buffer->Long_minute, Location_buffer->Long_direction);
 
 	printf("Current speed: %f\n", getSpeedFromRMC(RMC_buffer));
+
 
 	/*
 	 gps_send_command(GPS_DATA_DUMP_PARTIAL);
@@ -80,6 +90,8 @@ void gps_test() {
 	free(GGA_buffer);
 	free(RMC_buffer);
 	free(data_line_buffer);
+	free(DateTime_buffer);
+	free(Location_buffer);
 }
 
 void print_test_data(char ** test_data) {

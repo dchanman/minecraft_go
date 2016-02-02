@@ -15,6 +15,9 @@
 #define GPS_DEFAULT_DATA_LINE_SIZE 300
 #define GPS_DEFAULT_DATA_RETRIEVAL_TRIES 20
 
+#define GPS_LAT_EPSILON 0.01
+#define GPS_LONG_EPSILON 0.01
+
 // GPS Commands
 #define GPS_SNAPSHOT_NOW "$PMTK186,1*20\r\n"
 
@@ -58,6 +61,17 @@ typedef struct Time {
 	int second;
 } Time;
 
+typedef struct Location {
+	int Lat_degree;
+	double Lat_minute;
+	char Lat_direction;
+
+	int Long_degree;
+	double Long_minute;
+	char Long_direction;
+} Location;
+
+
 //DateTime start_time;
 
 bool gps_retrieve_data_line(char *, int);
@@ -69,6 +83,8 @@ bool gps_get_rmc_data(char *, RMC_data *);
 void convertRMCtoDateTime(RMC_data *, DateTime *);
 unsigned long getElapsedInSeconds(DateTime *, DateTime *);
 float getSpeedFromRMC(RMC_data *);
+void convertRMCtoLocation(RMC_data *, Location *);
+
 
 void gps_checksum(char *, int);
 

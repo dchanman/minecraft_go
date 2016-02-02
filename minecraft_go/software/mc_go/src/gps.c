@@ -228,6 +228,7 @@ bool getCurrentRMCdata(RMC_data *buffer, int max_tries){
 	return num_tries >= max_tries ? false : true;
 }
 
+//---------------------------Timer Functions------------------------------//
 
 void convertRMCtoDateTime(RMC_data *RMC_data, DateTime *buffer){
 	char RMC_year[3] = {0};
@@ -289,15 +290,13 @@ void convertSecondsToTime(Time *buffer, unsigned long seconds) {
 	buffer->second = (int) left_over % 60;
 }
 
-
-//---------------------------Timer Functions------------------------------//
 void startTimer(DateTime *start_time){
 	RMC_data *RMC_buffer = malloc(sizeof(RMC_data));
 
 	if (!getCurrentRMCdata(RMC_buffer, GPS_DEFAULT_DATA_RETRIEVAL_TRIES))
 		printf("Error: Unable to retrieve RMC data in %d tries.\n", GPS_DEFAULT_DATA_RETRIEVAL_TRIES);
 	else
-		convertRMCtoTime(RMC_buffer, start_time);
+		convertRMCtoDateTime(RMC_buffer, start_time);
 
 	free(RMC_buffer);
 }
@@ -309,7 +308,7 @@ unsigned long stopTimer(DateTime *start_time){
 	if (!getCurrentRMCdata(RMC_buffer, GPS_DEFAULT_DATA_RETRIEVAL_TRIES))
 		printf("Error: Unable to retrieve RMC data in %d tries.\n", GPS_DEFAULT_DATA_RETRIEVAL_TRIES);
 	else
-		convertRMCtoTime(RMC_buffer, finish_time);
+		convertRMCtoDateTime(RMC_buffer, finish_time);
 
 	free(RMC_buffer);
 	free(finish_time);
@@ -319,11 +318,12 @@ unsigned long stopTimer(DateTime *start_time){
 //--------------------------End Timer Functions---------------------------//
 
 
+//--------------------------Speed Function---------------------------//
 
 /*
  * Return the speed in km/h (converted from knots)
  *
- * Note: GPS can claim speed of up to 0.09km/h even
+ * Note: GPS can claim speed of up to 0.08km/h even
  * when not moving due to device limitations
  */
 float getSpeedFromRMC(RMC_data *RMC_data){
@@ -332,7 +332,56 @@ float getSpeedFromRMC(RMC_data *RMC_data){
 	return speed_knots * 1.852; // 1 knots = 1.852 km/h
 }
 
+//--------------------------End Speed Functions---------------------------//
 
+//--------------------------Location Functions---------------------------//
+
+void convertRMCtoLocation(RMC_data *RMC_data, Location *buffer){
+	char RMC_LatDegree[3] = {0};
+	strncpy(RMC_LatDegree, RMC_data->latitude, 2);
+	buffer->Lat_degree = atoi(RMC_LatDegree);
+
+	char RMC_LatMinute[8] = {0};
+	strncpy(RMC_LatMinute, RMC_data->latitude+2, 7);
+	buffer->Lat_minute = atof(RMC_LatMinute);
+
+	buffer->Lat_direction = RMC_data->N_S[0];
+
+	char RMC_LongDegree[4] = {0};
+	strncpy(RMC_LongDegree, RMC_data->longitude, 3);
+	buffer->Long_degree = atoi(RMC_LongDegree);
+
+	char RMC_LongMinute[8] = {0};
+	strncpy(RMC_LongMinute, RMC_data->longitude+3, 7);
+	buffer->Long_minute = atof(RMC_LongMinute);
+
+	buffer->Long_direction = RMC_data->E_W[0];
+}
+
+/* Compares two location and if they are close enough, return true.
+* Note: algorithm might not work if the the 2 locations are right on
+* 		the Equator or Prime Meridian
+*/
+bool hasArrivedAtDestination(Location *current, Location *destination){
+	// this will work for North America, re-implement part later if needed
+	if (current->Lat_direction != destination->Lat_direction ||
+		current->Long_direction != destination->Long_direction)
+		return false;
+
+	double currLatInMinutes = current->Lat_degree * 60 + current->Lat_minute;
+	double destLatInMinutes = destination->Lat_degree * 60 + destination->Lat_minute;
+
+	double currLongInMinutes = current->Long_degree * 60 + current->Long_minute;
+	double destLongInMinutes = destination->Long_degree * 60 + destination->Long_minute;
+
+	if (abs(currLatInMinutes - destLatInMinutes) < GPS_LAT_EPSILON &&
+		abs(currLongInMinutes - destLongInMinutes) < GPS_LONG_EPSILON)
+		return true;
+	else
+		return false;
+}
+
+//--------------------------End Location Functions---------------------------//
 
 
 void gps_checksum(char *string, int size) {
@@ -345,9 +394,6 @@ void gps_checksum(char *string, int size) {
 
   printf("Checksum: %x \n", result);
 }
-
-
-
 
 
 //------------------------- FOR PARSING DATA DUMP-----------------------------//
