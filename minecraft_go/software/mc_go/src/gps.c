@@ -49,13 +49,13 @@ static unsigned char gps_get_char() {
 }
 
 void gps_send_command(const char *command) {
-    int counter = 0;
-    char curr_char = command[counter];
-    
-    while(curr_char != '\0'){
-        gps_put_char(curr_char);
-        curr_char = command[++counter];
-    }
+	int counter = 0;
+	char curr_char = command[counter];
+
+	while (curr_char != '\0') {
+		gps_put_char(curr_char);
+		curr_char = command[++counter];
+	}
 }
 
 /*
@@ -65,7 +65,7 @@ bool gps_retrieve_data_line(char *buffer, int buffer_size) {
 	int char_count = 0;
 
 	while (1) {
-		if (char_count >= buffer_size - 1){
+		if (char_count >= buffer_size - 1) {
 			printf("Warning: Buffer not large enough for GPS data line; Cutting data line prematurely.");
 			buffer[char_count] = '\0';
 			return false;
@@ -73,7 +73,7 @@ bool gps_retrieve_data_line(char *buffer, int buffer_size) {
 
 		char curr_char = gps_get_char();
 
-		if (curr_char == CR_CHAR){
+		if (curr_char == CR_CHAR) {
 			if (gps_get_char() == LF_CHAR)
 				break;
 		} else {
@@ -86,14 +86,14 @@ bool gps_retrieve_data_line(char *buffer, int buffer_size) {
 	return true;
 }
 
-
 /*
  * Retrieves the data dump of GPS data logger. Return true if all data from dump
  * is placed in buffer.
  *
  * buffer - 2D array where each index will hold a data line
  */
-bool gps_retrieve_data_dump(char *buffer[GPS_DEFAULT_DATA_LINE_SIZE], int buffer_size) {
+bool gps_retrieve_data_dump(char *buffer[GPS_DEFAULT_DATA_LINE_SIZE],
+		int buffer_size) {
 	int i;
 
 	for (i = 0; i < buffer_size; i++) {
@@ -102,7 +102,7 @@ bool gps_retrieve_data_dump(char *buffer[GPS_DEFAULT_DATA_LINE_SIZE], int buffer
 		if (strstr(buffer[i], GPS_DATA_DUMP_END) != NULL)
 			break;
 
-		if (i == buffer_size - 1){
+		if (i == buffer_size - 1) {
 			printf("Warning: Data dump reached max buffer size!\n");
 			return false;
 		}
@@ -120,40 +120,40 @@ bool gps_get_gga_data(char *data_line, GGA_data *buffer) {
 
 	char *token = strtok(data_line_copy, delimiter);
 
-	if ( strcmp(token, GGA_IDENTIFIER) != 0) {
+	if (strcmp(token, GGA_IDENTIFIER) != 0) {
 		//printf("Line is not in GGA format!\n");
 		return false;
 	}
 
 	int count = 0;
-	while( token != NULL ) {
-		switch(count){
-			case 1:
-				strcpy(buffer->UTC_time, token);
-				buffer->UTC_time[10] = '\0';
-				break;
-			case 2:
-				strcpy(buffer->latitude, token);
-				buffer->latitude[9] = '\0';
-				break;
-			case 3:
-				strcpy(buffer->N_S, token);
-				buffer->N_S[1] = '\0';
-				break;
-			case 4:
-				strcpy(buffer->longitude, token);
-				buffer->longitude[10] = '\0';
-				break;
-			case 5:
-				strcpy(buffer->E_W, token);
-				buffer->E_W[1] = '\0';
-				break;
-			case 7:
-				strcpy(buffer->satellites, token);
-				buffer->satellites[2] = '\0';
-				break;
-			default:
-				break; // leave the other fields for now
+	while (token != NULL) {
+		switch (count) {
+		case 1:
+			strcpy(buffer->UTC_time, token);
+			buffer->UTC_time[10] = '\0';
+			break;
+		case 2:
+			strcpy(buffer->latitude, token);
+			buffer->latitude[9] = '\0';
+			break;
+		case 3:
+			strcpy(buffer->N_S, token);
+			buffer->N_S[1] = '\0';
+			break;
+		case 4:
+			strcpy(buffer->longitude, token);
+			buffer->longitude[10] = '\0';
+			break;
+		case 5:
+			strcpy(buffer->E_W, token);
+			buffer->E_W[1] = '\0';
+			break;
+		case 7:
+			strcpy(buffer->satellites, token);
+			buffer->satellites[2] = '\0';
+			break;
+		default:
+			break; // leave the other fields for now
 		}
 
 		//printf("Current token: %s \n", token);
@@ -174,44 +174,44 @@ bool gps_get_rmc_data(char *data_line, RMC_data *buffer) {
 
 	char * token = strtok(data_line_copy, delimiter);
 
-	if ( strcmp(token, RMC_IDENTIFIER) != 0) {
+	if (strcmp(token, RMC_IDENTIFIER) != 0) {
 		//printf("Line is not in GGA format!\n");
 		return false;
 	}
 
 	int count = 0;
-	while( token != NULL ) {
-		switch(count){
-			case 1:
-				strcpy(buffer->UTC_time, token);
-				buffer->UTC_time[10] = '\0';
-				break;
-			case 3:
-				strcpy(buffer->latitude, token);
-				buffer->latitude[9] = '\0';
-				break;
-			case 4:
-				strcpy(buffer->N_S, token);
-				buffer->N_S[1] = '\0';
-				break;
-			case 5:
-				strcpy(buffer->longitude, token);
-				buffer->longitude[10] = '\0';
-				break;
-			case 6:
-				strcpy(buffer->E_W, token);
-				buffer->E_W[1] = '\0';
-				break;
-			case 7:
-				strcpy(buffer->speed, token);
-				buffer->speed[4] = '\0';
-				break;
-			case 9:
-				strcpy(buffer->date, token);
-				buffer->date[6] = '\0';
-				break;
-			default:
-				break; // leave the out other fields
+	while (token != NULL) {
+		switch (count) {
+		case 1:
+			strcpy(buffer->UTC_time, token);
+			buffer->UTC_time[10] = '\0';
+			break;
+		case 3:
+			strcpy(buffer->latitude, token);
+			buffer->latitude[9] = '\0';
+			break;
+		case 4:
+			strcpy(buffer->N_S, token);
+			buffer->N_S[1] = '\0';
+			break;
+		case 5:
+			strcpy(buffer->longitude, token);
+			buffer->longitude[10] = '\0';
+			break;
+		case 6:
+			strcpy(buffer->E_W, token);
+			buffer->E_W[1] = '\0';
+			break;
+		case 7:
+			strcpy(buffer->speed, token);
+			buffer->speed[4] = '\0';
+			break;
+		case 9:
+			strcpy(buffer->date, token);
+			buffer->date[6] = '\0';
+			break;
+		default:
+			break; // leave the out other fields
 		}
 
 		//printf("Current token: %s \n", token);
@@ -222,7 +222,6 @@ bool gps_get_rmc_data(char *data_line, RMC_data *buffer) {
 
 	return true;
 }
-
 
 /*
  *  Get the most up to date RMC data. Return true if succeed before max_tries.
@@ -238,39 +237,38 @@ static bool gps_get_current_rmc_data(RMC_data *buffer, int max_tries) {
 	do {
 		num_tries++;
 		gps_retrieve_data_line(data_line_buffer, GPS_DEFAULT_DATA_LINE_SIZE);
-	} while(!gps_get_rmc_data(data_line_buffer, buffer) && num_tries < max_tries);
+	} while (!gps_get_rmc_data(data_line_buffer, buffer) && num_tries < max_tries);
 
 	return num_tries >= max_tries ? false : true;
 }
 
 //---------------------------Timer Functions------------------------------//
 
-void convert_rmc_to_datetime(RMC_data *RMC_data, DateTime *buffer){
-	char RMC_year[3] = {0};
-	strncpy(RMC_year, RMC_data->date+4, 2);
+void convert_rmc_to_datetime(RMC_data *RMC_data, DateTime *buffer) {
+	char RMC_year[3] = { 0 };
+	strncpy(RMC_year, RMC_data->date + 4, 2);
 	buffer->year = atoi(RMC_year);
 
-	char RMC_month[3] = {0};
-	strncpy(RMC_month, RMC_data->date+2, 2);
+	char RMC_month[3] = { 0 };
+	strncpy(RMC_month, RMC_data->date + 2, 2);
 	buffer->month = atoi(RMC_month);
 
-	char RMC_day[3] = {0};
+	char RMC_day[3] = { 0 };
 	strncpy(RMC_day, RMC_data->date, 2);
 	buffer->day = atoi(RMC_day);
 
-	char RMC_hour[3] = {0};
+	char RMC_hour[3] = { 0 };
 	strncpy(RMC_hour, RMC_data->UTC_time, 2);
 	buffer->hour = atoi(RMC_hour);
 
-	char RMC_minute[3] = {0};
-	strncpy(RMC_minute, RMC_data->UTC_time+2, 2);
+	char RMC_minute[3] = { 0 };
+	strncpy(RMC_minute, RMC_data->UTC_time + 2, 2);
 	buffer->minute = atoi(RMC_minute);
 
-	char RMC_second[3] = {0};
-	strncpy(RMC_second, RMC_data->UTC_time+4, 2);
+	char RMC_second[3] = { 0 };
+	strncpy(RMC_second, RMC_data->UTC_time + 4, 2);
 	buffer->second = atoi(RMC_second);
 }
-
 
 /*
  *  Return elapsed time in seconds from start till finish
@@ -331,7 +329,6 @@ unsigned long gps_stop_timer(DateTime *start_time) {
 }
 //--------------------------End Timer Functions---------------------------//
 
-
 //--------------------------Speed Function---------------------------//
 
 /*
@@ -351,45 +348,47 @@ float gps_get_speed_from_rmc(RMC_data *RMC_data) {
 //--------------------------Location Functions---------------------------//
 
 void gps_convert_rmc_to_location(RMC_data *RMC_data, Location *buffer) {
-	char RMC_LatDegree[3] = {0};
+	char RMC_LatDegree[3] = { 0 };
 	strncpy(RMC_LatDegree, RMC_data->latitude, 2);
 	buffer->lat_degree = atoi(RMC_LatDegree);
 
-	char RMC_LatMinute[8] = {0};
-	strncpy(RMC_LatMinute, RMC_data->latitude+2, 7);
+	char RMC_LatMinute[8] = { 0 };
+	strncpy(RMC_LatMinute, RMC_data->latitude + 2, 7);
 	buffer->lat_minute = atof(RMC_LatMinute);
 
 	buffer->lat_direction = RMC_data->N_S[0];
 
-	char RMC_LongDegree[4] = {0};
+	char RMC_LongDegree[4] = { 0 };
 	strncpy(RMC_LongDegree, RMC_data->longitude, 3);
 	buffer->long_degree = atoi(RMC_LongDegree);
 
-	char RMC_LongMinute[8] = {0};
-	strncpy(RMC_LongMinute, RMC_data->longitude+3, 7);
+	char RMC_LongMinute[8] = { 0 };
+	strncpy(RMC_LongMinute, RMC_data->longitude + 3, 7);
 	buffer->long_minute = atof(RMC_LongMinute);
 
 	buffer->long_direction = RMC_data->E_W[0];
 }
 
 /* Compares two location and if they are close enough, return true.
-* Note: algorithm might not work if the the 2 locations are right on
-* 		the Equator or Prime Meridian
-*/
+ * Note: algorithm might not work if the the 2 locations are right on
+ * 		the Equator or Prime Meridian
+ */
 bool gps_has_arrived_at_destination(Location *current, Location *destination) {
 	// this will work for North America, re-implement part later if needed
-	if (current->lat_direction != destination->lat_direction ||
-		current->long_direction != destination->long_direction)
+	if (current->lat_direction != destination->lat_direction
+			|| current->long_direction != destination->long_direction)
 		return false;
 
 	double currLatInMinutes = current->lat_degree * 60 + current->lat_minute;
-	double destLatInMinutes = destination->lat_degree * 60 + destination->lat_minute;
+	double destLatInMinutes = destination->lat_degree * 60
+			+ destination->lat_minute;
 
 	double currLongInMinutes = current->long_degree * 60 + current->long_minute;
-	double destLongInMinutes = destination->long_degree * 60 + destination->long_minute;
+	double destLongInMinutes = destination->long_degree * 60
+			+ destination->long_minute;
 
-	if (abs(currLatInMinutes - destLatInMinutes) < GPS_LAT_EPSILON &&
-		abs(currLongInMinutes - destLongInMinutes) < GPS_LONG_EPSILON)
+	if (abs(currLatInMinutes - destLatInMinutes) < GPS_LAT_EPSILON
+			&& abs(currLongInMinutes - destLongInMinutes) < GPS_LONG_EPSILON)
 		return true;
 	else
 		return false;
@@ -397,21 +396,19 @@ bool gps_has_arrived_at_destination(Location *current, Location *destination) {
 
 //--------------------------End Location Functions---------------------------//
 
-
 void gps_checksum(char *string, int size) {
-  int i;
-  char result = string[0];
-  for(i = 1; i < size; i++){
-	printf("XORing: %c %d ", string[i], string[i]);
-    result ^= string[i];
-  }
+	int i;
+	char result = string[0];
+	for (i = 1; i < size; i++) {
+		printf("XORing: %c %d ", string[i], string[i]);
+		result ^= string[i];
+	}
 
-  printf("Checksum: %x \n", result);
+	printf("Checksum: %x \n", result);
 }
 
-
 //------------------------- FOR PARSING DATA DUMP-----------------------------//
-    
+
 // see http://stackoverflow.com/questions/2182002/convert-big-endian-to-
 // little-endian-in-c-without-using-provided-func
 // takes a 4 byte float in string form (8 chars) and converts to 4 byte form
@@ -419,13 +416,12 @@ void gps_checksum(char *string, int size) {
 // and swaps the bytes order the reason for this is the GPS outputs the
 // longitude and latitude LOG data in 4 byte float form but as little endian
 // NIOS however uses big endian
-static int gps_swap_endian(char *s)
-{
-    register int val;
-    val = strtoul(s, NULL, 16) ; // convert to 4 byte int form in base 16
-    val = ((val << 8) & 0xFF00FF00) | ((val >> 8) & 0xFF00FF );
-    val = (val << 16) | ((val >> 16) & 0xFFFF);
-    return val;
+static int gps_swap_endian(char *s) {
+	register int val;
+	val = strtoul(s, NULL, 16); // convert to 4 byte int form in base 16
+	val = ((val << 8) & 0xFF00FF00) | ((val >> 8) & 0xFF00FF);
+	val = (val << 16) | ((val >> 16) & 0xFFFF);
+	return val;
 }
 
 // these two functions take a 4 byte IEEE-754 format float
@@ -434,19 +430,19 @@ static int gps_swap_endian(char *s)
 // which it returns with decimal point in the string.
 static char * gps_float_to_latitude_conversion(int x) //output format is xx.yyyy
 {
-    static char buff[100];
-    float *ptr = (float *)(&x) ; // cast int to float
-    float f = *ptr ; // get the float
-    sprintf(buff, "%2.4f", f); // write in string to an array
-    return buff;
+	static char buff[100];
+	float *ptr = (float *) (&x); // cast int to float
+	float f = *ptr; // get the float
+	sprintf(buff, "%2.4f", f); // write in string to an array
+	return buff;
 }
 
 static char * gps_float_to_longitude_conversion(int x) // output format is (-)xxx.yyyy
 {
-    static char buff[100];
-    float *ptr = (float *)(&x);
-    float f = *ptr;
-    sprintf(buff, "%3.4f", f);
-    return buff;
+	static char buff[100];
+	float *ptr = (float *) (&x);
+	float f = *ptr;
+	sprintf(buff, "%3.4f", f);
+	return buff;
 }
 
