@@ -22,6 +22,9 @@
 #define GPS_LAT_EPSILON 0.01
 #define GPS_LONG_EPSILON 0.01
 
+#define CR_CHAR '\r'
+#define LF_CHAR '\n'
+
 /* GPS Commands */
 #define GPS_SNAPSHOT_NOW "$PMTK186,1*20\r\n"
 
