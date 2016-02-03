@@ -129,28 +129,22 @@ bool gps_get_gga_data(char *data_line, GGA_data *buffer) {
 	while (token != NULL) {
 		switch (count) {
 		case 1:
-			strcpy(buffer->UTC_time, token);
-			buffer->UTC_time[10] = '\0';
+			snprintf(buffer->UTC_time, 11, token);
 			break;
 		case 2:
-			strcpy(buffer->latitude, token);
-			buffer->latitude[9] = '\0';
+			snprintf(buffer->latitude, 10, token);
 			break;
 		case 3:
-			strcpy(buffer->N_S, token);
-			buffer->N_S[1] = '\0';
+			snprintf(buffer->N_S, 2, token);
 			break;
 		case 4:
-			strcpy(buffer->longitude, token);
-			buffer->longitude[10] = '\0';
+			snprintf(buffer->longitude, 11, token);
 			break;
 		case 5:
-			strcpy(buffer->E_W, token);
-			buffer->E_W[1] = '\0';
+			snprintf(buffer->E_W, 2, token);
 			break;
 		case 7:
-			strcpy(buffer->satellites, token);
-			buffer->satellites[2] = '\0';
+			snprintf(buffer->satellites, 3, token);
 			break;
 		default:
 			break; // leave the other fields for now
@@ -183,32 +177,25 @@ bool gps_get_rmc_data(char *data_line, RMC_data *buffer) {
 	while (token != NULL) {
 		switch (count) {
 		case 1:
-			strcpy(buffer->UTC_time, token);
-			buffer->UTC_time[10] = '\0';
+			snprintf(buffer->UTC_time, 11, token);
 			break;
 		case 3:
-			strcpy(buffer->latitude, token);
-			buffer->latitude[9] = '\0';
+			snprintf(buffer->latitude, 10, token);
 			break;
 		case 4:
-			strcpy(buffer->N_S, token);
-			buffer->N_S[1] = '\0';
+			snprintf(buffer->N_S, 2, token);
 			break;
 		case 5:
-			strcpy(buffer->longitude, token);
-			buffer->longitude[10] = '\0';
+			snprintf(buffer->longitude, 11, token);
 			break;
 		case 6:
-			strcpy(buffer->E_W, token);
-			buffer->E_W[1] = '\0';
+			snprintf(buffer->E_W, 2, token);
 			break;
 		case 7:
-			strcpy(buffer->speed, token);
-			buffer->speed[4] = '\0';
+			snprintf(buffer->speed, 5, token);
 			break;
 		case 9:
-			strcpy(buffer->date, token);
-			buffer->date[6] = '\0';
+			snprintf(buffer->date, 7, token);
 			break;
 		default:
 			break; // leave the out other fields
