@@ -115,6 +115,7 @@ float gps_get_speed_from_rmc(RMC_data *RMC_data);
  */
 void gps_convert_rmc_to_location(RMC_data *RMC_data, Location *buffer);
 
+
 /**
  * Compares two location and if they are close enough, return true.
  * Note: algorithm might not work if the the 2 locations are right on

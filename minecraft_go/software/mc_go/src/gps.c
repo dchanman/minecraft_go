@@ -396,3 +396,43 @@ void gps_checksum(char *string, int size) {
 
 	printf("Checksum: %x \n", result);
 }
+
+//------------------------- FOR PARSING DATA DUMP-----------------------------//
+
+// see http://stackoverflow.com/questions/2182002/convert-big-endian-to-
+// little-endian-in-c-without-using-provided-func
+// takes a 4 byte float in string form (8 chars) and converts to 4 byte form
+// (still stored in an int but in float form)
+// and swaps the bytes order the reason for this is the GPS outputs the
+// longitude and latitude LOG data in 4 byte float form but as little endian
+// NIOS however uses big endian
+static int gps_swap_endian(char *s) {
+	register int val;
+	val = strtoul(s, NULL, 16); // convert to 4 byte int form in base 16
+	val = ((val << 8) & 0xFF00FF00) | ((val >> 8) & 0xFF00FF);
+	val = (val << 16) | ((val >> 16) & 0xFFFF);
+	return val;
+}
+
+// these two functions take a 4 byte IEEE-754 format float
+// (passed as a 4 byte int representing latitude and longitude values)
+// in big endian format and converts it to an ASCII decimal string
+// which it returns with decimal point in the string.
+static char * gps_float_to_latitude_conversion(int x) //output format is xx.yyyy
+{
+	static char buff[100];
+	float *ptr = (float *) (&x); // cast int to float
+	float f = *ptr; // get the float
+	sprintf(buff, "%2.4f", f); // write in string to an array
+	return buff;
+}
+
+static char * gps_float_to_longitude_conversion(int x) // output format is (-)xxx.yyyy
+{
+	static char buff[100];
+	float *ptr = (float *) (&x);
+	float f = *ptr;
+	sprintf(buff, "%3.4f", f);
+	return buff;
+}
+
