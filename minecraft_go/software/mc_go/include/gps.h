@@ -62,31 +62,86 @@ typedef struct Time {
 } Time;
 
 typedef struct Location {
-	int Lat_degree;
-	double Lat_minute;
-	char Lat_direction;
+	int lat_degree;
+	double lat_minute;
+	char lat_direction;
 
-	int Long_degree;
-	double Long_minute;
-	char Long_direction;
+	int long_degree;
+	double long_minute;
+	char long_direction;
 } Location;
 
-
-//DateTime start_time;
-
-bool gps_retrieve_data_line(char *, int);
-bool gps_retrieve_data_dump(char **, int);
-void gps_send_command(const char *);
+/**
+ *
+ */
 void gps_init();
-bool gps_get_gga_data(char *, GGA_data *);
-bool gps_get_rmc_data(char *, RMC_data *);
-void convertRMCtoDateTime(RMC_data *, DateTime *);
-unsigned long getElapsedInSeconds(DateTime *, DateTime *);
-void convertSecondsToTime(Time *, unsigned long);
-float getSpeedFromRMC(RMC_data *);
-void convertRMCtoLocation(RMC_data *, Location *);
-bool hasArrivedAtDestination(Location *, Location *);
 
-void gps_checksum(char *, int);
+/**
+ *
+ */
+void gps_send_command(const char *command);
+
+/**
+ *
+ */
+bool gps_retrieve_data_line(char *buffer, int buffer_size);
+
+/**
+ *
+ */
+bool gps_retrieve_data_dump(char **buffer, int buffer_size);
+
+/**
+ *
+ */
+bool gps_get_gga_data(char *data_line, GGA_data *buffer);
+
+/**
+ *
+ */
+int gps_get_rmc_data(char *data_line, RMC_data *buffer);
+
+/**
+ *
+ */
+void convert_rmc_to_datetime(RMC_data *RMC_data, DateTime *buffer);
+
+/**
+ *
+ */
+unsigned long gps_get_elapsed_seconds(DateTime *start, DateTime *finish);
+
+/**
+ *
+ */
+void gps_start_timer(DateTime *start_time);
+
+/**
+ *
+ */
+unsigned long gps_stop_timer(DateTime *start_time);
+
+/**
+ *
+ */
+float gps_get_speed_from_rmc(RMC_data *RMC_data);
+
+/**
+ *
+ */
+void gps_convert_rmc_to_location(RMC_data *RMC_data, Location *buffer);
+
+
+/**
+ * Compares two location and if they are close enough, return true.
+ * Note: algorithm might not work if the the 2 locations are right on
+ * the Equator or Prime Meridian
+ */
+bool gps_has_arrived_at_destination(Location *current, Location *destination);
+
+/**
+ *
+ */
+void gps_checksum(char *string, int size);
 
 #endif /* GSP_H_ */

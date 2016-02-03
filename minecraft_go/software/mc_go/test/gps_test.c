@@ -16,12 +16,12 @@ void gps_test() {
 	gps_init();
 
 	//gps_send_command(GPS_STOP_DATA_LOG);
-	GGA_data *GGA_buffer = malloc(sizeof(GGA_data));
-	RMC_data *RMC_buffer = malloc(sizeof(RMC_data));
+	GGA_data GGA_buffer;
+	RMC_data RMC_buffer;
 
 	int times = 10;
 	int i;
-	char *data_line_buffer = malloc(GPS_DEFAULT_DATA_LINE_SIZE * sizeof(char));
+	char data_line_buffer[GPS_DEFAULT_DATA_LINE_SIZE];
 	for (i = 0; i < times; i++) {
 		if (!gps_retrieve_data_line(data_line_buffer, GPS_DEFAULT_DATA_LINE_SIZE)){
 			printf("Buffer to testing data line is too small!\n");
@@ -29,63 +29,63 @@ void gps_test() {
 		}
 
 		//printf("%s\n", data_line_buffer);
-		int isGGA = gps_get_gga_data(data_line_buffer, GGA_buffer);
-		int isRMC = gps_get_rmc_data(data_line_buffer, RMC_buffer);
+		int isGGA = gps_get_gga_data(data_line_buffer, &GGA_buffer);
+		int isRMC = gps_get_rmc_data(data_line_buffer, &RMC_buffer);
 
 		if (isGGA) {
 			printf("%s\n", data_line_buffer);
 			printf(
 					"GGA PARSED --> Time: %s Lat: %s N/S: %s Long: %s E/W: %s Satellites: %s \n",
-					GGA_buffer->UTC_time, GGA_buffer->latitude, GGA_buffer->N_S,
-					GGA_buffer->longitude, GGA_buffer->E_W,
-					GGA_buffer->satellites);
+					GGA_buffer.UTC_time, GGA_buffer.latitude, GGA_buffer.N_S,
+					GGA_buffer.longitude, GGA_buffer.E_W,
+					GGA_buffer.satellites);
 		}
 
 		if (isRMC) {
 			printf("%s\n", data_line_buffer);
 			printf(
 					"RMC PARSED --> Time: %s Lat: %s N/S: %s Long: %s E/W: %s Speed: %s Date: %s \n",
-					RMC_buffer->UTC_time, RMC_buffer->latitude, RMC_buffer->N_S,
-					RMC_buffer->longitude, RMC_buffer->E_W,
-					RMC_buffer->speed, RMC_buffer->date);
+					RMC_buffer.UTC_time, RMC_buffer.latitude, RMC_buffer.N_S,
+					RMC_buffer.longitude, RMC_buffer.E_W,
+					RMC_buffer.speed, RMC_buffer.date);
 		}
 
 	}
 
-	Location *Location_buffer = malloc(sizeof(Location));
+	Location location_buffer;
 
-	convertRMCtoLocation(RMC_buffer, Location_buffer);
+	gps_convert_rmc_to_location(&RMC_buffer, &location_buffer);
 	printf("Current Location -> Lat Degree: %d, Lat Minute: %lf, Lat Direction: %c, "
 							   "Long Degree: %d, Long_Minute: %lf, Long_Direction: %c\n",
-				Location_buffer->Lat_degree, Location_buffer->Lat_minute, Location_buffer->Lat_direction,
-				Location_buffer->Long_degree, Location_buffer->Long_minute, Location_buffer->Long_direction);
+				location_buffer.lat_degree, location_buffer.lat_minute, location_buffer.lat_direction,
+				location_buffer.long_degree, location_buffer.long_minute, location_buffer.long_direction);
 
-	if (!hasArrivedAtDestination(Location_buffer, Location_buffer))
+	if (!gps_has_arrived_at_destination(&location_buffer, &location_buffer))
 		printf("Error: hasArriveAtDestination() is not working!\n");
 
-	printf("Current speed: %f\n", getSpeedFromRMC(RMC_buffer));
+	printf("Current speed: %f\n", gps_get_speed_from_rmc(&RMC_buffer));
 
 
 
 	// testing DateTime struc and convertRMCtoDateTime()
-	DateTime *DateTime_buffer = malloc(sizeof(DateTime));
+	DateTime DateTime_buffer;
 
-	convertRMCtoDateTime(RMC_buffer, DateTime_buffer);
+	convert_rmc_to_datetime(&RMC_buffer, &DateTime_buffer);
 	printf("Current DateTime -> Year: %d, Month: %d, Day: %d, Hour: %d, Minute: %d, Second: %d\n",
-				DateTime_buffer->year, DateTime_buffer->month, DateTime_buffer->day,
-				DateTime_buffer->hour, DateTime_buffer->minute, DateTime_buffer->second);
+				DateTime_buffer.year, DateTime_buffer.month, DateTime_buffer.day,
+				DateTime_buffer.hour, DateTime_buffer.minute, DateTime_buffer.second);
 
 	// testing timer
 	DateTime testStartTime = {16, 2, 2, 0, 0, 0};
 
-	unsigned long testElapsedTime = stopTimer(&testStartTime);
+	unsigned long testElapsedTime = gps_stop_timer(&testStartTime);
 
-	Time *testTime = malloc(sizeof(Time));
+	Time testTime;
 
-	convertSecondsToTime(testTime, testElapsedTime);
-	printf("Elapsed Time -> Hour: %d, Minute: %d, Second: %d \n", testTime->hour,
-																  testTime->minute,
-																  testTime->second);
+	gps_convert_seconds_to_time(&testTime, testElapsedTime);
+	printf("Elapsed Time . Hour: %d, Minute: %d, Second: %d \n", testTime.hour,
+																  testTime.minute,
+																  testTime.second);
 
 
 
@@ -109,12 +109,6 @@ void gps_test() {
 
 	 checksum(array, 9);
 	 */
-
-	free(GGA_buffer);
-	free(RMC_buffer);
-	free(data_line_buffer);
-	free(DateTime_buffer);
-	free(Location_buffer);
 }
 
 void print_test_data(char ** test_data) {
