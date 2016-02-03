@@ -14,6 +14,23 @@
 
 #define GPS	((volatile unsigned char *)(0x84000210))
 
+#define GGA_IDENTIFIER "$GPGGA"
+#define RMC_IDENTIFIER "$GPRMC"
+
+#define GPS_DEFAULT_DATA_RETRIEVAL_TRIES 20
+
+#define GPS_LAT_EPSILON 0.01
+#define GPS_LONG_EPSILON 0.01
+
+/* GPS Commands */
+#define GPS_SNAPSHOT_NOW "$PMTK186,1*20\r\n"
+
+#define GPS_STOP_DATA_LOG "$PMTK185,1*23\r\n"
+#define GPS_START_DATA_LOG "$PMTK185,0*22\r\n"
+
+#define GPS_DATA_DUMP_PARTIAL "$PMTK622,1*29\r\n"
+#define GPS_DATA_DUMP_END "$PMTKLOX,2*47\r\n"
+
 /* Static Declarations */
 static void gps_put_char(const unsigned char c);
 static unsigned char gps_get_char();
@@ -47,7 +64,7 @@ void gps_send_command(const char *command) {
 bool gps_retrieve_data_line(char *buffer, int buffer_size) {
 	int char_count = 0;
 
-	while (1){
+	while (1) {
 		if (char_count >= buffer_size - 1){
 			printf("Warning: Buffer not large enough for GPS data line; Cutting data line prematurely.");
 			buffer[char_count] = '\0';
@@ -76,18 +93,14 @@ bool gps_retrieve_data_line(char *buffer, int buffer_size) {
  *
  * buffer - 2D array where each index will hold a data line
  */
-bool gps_retrieve_data_dump(char **buffer, int buffer_size) {
+bool gps_retrieve_data_dump(char *buffer[GPS_DEFAULT_DATA_LINE_SIZE], int buffer_size) {
 	int i;
 
 	for (i = 0; i < buffer_size; i++) {
-		char *data_line_buffer = malloc(GPS_DEFAULT_DATA_LINE_SIZE * sizeof(char));
+		gps_retrieve_data_line(buffer[i], GPS_DEFAULT_DATA_LINE_SIZE);
 
-		gps_retrieve_data_line(data_line_buffer, GPS_DEFAULT_DATA_LINE_SIZE);
-
-		if (strstr(data_line_buffer, GPS_DATA_DUMP_END) != NULL)
+		if (strstr(buffer[i], GPS_DATA_DUMP_END) != NULL)
 			break;
-
-		buffer[i] = data_line_buffer;
 
 		if (i == buffer_size - 1){
 			printf("Warning: Data dump reached max buffer size!\n");
@@ -102,7 +115,7 @@ bool gps_get_gga_data(char *data_line, GGA_data *buffer) {
 	const char delimiter[2] = ",";
 
 	// to prevent the original data line from being modified
-	char * data_line_copy[strlen(data_line)];
+	char data_line_copy[strlen(data_line)];
 	strcpy(data_line_copy, data_line);
 
 	char *token = strtok(data_line_copy, delimiter);
@@ -152,11 +165,11 @@ bool gps_get_gga_data(char *data_line, GGA_data *buffer) {
 	return true;
 }
 
-int gps_get_rmc_data(char *data_line, RMC_data *buffer) {
+bool gps_get_rmc_data(char *data_line, RMC_data *buffer) {
 	const char delimiter[2] = ",";
 
 	// to prevent the original data line from being modified
-	char * data_line_copy[strlen(data_line)];
+	char data_line_copy[strlen(data_line)];
 	strcpy(data_line_copy, data_line);
 
 	char * token = strtok(data_line_copy, delimiter);
@@ -219,15 +232,13 @@ int gps_get_rmc_data(char *data_line, RMC_data *buffer) {
  *  a large data dump.
  */
 static bool gps_get_current_rmc_data(RMC_data *buffer, int max_tries) {
-	char *data_line_buffer = malloc(GPS_DEFAULT_DATA_LINE_SIZE * sizeof(char));
+	char data_line_buffer[GPS_DEFAULT_DATA_LINE_SIZE];
 
 	int num_tries = 0;
 	do {
 		num_tries++;
 		gps_retrieve_data_line(data_line_buffer, GPS_DEFAULT_DATA_LINE_SIZE);
 	} while(!gps_get_rmc_data(data_line_buffer, buffer) && num_tries < max_tries);
-
-	free(data_line_buffer);
 
 	return num_tries >= max_tries ? false : true;
 }
@@ -297,29 +308,24 @@ void gps_convert_seconds_to_time(Time *buffer, unsigned long seconds) {
 }
 
 void gps_start_timer(DateTime *start_time) {
-	RMC_data *RMC_buffer = malloc(sizeof(RMC_data));
+	RMC_data RMC_buffer;
 
-	if (!gps_get_current_rmc_data(RMC_buffer, GPS_DEFAULT_DATA_RETRIEVAL_TRIES))
+	if (!gps_get_current_rmc_data(&RMC_buffer, GPS_DEFAULT_DATA_RETRIEVAL_TRIES))
 		printf("Error: Unable to retrieve RMC data in %d tries.\n", GPS_DEFAULT_DATA_RETRIEVAL_TRIES);
 	else
-		convert_rmc_to_datetime(RMC_buffer, start_time);
-
-	free(RMC_buffer);
+		convert_rmc_to_datetime(&RMC_buffer, start_time);
 }
 
 unsigned long gps_stop_timer(DateTime *start_time) {
-	RMC_data *RMC_buffer = malloc(sizeof(RMC_data));
-	DateTime *finish_time = malloc(sizeof(DateTime));
+	RMC_data RMC_buffer;
+	DateTime finish_time;
 
-	if (!gps_get_current_rmc_data(RMC_buffer, GPS_DEFAULT_DATA_RETRIEVAL_TRIES))
+	if (!gps_get_current_rmc_data(&RMC_buffer, GPS_DEFAULT_DATA_RETRIEVAL_TRIES))
 		printf("Error: Unable to retrieve RMC data in %d tries.\n", GPS_DEFAULT_DATA_RETRIEVAL_TRIES);
 	else
-		convert_rmc_to_datetime(RMC_buffer, finish_time);
+		convert_rmc_to_datetime(&RMC_buffer, &finish_time);
 
-	unsigned long result = gps_get_elapsed_seconds(start_time, finish_time);
-
-	free(RMC_buffer);
-	free(finish_time);
+	unsigned long result = gps_get_elapsed_seconds(start_time, &finish_time);
 
 	return result;
 }

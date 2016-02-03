@@ -7,25 +7,9 @@
 #include "general.h"
 
 #ifndef GSP_H_
-#define GSP_H_
-
-#define GGA_IDENTIFIER "$GPGGA"
-#define RMC_IDENTIFIER "$GPRMC"
+#define GPS_H_
 
 #define GPS_DEFAULT_DATA_LINE_SIZE 300
-#define GPS_DEFAULT_DATA_RETRIEVAL_TRIES 20
-
-#define GPS_LAT_EPSILON 0.01
-#define GPS_LONG_EPSILON 0.01
-
-// GPS Commands
-#define GPS_SNAPSHOT_NOW "$PMTK186,1*20\r\n"
-
-#define GPS_STOP_DATA_LOG "$PMTK185,1*23\r\n"
-#define GPS_START_DATA_LOG "$PMTK185,0*22\r\n"
-
-#define GPS_DATA_DUMP_PARTIAL "$PMTK622,1*29\r\n"
-#define GPS_DATA_DUMP_END "$PMTKLOX,2*47\r\n"
 
 typedef struct GGA_data {
 	char UTC_time[11];
@@ -99,7 +83,7 @@ bool gps_get_gga_data(char *data_line, GGA_data *buffer);
 /**
  *
  */
-int gps_get_rmc_data(char *data_line, RMC_data *buffer);
+bool gps_get_rmc_data(char *data_line, RMC_data *buffer);
 
 /**
  *
@@ -144,4 +128,4 @@ bool gps_has_arrived_at_destination(Location *current, Location *destination);
  */
 void gps_checksum(char *string, int size);
 
-#endif /* GSP_H_ */
+#endif /* GPS_H_ */
