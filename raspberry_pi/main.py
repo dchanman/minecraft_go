@@ -1,13 +1,13 @@
 import serial
 import time
-from mcpi.minecraft import Minecraft
-
+#from mcpi.minecraft import Minecraft
+from mock import Minecraft
 
 #######################################
 # Initialize ports 
 #######################################
 mc = Minecraft.create()
-port = serial.Serial("/dev/ttyUSB0", baudrate=115200, timeout = 10.0)
+port = serial.Serial("/dev/ttyUSB0", baudrate=115200, timeout = 2.0)
 
 
 #######################################
@@ -19,18 +19,118 @@ def main_loop():
 	if rcv == b'#':
 		rcv = port.read(2)
 		if rcv in function_map:
-			function_map[rcv]()
+			print("Handling " + rcv.decode("utf-8"))
+			function_map[rcv](b'#'+ rcv)
+			print()
 		else:
 			print("Received unknown command: ", rcv)
 
+
+def _send_and_check(byte, length):
+	port.write(byte)
+	rcv = port.read(length)
+	if (rcv != byte):
+		return False
+	else:
+		return True
+		
+def _receive_and_echo(length):
+	rcv = port.read(length)
+	port.write(rcv)
+	return rcv
 
 #######################################
 # rpc_hi
 #
 # Simple hello message 
 #######################################
-def rpc_hi():
+def rpc_hi(rpc_code):
 	mc.postToChat("Minecraft GO Connected!")
+	# Echo #hi
+	port.write(rpc_code)
+	
+#######################################
+# rpc_recv_coordinates
+#
+# Send new GPS destination coordinates
+#######################################
+def rpc_recv_coordinates(rpc_code):
+	mc.postToChat("Sending new GPS coordinates...")
+	
+	###################################
+	# Protocol Steps
+	###################################
+	
+	# Echo #rc
+	port.write(rpc_code)
+	
+	# Send latitude[9]
+	new_latitude = "ddmm.mmmm".encode('utf-8')
+	if not _send_and_check(new_latitude, 9):
+		print("Error sending new_latitude")
+	
+	# Send longitude[10]
+	new_longitude = "dddmm.mmmm".encode('utf-8')
+	if not _send_and_check(new_longitude, 10):
+		print("Error sending new_longitude")
+	
+	# Wait for #rc
+	rcv = port.read(3)
+	if (rcv != rpc_code):
+		print("Error closing connection")
+		
+	# Send #rc
+	port.write(rpc_code)
+	
+	###################################
+	# Processing Steps
+	###################################
+	mc.postToChat("New GPS coordinates uploaded!")
+	print("New GPS coordinates uploaded: Latitude: <{0}> Longitude: <{1}>".format(new_latitude, new_longitude))
+	
+#######################################
+# rpc_journey_complete
+#
+# Receive journey complete information
+#######################################
+def rpc_journey_complete(rpc_code):
+	mc.postToChat("Receiving journey statistics...")
+	
+	###################################
+	# Protocol Steps
+	###################################
+	
+	# Echo #jc
+	port.write(rpc_code)
+	
+	# Receive elapsed time
+	elapsed_time = _receive_and_echo(9)
+	
+	# Receive creeps encountered
+	creep_encounters = _receive_and_echo(3)
+	
+	# Wait for #jc
+	rcv = port.read(3)
+	if (rcv != rpc_code):
+		print("Error closing connection")
+		
+	# Send #jc
+	port.write(rpc_code)
+	
+	###################################
+	# Processing Steps
+	###################################
+	time_vals = str(elapsed_time.decode("utf-8")).split(":")
+	hours = int(time_vals[0])
+	minutes = int(time_vals[1])
+	seconds = int(time_vals[2])
+	
+	creeps = int(creep_encounters.decode("utf-8"))
+		
+	mc.postToChat("Journey Statistics:")
+	mc.postToChat("Elapsed Time: {0}h {1}m {2}s".format(hours, minutes, seconds))
+	mc.postToChat("Creeps Encountered: {0}".format(creeps))
+	print("Journey Stats: Elapsed Time {0}h {1}m {2}s | Creeps {3}".format(hours, minutes, seconds, creeps))
 
 
 #######################################
@@ -39,7 +139,9 @@ def rpc_hi():
 # functions as values. 
 #######################################
 function_map = {
-	b'hi': rpc_hi
+	b'hi': rpc_hi,
+	b'rc': rpc_recv_coordinates,
+	b'jc': rpc_journey_complete
 }
 
 

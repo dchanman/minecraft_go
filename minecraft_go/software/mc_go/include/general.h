@@ -12,4 +12,12 @@
 
 typedef enum { false, true } bool;
 
+#define DEBUGGING
+
+#ifdef DEBUGGING
+#define DEBUG(...) printf(__VA_ARGS__)
+#else
+#define DEBUG(...)
+#endif
+
 #endif /* GENERAL_H_ */
