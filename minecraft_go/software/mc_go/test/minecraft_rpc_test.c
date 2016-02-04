@@ -29,5 +29,5 @@ void minecraft_rpc_test_rs232_send_and_recv_echo() {
  */
 void minecraft_rpc_test_protocol_msg() {
 	minecraft_rpc_init();
-	minecraft_rpc_send_cmd(MINECRAFT_RPC_HI);
+	minecraft_rpc_hi();
 }
