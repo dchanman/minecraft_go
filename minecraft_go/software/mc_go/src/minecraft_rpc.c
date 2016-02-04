@@ -38,14 +38,14 @@ static bool minecraft_rpc_send_and_check(const unsigned char *message, const int
 	unsigned char recv[length];
 	int i;
 
-	rs232_put_n_char(message, length);
 	rs232_clear_buffer();
+	rs232_put_n_char(message, length);
 	rs232_get_n_char(recv, length);
 
 	/* Make sure that the server echoed back the same command we sent */
-	for (i = 0; i < MINECRAFT_RPC_MSG_LENGTH; i++) {
+	for (i = 0; i < length; i++) {
 		if (recv[i] != message[i]) {
-			printf("Error: Received unexpected message");
+			printf("Error: Received unexpected message <%.*s>\n", length, message);
 			return false;
 		}
 	}
@@ -94,7 +94,7 @@ bool minecraft_rpc_receive_coordinates(char *latitude, const int latitude_length
 		return false;
 	}
 
-	if (latitude_length < 11) {
+	if (longitude_length < 11) {
 		printf("Error: Longitude buffer needs minimum length <%d>, only <%d> provided\n", 11, latitude_length);
 		return false;
 	}
@@ -106,18 +106,22 @@ bool minecraft_rpc_receive_coordinates(char *latitude, const int latitude_length
 	}
 
 	/* Get Latitude */
+	DEBUG("[%s]: Getting latitude...\n", __func__);
 	memset(latitude, '\0', latitude_length);
 	if (!minecraft_rpc_receive_and_echo((unsigned char *)(latitude), latitude_length - 1)) {
 		printf("Error: Problem receiving latitude");
 		return false;
 	}
+	DEBUG("[%s]: Received Latitude: <%s>\n", __func__, latitude);
 
 	/* Get Longitude */
+	DEBUG("[%s]: Getting longitude...\n", __func__);
 	memset(longitude, '\0', longitude_length);
 	if (!minecraft_rpc_receive_and_echo((unsigned char *)(longitude), longitude_length - 1)) {
 		printf("Error: Problem receiving longitude");
 		return false;
 	}
+	DEBUG("[%s]: Received Longitude: <%s>\n", __func__, longitude);
 
 	/* Send #rc to close */
 	if (!minecraft_rpc_send_cmd(MINECRAFT_RPC_RECV_COORDINATES)) {
@@ -147,12 +151,13 @@ bool minecraft_rpc_journey_complete(const int elapsed_hours, const int elapsed_m
 	}
 
 	/* Create the buffers */
-	snprintf((char *)(elapsed_time_buffer), sizeof(elapsed_time_buffer), "%03d%02d%02d",
+	snprintf((char *)(elapsed_time_buffer), sizeof(elapsed_time_buffer), "%03d:%02d:%02d",
 			elapsed_hours, elapsed_min, elapsed_sec);
 	snprintf((char *)(creep_encs_buffer), sizeof(creep_encs_buffer), "%03d", creep_encs);
 
 	/* Send Elapsed Time */
 	/* (sizeof(buffer)-1 because we don't send the \0 char */
+	DEBUG("[%s]: Sending elapsed time <%s>\n", __func__, elapsed_time_buffer);
 	if (!minecraft_rpc_send_and_check(elapsed_time_buffer, sizeof(elapsed_time_buffer) - 1)) {
 		printf("Error: Could not send elapsed time\n");
 		return false;
@@ -160,6 +165,7 @@ bool minecraft_rpc_journey_complete(const int elapsed_hours, const int elapsed_m
 
 	/* Send Creep Encs */
 	/* (sizeof(buffer)-1 because we don't send the \0 char */
+	DEBUG("[%s]: Sending creep encounters <%s>\n", __func__, creep_encs_buffer);
 	if (!minecraft_rpc_send_and_check(creep_encs_buffer, sizeof(creep_encs_buffer) - 1)) {
 		printf("Error: Could not send creep encounters\n");
 		return false;
