@@ -4,7 +4,7 @@
  * Machine generated for CPU 'nios2_qsys_0' in SOPC Builder design 'nios_system'
  * SOPC Builder design path: ../../nios_system.sopcinfo
  *
- * Generated: Thu Feb 04 17:36:16 PST 2016
+ * Generated: Thu Feb 04 16:00:09 PST 2016
  */
 
 /*
@@ -59,7 +59,7 @@
  */
 
 #include "altera_nios2_qsys_irq.h"
-#include "Altera_UP_SD_Card_Avalon_Interface.h"
+#include "altera_up_sd_card_avalon_interface.h"
 #include "altera_avalon_jtag_uart.h"
 #include "altera_avalon_timer.h"
 #include "altera_up_avalon_character_lcd.h"
