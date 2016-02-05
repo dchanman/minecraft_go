@@ -2,6 +2,7 @@
  *  touchscreen.h
  *
  *  Created on: January 24, 2016
+ *  Updated on: February 4, 2016
  *      Author: Logan
  */
 
@@ -20,10 +21,17 @@
 #define REPORT_COORDINATE_MAX 4096
 #define REPORT_COORDINATE_MIN 0
 
+//type declaration for touch report coordinates
 typedef struct {
 	int x;
 	int y;
 } Point;
+
+//type declaration for pixel coordinates
+typedef struct {
+	int x;
+	int y;
+} Pixel;
 
 /**
  * Initialize the touchscreen controller
@@ -43,12 +51,17 @@ void touchscreen_wait_for_touch(void);
 /**
  * Waits for a touch, then returns an X,Y coordinate
  */
-Point touchscreen_get_press(void);
+Pixel touchscreen_get_press(void);
 
 /**
  * Waits for a release, then returns an X,Y coordinate
  */
-Point touchscreen_get_release(void);
+Pixel touchscreen_get_release(void);
+
+/**
+ * Converts touch report coordinates to pixel coordinates
+ */
+Pixel touchscreen_pixel_conversion(Point p);
 
 /*
  *	Checks if the point pressed is inside a specified coordinate boundary
@@ -56,10 +69,5 @@ Point touchscreen_get_release(void);
  *	(x2,y2) is the bottom right corner of the box
  */
 int touchscreen_is_touch_in_box(int x1, int y1, int x2, int y2);
-
-/**
- * Converts touch report coordinates to pixel coordinates
- */
-Point touchscreen_pixel_conversion(Point p);
 
 #endif /* TOUCHSCREEN_H_ */
