@@ -49,7 +49,6 @@ void gps_test() {
 					RMC_buffer.longitude, RMC_buffer.E_W,
 					RMC_buffer.speed, RMC_buffer.date);
 		}
-
 	}
 
 	Location location_buffer;

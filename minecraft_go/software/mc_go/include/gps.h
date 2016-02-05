@@ -98,6 +98,11 @@ unsigned long gps_get_elapsed_seconds(DateTime *start, DateTime *finish);
 /**
  *
  */
+void gps_convert_seconds_to_time(Time *buffer, unsigned long seconds);
+
+/**
+ *
+ */
 void gps_start_timer(DateTime *start_time);
 
 /**

@@ -26,7 +26,7 @@ typedef struct {
 } Point;
 
 /**
- * Initialize the touch screen controller
+ * Initialize the touchscreen controller
  */
 void touchscreen_init(void);
 
@@ -50,10 +50,12 @@ Point touchscreen_get_press(void);
  */
 Point touchscreen_get_release(void);
 
-/**
- * Reads the serial port to get the touch report packet
+/*
+ *	Checks if the point pressed is inside a specified coordinate boundary
+ *	(x1,y1) is the top left corner of the box
+ *	(x2,y2) is the bottom right corner of the box
  */
-void touchscreen_get_report_packet(unsigned char *buffer, unsigned char touchStatus);
+int touchscreen_is_touch_in_box(int x1, int y1, int x2, int y2);
 
 /**
  * Converts touch report coordinates to pixel coordinates

@@ -14,6 +14,8 @@
 
 static unsigned char ENABLE[] = { 0x55, 0x01, 0x12 };
 
+static void touchscreen_get_report_packet(unsigned char *buffer, unsigned char touchStatus);
+
 void touchscreen_init(void) {
 	serial_init(TOUCHSCREEN, BAUD_RATE_9600);
 	serial_put_n_char(TOUCHSCREEN, ENABLE, 3);
@@ -23,7 +25,7 @@ void touchscreen_init(void) {
 }
 
 void touchscreen_screen_touched(void) {
-	unsigned char buffer[5] = {'\0'};
+	unsigned char buffer[5] = { '\0' };
 
 	touchscreen_get_report_packet(buffer, TOUCHSCREEN_PRESS);
 
@@ -37,7 +39,7 @@ void touchscreen_wait_for_touch(void) {
 Point touchscreen_get_press(void) {
 	Point p1;
 
-	unsigned char buffer[TOUCHSCREEN_FRAME_SIZE] = {'\0'};
+	unsigned char buffer[TOUCHSCREEN_FRAME_SIZE] = { '\0' };
 
 	touchscreen_get_report_packet(buffer, TOUCHSCREEN_PRESS);
 
@@ -72,7 +74,10 @@ Point touchscreen_get_release(void) {
 	return p2;
 }
 
-void touchscreen_get_report_packet(unsigned char *buffer, unsigned char touchStatus){
+/**
+ * Reads the serial port to get the touch report packet
+ */
+static void touchscreen_get_report_packet(unsigned char *buffer, unsigned char touchStatus) {
 	/**
 	 * wait for a pen up command then return the X,Y coord of the point
 	 * calibrated correctly so that it maps to a pixel on screen
@@ -96,4 +101,16 @@ Point touchscreen_pixel_conversion(Point p){
 			((float)Y_MAX / (float)(REPORT_COORDINATE_MAX - REPORT_COORDINATE_MIN)));
 
 	return p;
+}
+
+int touchscreen_is_touch_in_box(int x1, int y1, int x2, int y2) {
+    Point p = touchscreen_get_press();
+
+    //compares the coordinate pressed to the specified coordinate boundary
+    if((p.x >= x1 && p.x <= x2) && (p.y <= y1 && p.y >= y2)){
+    	printf("Touch was inside box!\n");
+        return 1;
+    }
+    else
+        return 0;
 }
