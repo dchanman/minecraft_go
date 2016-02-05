@@ -95,12 +95,12 @@ NEWLIB_DIR = $(BSP_ROOT_DIR)/newlib
 
 # This following VERSION comment indicates the version of the tool used to 
 # generate this makefile. A makefile variable is provided for VERSION as well. 
-# ACDS_VERSION: 13.0sp1
-ACDS_VERSION := 13.0sp1
+# ACDS_VERSION: 13.0
+ACDS_VERSION := 13.0
 
 # This following BUILD_NUMBER comment indicates the build number of the tool 
 # used to generate this makefile. 
-# BUILD_NUMBER: 232
+# BUILD_NUMBER: 156
 
 SETTINGS_FILE := settings.bsp
 SOPC_FILE := ../../nios_system.sopcinfo
@@ -215,7 +215,7 @@ Altera_UP_SD_Card_Avalon_Interface_driver_SRCS_ROOT := drivers
 
 # altera_up_sd_card_avalon_interface_driver sources 
 Altera_UP_SD_Card_Avalon_Interface_driver_C_LIB_SRCS := \
-	$(Altera_UP_SD_Card_Avalon_Interface_driver_SRCS_ROOT)/src/altera_up_sd_card_avalon_interface.c
+	$(Altera_UP_SD_Card_Avalon_Interface_driver_SRCS_ROOT)/src/Altera_UP_SD_Card_Avalon_Interface.c
 
 # altera_avalon_jtag_uart_driver sources root 
 altera_avalon_jtag_uart_driver_SRCS_ROOT := drivers

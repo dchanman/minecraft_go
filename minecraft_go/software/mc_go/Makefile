@@ -147,7 +147,6 @@ C_SRCS += src/main.c
 C_SRCS += src/rs232.c
 C_SRCS += src/sdcard.c
 C_SRCS += src/serial.c
-#C_SRCS += src/bluetooth.c
 C_SRCS += src/minecraft_rpc.c
 C_SRCS += src/touchscreen.c
 C_SRCS += src/hw.c
@@ -155,11 +154,12 @@ C_SRCS += test/rs232_test.c
 C_SRCS += test/sdcard_test.c
 C_SRCS += test/gps_test.c
 C_SRCS += test/minecraft_rpc_test.c
-#C_SRCS += test/bluetooth_test.c
 C_SRCS += test/touchscreen_test.c
 C_SRCS += test/sprint1_demo.c
 CXX_SRCS :=
 ASM_SRCS :=
+#C_SRCS += src/bluetooth.c
+#C_SRCS += test/bluetooth_test.c
 
 
 # Path to root of object file tree.
