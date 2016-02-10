@@ -25,8 +25,9 @@ int main() {
 	//touchscreen_test();
 	//sprint1_demo();
 	//graphics_test();
-	int health = 500;
-	minigame_creep_encounter(&health);
+	//int health = 500;
+	//minigame_creep_encounter(&health);
+	digging_minigame_play();
 
 	return 0;
 }
