@@ -18,22 +18,23 @@ void bluetooth_test() {
 	// use the bluetooth default for now
 	bluetooth_init();
 
+	usleep(2000000);
 
-	usleep(1500000);
 	bluetooth_send_command(BLUETOOTH_CMD_MODE); // go into command mode for bluetooth
 
-	usleep(1500000);
+	usleep(2000000);
+
 	//bluetooth_send_command(BLUETOOTH_FACTORY_RESET);
 
-	/*
+	/* testing D ouptut
 	bluetooth_send_command("D\r\n");
 
 	int i;
 	for (i = 0; i < 100; i++){
 		char ack = bluetooth_get_char();
 		printf("%c", ack);
-	}*/
-
+	}
+	*/
 
 
 	if (bluetooth_send_cmd_from_template(BLUETOOTH_SET_NAME_TEMPLATE, BLUETOOTH_NAME)){

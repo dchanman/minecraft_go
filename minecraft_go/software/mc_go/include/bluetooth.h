@@ -8,7 +8,7 @@
 #ifndef BLUETOOTH_H_
 #define BLUETOOTH_H_
 
-#define BLUETOOTH_NAME "Team21"
+#define BLUETOOTH_NAME "Team21..."
 #define BLUETOOTH_PIN "1337" //"1234"
 
 
