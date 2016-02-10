@@ -1,3 +1,5 @@
+#include "graphics.h"
+
 // graphics registers all address begin with '8' so as to by pass data cache on NIOS
 
 #define GraphicsCommandReg   		(*(volatile unsigned short int *)(0x84000000))
@@ -237,6 +239,14 @@ void Rectangle(int x1, int y1, int x2, int y2, int x3, int y3, int x4, int y4, i
 
 }
 
+void Rectangle2(int x, int y, int length, int width, int Colour)
+{
+	VLine2(x, y, length, Colour);
+	VLine2(x+width, y, length, Colour);
+	HLine(x, y, width, Colour);
+	HLine(x, y+length, width, Colour);
+}
+
 void FillRectangle(int x1, int y1, int x2, int y2, int x3, int y3, int x4, int y4, int Colour)
 {
 
@@ -247,6 +257,14 @@ void FillRectangle(int x1, int y1, int x2, int y2, int x3, int y3, int x4, int y
 
 
 
+}
+
+void graphics_clear_screen() {
+	int y;
+
+	for (y = 0; y < GRAPHICS_PIXEL_HEIGHT; y++) {
+		Line2(0, y, GRAPHICS_PIXEL_WIDTH, y, GRAPHICS_BACKGROUND_COLOUR);
+	}
 }
 
 void FillRectangleWBorder(int x1, int y1, int x2, int y2, int x3, int y3, int x4, int y4, int Colour)

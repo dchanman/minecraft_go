@@ -51,14 +51,17 @@ void touchscreen_screen_touched(void);
 void touchscreen_wait_for_touch(void);
 
 /**
- * Waits for a touch, then returns an X,Y coordinate
+ * Waits for a touch, then returns an X,Y coordinate.
+ * NOTE: this function stalls until the user releases the touchscreen
  */
 void touchscreen_get_press(Pixel *pixel);
 
 /**
  * Waits for a release, then returns an X,Y coordinate
+ *
+ * @DEPRECATED
  */
-void touchscreen_get_release(Pixel *pixel);
+/* void touchscreen_get_release(Pixel *pixel); */
 
 /**
  * Converts touch report coordinates to pixel coordinates

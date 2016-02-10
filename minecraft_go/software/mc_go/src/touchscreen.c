@@ -13,10 +13,12 @@
 
 #define TOUCHSCREEN	((volatile unsigned char *)(0x84000230))
 #define TOUCHSCREEN_FRAME_SIZE	5
+#define TOUCHSCREEN_DEBOUNCE 200000
 
 static unsigned char ENABLE[] = { 0x55, 0x01, 0x12 };
 
 static void touchscreen_get_report_packet(unsigned char *buffer, unsigned char touchStatus);
+static void touchscreen_clear_buffer();
 
 void touchscreen_init(void) {
 	serial_init(TOUCHSCREEN, BAUD_RATE_9600);
@@ -27,7 +29,7 @@ void touchscreen_init(void) {
 }
 
 void touchscreen_screen_touched(void) {
-	unsigned char buffer[5] = { '\0' };
+	unsigned char buffer[TOUCHSCREEN_FRAME_SIZE] = { '\0' };
 
 	touchscreen_get_report_packet(buffer, TOUCHSCREEN_PRESS);
 
@@ -53,8 +55,15 @@ void touchscreen_get_press(Pixel *pixel) {
 	point.y += (int) (buffer[3]);
 
 	touchscreen_pixel_conversion(point, pixel);
+
+	/* Wait until the user releases the screen */
+	touchscreen_clear_buffer();
 }
 
+#ifdef FALSE
+/* @DEPRECATED
+ * touchscreen_get_press stalls the processor until a release occurs
+ */
 void touchscreen_get_release(Pixel *pixel) {
 	Point point;
 
@@ -70,7 +79,11 @@ void touchscreen_get_release(Pixel *pixel) {
 	point.y += (int) (buffer[3]);
 
 	touchscreen_pixel_conversion(point, pixel);
+
+	/* Debounce */
+	touchscreen_clear_buffer();
 }
+#endif
 
 /**
  * Reads the serial port to get the touch report packet
@@ -101,6 +114,15 @@ void touchscreen_pixel_conversion(const Point point_in, Pixel *pixel_out) {
 
 bool touchscreen_is_touch_in_box(const Pixel touch, const Pixel box, const int box_width, const int box_height) {
     /* compares the coordinate pressed to the specified coordinate boundary */
+	if(touch.x >= box.x && touch.x <= box.x + box_width)
+		DEBUG("\tWithin X bounds\n");
+	else
+		DEBUG("\tOutside X bounds\n");
+
+	if (touch.y >= box.y && touch.y <= box.y + box_height)
+		DEBUG("\tWithin Y bounds\n");
+	else
+		DEBUG("\tOutside Y bounds\n");
 
     if((touch.x >= box.x && touch.x <= box.x + box_width) && (touch.y >= box.y && touch.y <= box.y + box_height)) {
     	printf("Touch was inside box!\n");
@@ -108,4 +130,24 @@ bool touchscreen_is_touch_in_box(const Pixel touch, const Pixel box, const int b
     } else {
         return false;
     }
+}
+
+static void touchscreen_clear_buffer() {
+	int i;
+	unsigned char data;
+	int count = 0;
+
+	for (i = 0; i < TOUCHSCREEN_DEBOUNCE; i++)
+		;
+
+	while (serial_test_for_received_data(TOUCHSCREEN)) {
+		data = serial_get_char(TOUCHSCREEN);
+		//DEBUG("\t\t[%s] Cleared <0x%02x>\n", __func__, data);
+		count++;
+
+		for (i = 0; i < TOUCHSCREEN_DEBOUNCE; i++)
+			;
+	}
+
+	//DEBUG("[%s]: Cleared <%d> items in the buffer\n", __func__, count);
 }
