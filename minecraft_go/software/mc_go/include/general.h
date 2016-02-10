@@ -8,6 +8,8 @@
 #ifndef GENERAL_H_
 #define GENERAL_H_
 
+#include <stdio.h>
+
 #define EXIT_OK 0
 
 typedef enum { false, true } bool;

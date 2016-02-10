@@ -147,6 +147,7 @@ C_SRCS += src/main.c
 C_SRCS += src/rs232.c
 C_SRCS += src/sdcard.c
 C_SRCS += src/serial.c
+C_SRCS += src/bluetooth.c
 C_SRCS += src/minecraft_rpc.c
 C_SRCS += src/touchscreen.c
 C_SRCS += src/hw.c
@@ -155,18 +156,18 @@ C_SRCS += src/graphics/Fill.c
 C_SRCS += src/graphics/Fonts.c
 C_SRCS += src/graphics/OutGraphicsCharFont1.c
 C_SRCS += src/graphics/OutGraphicsCharFont2.c
+C_SRCS += src/minigames/creep_encounter.c
 C_SRCS += test/rs232_test.c
 C_SRCS += test/sdcard_test.c
 C_SRCS += test/gps_test.c
 C_SRCS += test/minecraft_rpc_test.c
+C_SRCS += test/bluetooth_test.c
 C_SRCS += test/touchscreen_test.c
 C_SRCS += test/sprint1_demo.c
 C_SRCS += test/graphics/graphics_test.c
-C_SRCS += src/bluetooth.c
-C_SRCS += test/bluetooth_test.c
+C_SRCS += src/minigames/digging_minigame.c
 CXX_SRCS :=
 ASM_SRCS :=
-
 
 
 # Path to root of object file tree.

@@ -1,6 +1,8 @@
 #include <stdint.h>
 #include <stdio.h>
 
+#include "minigames.h"
+
 /* Comment this #define out when we're done testing */
 #define TESTING
 
@@ -22,8 +24,10 @@ int main() {
 	//bluetooth_test();
 	//touchscreen_test();
 	//sprint1_demo();
-	graphics_test();
-
+	//graphics_test();
+	//int health = 500;
+	//minigame_creep_encounter(&health);
+	digging_minigame_play();
 
 	return 0;
 }

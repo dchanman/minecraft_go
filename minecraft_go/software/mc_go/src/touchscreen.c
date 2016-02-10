@@ -7,15 +7,18 @@
  */
 
 #include <stdio.h>
+#include "general.h"
 #include "serial.h"
 #include "touchscreen.h"
 
 #define TOUCHSCREEN	((volatile unsigned char *)(0x84000230))
 #define TOUCHSCREEN_FRAME_SIZE	5
+#define TOUCHSCREEN_DEBOUNCE 200000
 
 static unsigned char ENABLE[] = { 0x55, 0x01, 0x12 };
 
 static void touchscreen_get_report_packet(unsigned char *buffer, unsigned char touchStatus);
+static void touchscreen_clear_buffer();
 
 void touchscreen_init(void) {
 	serial_init(TOUCHSCREEN, BAUD_RATE_9600);
@@ -26,7 +29,7 @@ void touchscreen_init(void) {
 }
 
 void touchscreen_screen_touched(void) {
-	unsigned char buffer[5] = { '\0' };
+	unsigned char buffer[TOUCHSCREEN_FRAME_SIZE] = { '\0' };
 
 	touchscreen_get_report_packet(buffer, TOUCHSCREEN_PRESS);
 
@@ -37,7 +40,7 @@ void touchscreen_wait_for_touch(void) {
 	touchscreen_screen_touched();
 }
 
-Pixel touchscreen_get_press(void) {
+void touchscreen_get_press(Pixel *pixel) {
 	Point point;
 
 	unsigned char buffer[TOUCHSCREEN_FRAME_SIZE] = { '\0' };
@@ -51,12 +54,17 @@ Pixel touchscreen_get_press(void) {
 	point.y = (int) (buffer[4]) << 7;
 	point.y += (int) (buffer[3]);
 
-	Pixel pixel = touchscreen_pixel_conversion(point);
+	touchscreen_pixel_conversion(point, pixel);
 
-	return pixel;
+	/* Wait until the user releases the screen */
+	touchscreen_clear_buffer();
 }
 
-Pixel touchscreen_get_release(void) {
+#ifdef FALSE
+/* @DEPRECATED
+ * touchscreen_get_press stalls the processor until a release occurs
+ */
+void touchscreen_get_release(Pixel *pixel) {
 	Point point;
 
 	unsigned char buffer[TOUCHSCREEN_FRAME_SIZE] = {'\0'};
@@ -70,10 +78,12 @@ Pixel touchscreen_get_release(void) {
 	point.y = (int) (buffer[4]) << 7;
 	point.y += (int) (buffer[3]);
 
-	Pixel pixel = touchscreen_pixel_conversion(point);
+	touchscreen_pixel_conversion(point, pixel);
 
-	return pixel;
+	/* Debounce */
+	touchscreen_clear_buffer();
 }
+#endif
 
 /**
  * Reads the serial port to get the touch report packet
@@ -92,28 +102,52 @@ static void touchscreen_get_report_packet(unsigned char *buffer, unsigned char t
 			//buffer[0], buffer[1], buffer[2], buffer[3], buffer[4]);
 }
 
-Pixel touchscreen_pixel_conversion(Point p){
+void touchscreen_pixel_conversion(const Point point_in, Pixel *pixel_out) {
 	/*
 	 * convert the from touch report coordinates to pixel coordinates
 	 */
-	Pixel pixel;
-
-	pixel.x = (int)((float)(p.x - REPORT_COORDINATE_MIN) *
+	pixel_out->x = (int)((float)(point_in.x - REPORT_COORDINATE_MIN) *
 			((float)X_MAX / (float)(REPORT_COORDINATE_MAX - REPORT_COORDINATE_MIN)));
-	pixel.y = (int)((float)(p.y - REPORT_COORDINATE_MIN) *
+	pixel_out->y = (int)((float)(point_in.y - REPORT_COORDINATE_MIN) *
 			((float)Y_MAX / (float)(REPORT_COORDINATE_MAX - REPORT_COORDINATE_MIN)));
-
-	return pixel;
 }
 
-int touchscreen_is_touch_in_box(int x1, int y1, int x2, int y2) {
-	Pixel pixel = touchscreen_get_press();
+bool touchscreen_is_touch_in_box(const Pixel touch, const Pixel box, const int box_width, const int box_height) {
+    /* compares the coordinate pressed to the specified coordinate boundary */
+	if(touch.x >= box.x && touch.x <= box.x + box_width)
+		DEBUG("\tWithin X bounds\n");
+	else
+		DEBUG("\tOutside X bounds\n");
 
-    //compares the coordinate pressed to the specified coordinate boundary
-    if((pixel.x >= x1 && pixel.x <= x2) && (pixel.y <= y1 && pixel.y >= y2)){
+	if (touch.y >= box.y && touch.y <= box.y + box_height)
+		DEBUG("\tWithin Y bounds\n");
+	else
+		DEBUG("\tOutside Y bounds\n");
+
+    if((touch.x >= box.x && touch.x <= box.x + box_width) && (touch.y >= box.y && touch.y <= box.y + box_height)) {
     	printf("Touch was inside box!\n");
-        return 1;
+        return true;
+    } else {
+        return false;
     }
-    else
-        return 0;
+}
+
+static void touchscreen_clear_buffer() {
+	int i;
+	unsigned char data;
+	int count = 0;
+
+	for (i = 0; i < TOUCHSCREEN_DEBOUNCE; i++)
+		;
+
+	while (serial_test_for_received_data(TOUCHSCREEN)) {
+		data = serial_get_char(TOUCHSCREEN);
+		//DEBUG("\t\t[%s] Cleared <0x%02x>\n", __func__, data);
+		count++;
+
+		for (i = 0; i < TOUCHSCREEN_DEBOUNCE; i++)
+			;
+	}
+
+	//DEBUG("[%s]: Cleared <%d> items in the buffer\n", __func__, count);
 }

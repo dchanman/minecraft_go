@@ -37,7 +37,14 @@ void sprint1_demo() {
 
 	/* Main Loop */
 	while (1) {
-		if (touchscreen_is_touch_in_box(362, 450, 662, 150)) {
+		Pixel box;
+		box.x = 362;
+		box.y = 450;
+
+		Pixel touch;
+		touchscreen_get_press(&touch);
+
+		if (touchscreen_is_touch_in_box(touch, box, 300, 300)) {
 			/* Say Hi to Minecraft Pi */
 			minecraft_rpc_hi();
 
