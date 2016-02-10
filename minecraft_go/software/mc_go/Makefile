@@ -162,6 +162,8 @@ C_SRCS += test/minecraft_rpc_test.c
 C_SRCS += test/touchscreen_test.c
 C_SRCS += test/sprint1_demo.c
 C_SRCS += test/graphics/graphics_test.c
+C_SRCS += src/bluetooth.c
+C_SRCS += test/bluetooth_test.c
 CXX_SRCS :=
 ASM_SRCS :=
 
