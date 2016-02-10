@@ -9,13 +9,15 @@
 #ifndef TOUCHSCREEN_H_
 #define TOUCHSCREEN_H_
 
+#include "general.h"
+
 //touch screen
 #define TOUCHSCREEN_PRESS 0x80
 #define TOUCHSCREEN_RELEASE 0X81
 
 //touch screen pixel resolution
-#define X_MAX 1024
-#define Y_MAX 600
+#define X_MAX 800
+#define Y_MAX 480
 
 //touch report coordinate boundaries
 #define REPORT_COORDINATE_MAX 4096
@@ -51,23 +53,25 @@ void touchscreen_wait_for_touch(void);
 /**
  * Waits for a touch, then returns an X,Y coordinate
  */
-Pixel touchscreen_get_press(void);
+void touchscreen_get_press(Pixel *pixel);
 
 /**
  * Waits for a release, then returns an X,Y coordinate
  */
-Pixel touchscreen_get_release(void);
+void touchscreen_get_release(Pixel *pixel);
 
 /**
  * Converts touch report coordinates to pixel coordinates
  */
-Pixel touchscreen_pixel_conversion(Point p);
+void touchscreen_pixel_conversion(const Point point_in, Pixel *pixel);
 
 /*
  *	Checks if the point pressed is inside a specified coordinate boundary
- *	(x1,y1) is the top left corner of the box
- *	(x2,y2) is the bottom right corner of the box
+ *	@param touch - the Pixel coordinates of a touch
+ *	@param box - the Pixel coordinate of the top left corner of the box
+ *	@param box_width - the width of the box
+ *	@param box_height - the height of the box
  */
-int touchscreen_is_touch_in_box(int x1, int y1, int x2, int y2);
+bool touchscreen_is_touch_in_box(const Pixel touch, const Pixel box, const int box_width, const int box_height);
 
 #endif /* TOUCHSCREEN_H_ */

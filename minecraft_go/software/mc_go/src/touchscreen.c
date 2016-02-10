@@ -7,6 +7,7 @@
  */
 
 #include <stdio.h>
+#include "general.h"
 #include "serial.h"
 #include "touchscreen.h"
 
@@ -37,7 +38,7 @@ void touchscreen_wait_for_touch(void) {
 	touchscreen_screen_touched();
 }
 
-Pixel touchscreen_get_press(void) {
+void touchscreen_get_press(Pixel *pixel) {
 	Point point;
 
 	unsigned char buffer[TOUCHSCREEN_FRAME_SIZE] = { '\0' };
@@ -51,12 +52,10 @@ Pixel touchscreen_get_press(void) {
 	point.y = (int) (buffer[4]) << 7;
 	point.y += (int) (buffer[3]);
 
-	Pixel pixel = touchscreen_pixel_conversion(point);
-
-	return pixel;
+	touchscreen_pixel_conversion(point, pixel);
 }
 
-Pixel touchscreen_get_release(void) {
+void touchscreen_get_release(Pixel *pixel) {
 	Point point;
 
 	unsigned char buffer[TOUCHSCREEN_FRAME_SIZE] = {'\0'};
@@ -70,9 +69,7 @@ Pixel touchscreen_get_release(void) {
 	point.y = (int) (buffer[4]) << 7;
 	point.y += (int) (buffer[3]);
 
-	Pixel pixel = touchscreen_pixel_conversion(point);
-
-	return pixel;
+	touchscreen_pixel_conversion(point, pixel);
 }
 
 /**
@@ -92,28 +89,23 @@ static void touchscreen_get_report_packet(unsigned char *buffer, unsigned char t
 			//buffer[0], buffer[1], buffer[2], buffer[3], buffer[4]);
 }
 
-Pixel touchscreen_pixel_conversion(Point p){
+void touchscreen_pixel_conversion(const Point point_in, Pixel *pixel_out) {
 	/*
 	 * convert the from touch report coordinates to pixel coordinates
 	 */
-	Pixel pixel;
-
-	pixel.x = (int)((float)(p.x - REPORT_COORDINATE_MIN) *
+	pixel_out->x = (int)((float)(point_in.x - REPORT_COORDINATE_MIN) *
 			((float)X_MAX / (float)(REPORT_COORDINATE_MAX - REPORT_COORDINATE_MIN)));
-	pixel.y = (int)((float)(p.y - REPORT_COORDINATE_MIN) *
+	pixel_out->y = (int)((float)(point_in.y - REPORT_COORDINATE_MIN) *
 			((float)Y_MAX / (float)(REPORT_COORDINATE_MAX - REPORT_COORDINATE_MIN)));
-
-	return pixel;
 }
 
-int touchscreen_is_touch_in_box(int x1, int y1, int x2, int y2) {
-	Pixel pixel = touchscreen_get_press();
+bool touchscreen_is_touch_in_box(const Pixel touch, const Pixel box, const int box_width, const int box_height) {
+    /* compares the coordinate pressed to the specified coordinate boundary */
 
-    //compares the coordinate pressed to the specified coordinate boundary
-    if((pixel.x >= x1 && pixel.x <= x2) && (pixel.y <= y1 && pixel.y >= y2)){
+    if((touch.x >= box.x && touch.x <= box.x + box_width) && (touch.y >= box.y && touch.y <= box.y + box_height)) {
     	printf("Touch was inside box!\n");
-        return 1;
+        return true;
+    } else {
+        return false;
     }
-    else
-        return 0;
 }

@@ -24,7 +24,15 @@ void touchscreen_test() {
 
     //300x300 block in the middle of touch screen
     while(1){
-    	int i = touchscreen_is_touch_in_box(362, 450, 662, 150);
+    	Pixel box;
+    	box.x = 362;
+    	box.y = 450;
+
+    	Pixel touch;
+    	touchscreen_get_press(&touch);
+
+    	bool result = touchscreen_is_touch_in_box(touch, box, 300, 300);
+    	printf("Touch %s in box\n", (result ? "is" : "is not"));
     }
 
     printf("Touch screen test is complete!\n");
