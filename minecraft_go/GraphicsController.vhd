@@ -59,7 +59,9 @@ architecture bhvr of GraphicsController is
 -- X1,Y1 and X2,Y2 can be used to represent coords, e.g. draw a pixel or draw a line from x1,y1 to x2,y2
 -- CPU writes values to these registers and the graphcis controller will do the rest
 
-	Signal 	X1, Y1, X2, Y2, Colour, BackGroundColour, Command 		: Std_Logic_Vector(15 downto 0);	
+	Signal 	X1, Y1, X2, Y2, Colour, BackGroundColour, Command, x_data, y_data, dx_Data, dy_Data, interchange_Data, s1_Data, s2_Data, counter	: Std_Logic_Vector(15 downto 0);
+
+	Signal error : std_Logic_Vector(16 downto 0);	
 
 -- 16 bit register that can be read by NIOS. It holds the 8 bit pallette number of the pixel that we read (see reading pixels)
 	
@@ -72,7 +74,16 @@ architecture bhvr of GraphicsController is
 				Y2_Select_H,
 				Command_Select_H,
 				Colour_Select_H,
-				BackGroundColour_Select_H: Std_Logic; 	
+				BackGroundColour_Select_H,
+				x_load_H,
+				y_load_H,
+				dx_Load_H,
+				dy_Load_H,
+				s1_Load_H,
+				s2_Load_H,
+				interchange_Load_H,
+				drawH,
+				drawV : Std_Logic; 	
 	
 	Signal 	CommandWritten_H, ClearCommandWritten_H,							-- signals to control that a command has bee written to the graphcis by NIOS
 				Idle_H, SetBusy_H, ClearBusy_H	: Std_Logic;					-- signals to control status of the graphics chip				
@@ -130,7 +141,9 @@ architecture bhvr of GraphicsController is
 	constant ReadPixel2							 	: Std_Logic_Vector(7 downto 0) := X"08";		-- State for reading a pixel
 	constant ReadPixel3							 	: Std_Logic_Vector(7 downto 0) := X"09";		-- State for reading a pixel
 	constant PalletteReProgram						: Std_Logic_Vector(7 downto 0) := X"0A";		-- State for programming a pallette
-
+	constant DrawLine1								: Std_Logic_Vector(7 downto 0) := X"0B";		-- State for storing values for one clock cycle 
+	constant DrawLine2								: Std_Logic_Vector(7 downto 0) := X"0C";		-- State for storing values for one clock cycle 
+	constant DrawLine3								: Std_Logic_Vector(7 downto 0) := X"0D";		-- State for storing values for one clock cycle 
 	-- add any extra states you need here for example to draw lines etc.
 -------------------------------------------------------------------------------------------------------------------------------------------------
 -- Commands that can be written to command register by NIOS to get graphics controller to draw a shape
@@ -160,7 +173,7 @@ Begin
 		X2_Select_H 					<= '0';
 		Y2_Select_H 					<= '0';
 		Colour_Select_H 				<= '0';
-		BackGroundColour_Select_H 	<= '0';
+		BackGroundColour_Select_H 		<= '0';
 		Command_Select_H 				<= '0';
 	
 		-- if 16 bit Bridge address outputs addres in range hex 0000 - 00FF then Graphics chip will be be accessed
@@ -277,6 +290,9 @@ Begin
 					X1(7 downto 0) <= DataInFromCPU(7 downto 0);
 				end if ;
 			end if;
+			if(drawH = '1') then
+					X1 <= X1 + 1;
+				end if;
 		end if;
 	end process;
 	
@@ -300,6 +316,9 @@ Begin
 					Y1(7 downto 0) <= DataInFromCPU(7 downto 0);
 				end if;
 			end if;
+			if(drawV = '1') then
+					Y1 <= Y1 + 1;
+				end if;
 		end if;
 	end process;
 	
@@ -466,12 +485,115 @@ Begin
 		end if; 
 	end process;
 	
+	Process(ClK, Reset_L)
+	 variable err1 : std_Logic_Vector(16 downto 0);
+	 variable in_while   : std_logic;
+	 variable x2Minusx1  : std_Logic_Vector(15 downto 0);
+    variable y2Minusy1  : std_Logic_Vector(15 downto 0);
+	begin
+		if(Reset_L = '0') then
+			counter <= X"0000" ;
+			interchange_Data <= X"0000";
+			x_Data <= x1;
+			y_Data <= y1;
+		elsif(rising_edge(Clk)) then
+
+			
+			--DrawLine
+			if(X_load_H = '1') then
+			x_Data <= x1;
+			y_Data <= y1;
+			
+			x2Minusx1 := x2 - x1;
+			y2Minusy1 := y2 - y1;
+			dx_Data <= abs(signed(x2Minusx1)); -- assign immediately, no storage
+			dy_Data <= abs(signed(y2Minusy1)); -- assign immediately, no storage
+			
+			
+			-- calculate s1= sign(x2 - x1)
+			if(x2Minusx1 < 0) then
+				s1_Data <= X"FFFF"; -- s1 = -1 (in 2's complement)
+			elsif (x2Minusx1 = 0) then
+				s1_Data <= X"0000"; -- s1 = 0
+			else
+				s1_Data <= X"0001"; -- s1 = 1
+			end if;
+			
+			-- calculate s2= sign(y2 - y1)
+			
+			if(y2Minusy1 < 0) then
+				s2_Data <= X"FFFF"; -- s1 = -1
+			elsif (y2Minusy1 = 0) then
+				s2_Data <= X"0000"; -- s1 = 0
+			else
+				s2_Data <= X"0001"; -- s1 = 1
+			end if;
+			
+			interchange_Data <= X"0000";
+			end if;
+						
+			
+			--DrawLine1
+			if(dy_Load_H = '1') then
+			
+				if(dy_data > dx_data) then
+						dy_data <= dx_data;
+						dx_data <= dy_data;
+						interchange_Data <= X"0001";
+					end if;
+			end if;
+			
+			
+			--drawLine2
+			if(dx_Load_H = '1') then
+				
+			
+			error <= ((dy_data &'0') - dx_data);
+			counter <= X"0001";
+			end if;
+
+				
+--=================================================== LOOP ==============================================
+			if(s1_Load_H = '1') then	
+				
+				err1 := error;
+				
+				if(counter <= dx_data) then
+					
+					if(err1 >= 0) then
+						in_while := '1';
+						if(interchange_Data = 1) then
+							x_data <= x_data + s1_Data;
+						else
+							y_data <= y_data + s2_Data;
+						end if;
+					
+						err1 := err1 - ((dx_data & '0'));
+					else
+						in_while := '0';
+					end if;
+					
+					if(in_while = '0') then
+						if(interchange_Data = 1) then
+							y_data <= y_data + s2_Data;
+						else
+							x_data <= x_data + s1_Data;
+						end if;
+						err1 := err1 + ((dy_Data & '0'));
+						counter <= counter + 1;	
+					end if;
+					error <= err1;
+				end if;
+			end if;
+		end if;
+	end process;	
+		
 ---------------------------------------------------------------------------------------------------------------------
 -- next state and output logic
 ----------------------------------------------------------------------------------------------------------------------	
 	
 	process(CurrentState, CommandWritten_H, Command, X1, X2, Y1, Y2, Colour, OKToDraw_L, VSync_L,
-				BackGroundColour, AS_L, Sram_DataIn, CLK, Colour_Latch)
+				BackGroundColour, AS_L, Sram_DataIn, CLK, Colour_Latch, dx_Data, dy_Data, counter)
 	begin
 	
 	----------------------------------------------------------------------------------------------------------------------------------
@@ -488,6 +610,15 @@ Begin
 		Sig_RW_Out 							<= '1';	-- assume reading
 		Sig_CE_L								<= '0';	-- assume activated
 		Sig_OE_L								<= '0';	-- assume reading (won't affect memory chip if writing since it will ignore it)
+	   DrawH <= '0';
+		DrawV <= '0';
+		x_Load_H <= '0';
+		y_Load_H <= '0';
+		dx_Load_H <= '0';
+		dy_Load_H <= '0';
+		s1_Load_H <= '0';
+		s2_Load_H <= '0';
+				
 		
 		ClearBusy_H 						<= '0';	-- default is do NOT Clear busy
 		SetBusy_H							<= '0';	-- default is do NOT Set busy
@@ -513,6 +644,16 @@ Begin
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 			ClearBusy_H <= '1';							-- mark status as idle
 			Sig_Busy_H <= '0';							-- show graphics outside world that it is NOT busy
+			DrawH <= '0';
+			DrawV <= '0';
+			
+			x_Load_H <= '0';
+			y_Load_H <= '0';
+			dx_Load_H <= '0';
+			dy_Load_H <= '0';
+			s1_Load_H <= '0';
+			s2_Load_H <= '0';
+			interchange_Load_H <= '0';
 			
 			-- if NIOS is writing to command register
 			if(CommandWritten_H = '1') then
@@ -528,7 +669,11 @@ Begin
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 			SetBusy_H <= '1';								-- set the busy status of the graphics chip
 			ClearCommandWritten_H <= '1';				-- clear the command that NIOS wrote, now that we are processing it
-			
+					x_Load_H <= '0';
+			y_Load_H <= '0';
+			dx_Load_H <= '0';
+			dy_Load_H <= '0';
+				
 			-- decide what command NIOS wrote and move to a new state to deal with that command
 			
 			if(Command = PutPixel) then
@@ -558,6 +703,11 @@ Begin
 -- and the 32 bit 00RRGGBB value to the pallette into X1 (mist significant 16 bits i.e. 00RR) 
 -- and Y1 (least significant 16 bits i.e. GGBB) before writing to the command register with a "program pallette" command)
 
+					x_Load_H <= '0';
+			y_Load_H <= '0';
+			dx_Load_H <= '0';
+			dy_Load_H <= '0';
+				
 			Sig_ColourPalletteAddr 	<= Colour(7 downto 0);		-- The pallette number to program should be in Colour Register. 
 			Sig_ColourPalletteData	<= X1 & Y1;						-- 00RRGGBB		
 			
@@ -580,6 +730,11 @@ Begin
 
 			-- first we have to wait until it safe to draw to the memory (i.e. wait for a horizontal sync from the display controller that indicates that it is not displaying anything)
 
+					x_Load_H <= '0';
+			y_Load_H <= '0';
+			dx_Load_H <= '0';
+			dy_Load_H <= '0';
+				
 			if(OKToDraw_L = '0') then														-- if VGA is not displaying at this time, then we can draw, otherwise wait for video blanking during Hsync
 			
 				-- the address of the pixel is formed from the 9 bit y coord that indicates a "row" (1 out of a maximum of 512 rows)
@@ -615,6 +770,12 @@ Begin
 -- The Sram on the DE2 is asynchronous and not Dual Port which makes it a real pain to drive for this application.
 -- To combat this we have to take all signals to "inactive" state before starting a read (after a possible previous write)
 --
+					x_Load_H <= '0';
+			y_Load_H <= '0';
+			dx_Load_H <= '0';
+			dy_Load_H <= '0';
+				
+			
 			Sig_CE_L <= '1';	
 			Sig_OE_L <= '1';
 			Sig_UDS_Out_L <= '1';
@@ -631,6 +792,12 @@ Begin
 		elsif(CurrentState = ReadPixel1) then
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 			-- present the X/Y address to the memory chip as we did when writing a pixel (see above)
+					x_Load_H <= '0';
+			y_Load_H <= '0';
+			dx_Load_H <= '0';
+			dy_Load_H <= '0';
+				
+			
 			
 			Sig_AddressOut 	<= Y1(8 downto 0) & X1(9 downto 1);				-- 8 bit x address even though it goes up to 1024 which would mean 10 bits, because each address = 2 pixles/bytes
 			
@@ -653,6 +820,11 @@ Begin
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 			-- we are committed to read the data note the 1 clock period delay between setting up the signals on the Sram and then ACTUALLY being presented
 			-- that's why we have to move to a new state to grab the data from the memory
+					x_Load_H <= '0';
+			y_Load_H <= '0';
+			dx_Load_H <= '0';
+			dy_Load_H <= '0';
+				
 			
 			Colour_Latch_Load_H 				<= '1';										-- set up signal to store sram data
 
@@ -673,6 +845,11 @@ Begin
 		elsif(CurrentState = ReadPixel3) then
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 			-- take all sram signals inactive again after a successful read for at least clock period
+					x_Load_H <= '0';
+			y_Load_H <= '0';
+			dx_Load_H <= '0';
+			dy_Load_H <= '0';
+				
 			
 			Sig_CE_L <= '1';	
 			Sig_OE_L <= '1';
@@ -684,21 +861,188 @@ Begin
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 		elsif(CurrentState = DrawHline) then
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-			-- TODO in your project
-			NextState <= IDLE;
+					x_Load_H <= '0';
+			y_Load_H <= '0';
+			dx_Load_H <= '0';
+			dy_Load_H <= '0';
+				
+			
+			if(OKToDraw_L = '0') then	
+
+				-- if VGA is not displaying at this time, then we can draw, otherwise wait for video blanking during Hsync
+			
+				-- the address of the pixel is formed from the 9 bit y coord that indicates a "row" (1 out of a maximum of 512 rows)
+				-- coupled with a 9 bit x or column address within that row. Note a 9 bit X address is used for a maximum of 1024 columns or horizontal pixels
+				-- You might thing that 10 bits would be required for 1024 columns and you would be correct, except that the address we are issuing
+				-- holds two pixels (the memory us 16 bit wide remember so each location/address is that of 2 pixels)
+				
+				Sig_AddressOut 	<= Y1(8 downto 0) & X1(9 downto 1);				-- 9 bit x address even though it goes up to 1024 which would mean 10 bits, because each address = 2 pixels/bytes
+				Sig_RW_Out		<= '0';													-- we are intending to draw a pixel so set RW to '0' for a write to memory
+				
+				DrawH <= '1';
+				
+				if(X1(0) = '0')	then														-- if the address/pixel is an even numbered one
+					Sig_UDS_Out_L 	<= '0';													-- enable write to upper half of Sram data bus to access 1 pixel at that location
+				else
+					Sig_LDS_Out_L 	<= '0';													-- else write to lower half of Sram data bus to get the other pixel at that address
+				end if;
+
+				if(X1 >= X2) then
+				       NextState <= IDLE;
+				 else
+				 NextState <= DrawHLine;	-- otherwise stay here until we manage to write the pixel (during an HSync period)
+				 end if;
+
+
+
+
+				
+				-- the data that we write comes from the default value assigned to Sig_DataOut previously
+				-- you will recall that this is the value of the Colour register
+			else
+				DrawH <= '0';
+				NextState <= DrawHLine;	-- otherwise stay here until we manage to write the pixel (during an HSync period)
+			end if ;
+			
+			
 				
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 		elsif(CurrentState = DrawVline) then
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------		
 			-- TODO in your project
-			NextState <= IDLE;
+					x_Load_H <= '0';
+			y_Load_H <= '0';
+			dx_Load_H <= '0';
+			dy_Load_H <= '0';
+				
+			
+			if(OKToDraw_L = '0') then	
+
+				-- if VGA is not displaying at this time, then we can draw, otherwise wait for video blanking during Hsync
+			
+				-- the address of the pixel is formed from the 9 bit y coord that indicates a "row" (1 out of a maximum of 512 rows)
+				-- coupled with a 9 bit x or column address within that row. Note a 9 bit X address is used for a maximum of 1024 columns or horizontal pixels
+				-- You might thing that 10 bits would be required for 1024 columns and you would be correct, except that the address we are issuing
+				-- holds two pixels (the memory us 16 bit wide remember so each location/address is that of 2 pixels)
+
+			DrawV <= '1';
+				
+				Sig_AddressOut 	<= Y1(8 downto 0) & X1(9 downto 1);				-- 9 bit x address even though it goes up to 1024 which would mean 10 bits, because each address = 2 pixels/bytes
+				Sig_RW_Out		<= '0';													-- we are intending to draw a pixel so set RW to '0' for a write to memory
+				
+				if(X1(0) = '0')	then														-- if the address/pixel is an even numbered one
+					Sig_UDS_Out_L 	<= '0';													-- enable write to upper half of Sram data bus to access 1 pixel at that location
+				else
+					Sig_LDS_Out_L 	<= '0';													-- else write to lower half of Sram data bus to get the other pixel at that address
+				end if;
+
+				if(Y1 >= Y2) then
+				       NextState <= IDLE;
+				 else
+				 NextState <= DrawVLine;	-- otherwise stay here until we manage to write the pixel (during an HSync period)
+				 end if;
+
+
+
+				
+				-- the data that we write comes from the default value assigned to Sig_DataOut previously
+				-- you will recall that this is the value of the Colour register
+			else
+				DrawV <= '0';
+				NextState <= DrawVLine;	-- otherwise stay here until we manage to write the pixel (during an HSync period)
+			end if ;
+			
 			
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 		elsif(CurrentState = DrawLine) then
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------		
 			-- TODO in your project
-			NextState <= IDLE;
+
+			x_Load_H <= '1';
+			y_Load_H <= '1';
+			
+				dy_Load_H <= '0';
+				s1_Load_H <= '0';
+				s2_Load_H <= '0';
+				dx_Load_H <= '0';
+
+			interchange_Load_H <= '1';
+
+			
+			NextState <= DrawLine1;
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+		elsif(CurrentState = DrawLine1) then
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------		
+				if((dx_data = 0) and (dy_data = 0)) then
+					nextState <= IDLE;
+				else
+					nextState <= DrawLine2;
+				end if;
+				
+				 x_Load_H <= '0';
+			   y_Load_H <= '0';
+				dy_Load_H <= '1';
+				s1_Load_H <= '0';
+				s2_Load_H <= '0';
+				dx_Load_H <= '0';
+		
+		
+		elsif(CurrentState = DrawLine2) then
+			dx_Load_H <= '1';
+			dy_Load_H <= '0';
+			x_Load_H <= '0';
+			y_Load_H <= '0';
+			s1_Load_H <= '0';
+			s2_Load_H <= '0';
+			
+			nextState <= DrawLine3;
+		elsif(CurrentState = DrawLine3) then
+		
+			x_Load_H <= '0';
+			y_Load_H <= '0';
+			dx_Load_H <= '0';
+			dy_Load_H <= '0';
+				
+			if(OKToDraw_L = '0') then	
+				
+					s1_Load_H <= '1';
+					s2_Load_H <= '1';
+			
+
+				-- if VGA is not displaying at this time, then we can draw, otherwise wait for video blanking during Hsync
+			
+				-- the address of the pixel is formed from the 9 bit y coord that indicates a "row" (1 out of a maximum of 512 rows)
+				-- coupled with a 9 bit x or column address within that row. Note a 9 bit X address is used for a maximum of 1024 columns or horizontal pixels
+				-- You might thing that 10 bits would be required for 1024 columns and you would be correct, except that the address we are issuing
+				-- holds two pixels (the memory us 16 bit wide remember so each location/address is that of 2 pixels)
+
+			
+				
+				Sig_AddressOut 	<= Y_Data(8 downto 0) & X_Data(9 downto 1);				-- 9 bit x address even though it goes up to 1024 which would mean 10 bits, because each address = 2 pixels/bytes
+				Sig_RW_Out		<= '0';													-- we are intending to draw a pixel so set RW to '0' for a write to memory
+				
+				if(X_Data(0) = '0')	then														-- if the address/pixel is an even numbered one
+					Sig_UDS_Out_L 	<= '0';													-- enable write to upper half of Sram data bus to access 1 pixel at that location
+				else
+					Sig_LDS_Out_L 	<= '0';													-- else write to lower half of Sram data bus to get the other pixel at that address
+				end if;
+				
+				if(counter <= dx_data) then
+					nextState <= DrawLine3;
+				else
+					nextState <= Idle;
+				end if;
+
+
+				-- the data that we write comes from the default value assigned to Sig_DataOut previously
+				-- you will recall that this is the value of the Colour register
+			else
+					s1_Load_H <= '0';
+					s2_Load_H <= '0';
+				NextState <= DrawLine3;	-- otherwise stay here until we manage to write the pixel (during an HSync period)
+			end if ;
 			
 		end if ;
 	end process;	
 end;
+
