@@ -88,5 +88,5 @@ static void creep_encounter_erase_creep(Pixel creep_location) {
 }
 
 static void creep_encounter_draw_creep_helper(Pixel creep_location, int colour) {
-	Rectangle2(creep_location.x, creep_location.y, CREEP_PIXEL_HEIGHT, CREEP_PIXEL_WIDTH, colour);
+	graphics_draw_rectangle_filled(creep_location.x, creep_location.y, CREEP_PIXEL_WIDTH, CREEP_PIXEL_HEIGHT, colour);
 }

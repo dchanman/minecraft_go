@@ -239,12 +239,21 @@ void Rectangle(int x1, int y1, int x2, int y2, int x3, int y3, int x4, int y4, i
 
 }
 
-void Rectangle2(int x, int y, int length, int width, int Colour)
+void graphics_draw_rectangle_border(int x, int y, int width, int height, int colour)
 {
-	VLine2(x, y, length, Colour);
-	VLine2(x+width, y, length, Colour);
-	HLine(x, y, width, Colour);
-	HLine(x, y+length, width, Colour);
+	VLine2(x, y, height, colour);
+	VLine2(x + width, y, height, colour);
+	HLine(x, y, width, colour);
+	HLine(x, y + height, width, colour);
+}
+
+void graphics_draw_rectangle_filled(int x, int y, int width, int height, int colour)
+{
+	int y0;
+
+	for (y0 = y; y0 < (y + height); y0++) {
+		Line2(x, y0, x+width, y0, colour);
+	}
 }
 
 void FillRectangle(int x1, int y1, int x2, int y2, int x3, int y3, int x4, int y4, int Colour)
@@ -260,11 +269,7 @@ void FillRectangle(int x1, int y1, int x2, int y2, int x3, int y3, int x4, int y
 }
 
 void graphics_clear_screen() {
-	int y;
-
-	for (y = 0; y < GRAPHICS_PIXEL_HEIGHT; y++) {
-		Line2(0, y, GRAPHICS_PIXEL_WIDTH, y, GRAPHICS_BACKGROUND_COLOUR);
-	}
+	graphics_draw_rectangle_filled(0, 0, GRAPHICS_PIXEL_WIDTH, GRAPHICS_PIXEL_HEIGHT, GRAPHICS_BACKGROUND_COLOUR);
 }
 
 void FillRectangleWBorder(int x1, int y1, int x2, int y2, int x3, int y3, int x4, int y4, int Colour)
