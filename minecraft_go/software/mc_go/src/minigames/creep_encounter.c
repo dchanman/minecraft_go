@@ -38,7 +38,6 @@ static bool creep_encounter_main(int *player_health) {
 	int creep_health = CREEP_STARTING_HEALTH;
 	Pixel creep_location;
 	Pixel touch_location;
-	//Pixel release_location;
 
 	while (creep_health > 0 && *player_health > 0) {
 		/* Update creep location */
@@ -54,8 +53,6 @@ static bool creep_encounter_main(int *player_health) {
 		touchscreen_get_press(&touch_location);
 		DEBUG("Touched (%d, %d)\n", touch_location.x, touch_location.y);
 
-		creep_encounter_draw_creep(touch_location);
-
 		/* Update health */
 		if (touchscreen_is_touch_in_box(touch_location, creep_location, CREEP_PIXEL_WIDTH, CREEP_PIXEL_HEIGHT)) {
 			DEBUG("Hit the creep!\n");
@@ -65,18 +62,18 @@ static bool creep_encounter_main(int *player_health) {
 			(*player_health)--;
 		}
 
-		/* Wait for release */
-		//touchscreen_get_release(&release_location);
-
 		/* Erase previous creep */
 		creep_encounter_erase_creep(creep_location);
-		creep_encounter_erase_creep(touch_location);
 	}
 
-	if (creep_health <= 0)
+	/* Determine whether the player won or lost */
+	if (creep_health <= 0) {
+		DEBUG("You won!\n");
 		return true;
-	else
+	} else {
+		DEBUG("You lost!\n");
 		return false;
+	}
 }
 
 static void creep_encounter_draw_creep(Pixel creep_location) {
