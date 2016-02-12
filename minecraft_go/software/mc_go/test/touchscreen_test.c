@@ -31,7 +31,7 @@ void touchscreen_test() {
     	Pixel touch;
     	touchscreen_get_press(&touch);
 
-    	bool result = touchscreen_is_touch_in_box(touch, box, 300, 300);
+    	boolean result = touchscreen_is_touch_in_box(touch, box, 300, 300);
     	printf("Touch %s in box\n", (result ? "is" : "is not"));
     }
 

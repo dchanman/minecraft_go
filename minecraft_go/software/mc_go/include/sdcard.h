@@ -42,6 +42,15 @@ int sdcard_close(short int filehandle);
 int sdcard_write(const short int filehandle, const char * buffer, const int buffer_length);
 
 /**
+ * Writes a buffer terminated with \n to the sdcard
+ *
+ * @param filehandle - an open filehandle
+ * @param data - data to write to the file
+ * @param data_length = length of the data
+ */
+int sdcard_writeln(const short int filehandle, const char * data, const int data_length);
+
+/**
  * Reads from an opened file on the sdcard
  *
  * @param filehandle - an open filehandle

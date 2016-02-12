@@ -75,6 +75,6 @@ void touchscreen_pixel_conversion(const Point point_in, Pixel *pixel);
  *	@param box_width - the width of the box
  *	@param box_height - the height of the box
  */
-bool touchscreen_is_touch_in_box(const Pixel touch, const Pixel box, const int box_width, const int box_height);
+boolean touchscreen_is_touch_in_box(const Pixel touch, const Pixel box, const int box_width, const int box_height);
 
 #endif /* TOUCHSCREEN_H_ */

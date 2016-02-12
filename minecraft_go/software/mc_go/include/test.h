@@ -18,6 +18,7 @@ void minecraft_rpc_test_rs232_send_and_recv_echo();
 void minecraft_rpc_test_protocol_msg();
 void bluetooth_test();
 void sprint1_demo();
+void savefile_test();
 
 
 #endif /* TEST_H_ */

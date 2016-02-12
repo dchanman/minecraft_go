@@ -29,7 +29,7 @@ typedef struct {
  * Starts the digging minigame.
  * @return true when the game completes, false if the player didn't complete the game
  */
-bool digging_minigame_play();
+boolean digging_minigame_play();
 
 
 /**************************************************************************
@@ -38,7 +38,7 @@ bool digging_minigame_play();
 /*
  *
  */
-bool minigame_creep_encounter(int *player_heath);
+boolean minigame_creep_encounter(int *player_heath);
 
 
 #endif /* MINIGAMES_H_ */

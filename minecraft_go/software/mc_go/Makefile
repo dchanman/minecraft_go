@@ -151,6 +151,7 @@ C_SRCS += src/bluetooth.c
 C_SRCS += src/minecraft_rpc.c
 C_SRCS += src/touchscreen.c
 C_SRCS += src/hw.c
+C_SRCS += src/savefile.c
 C_SRCS += src/graphics/Bresenhams_Line_Drawing_Algorithm.c
 C_SRCS += src/graphics/Fill.c
 C_SRCS += src/graphics/Fonts.c
