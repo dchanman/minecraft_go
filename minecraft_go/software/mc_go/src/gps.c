@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <math.h>
 #include "general.h"
 #include "gps.h"
 #include "serial.h"
@@ -383,6 +384,39 @@ bool gps_has_arrived_at_destination(Location *current, Location *destination) {
 	else
 		return false;
 }
+
+static double getLatInDegrees(Location *location){
+	double latitudeDeg = location->lat_degree + location->lat_minute / 60;
+
+	return location->lat_direction == 'N' ? latitudeDeg : -1 * latitudeDeg;
+}
+
+static double getLongInDegrees(Location *location){
+	double longitudeDeg = location->long_degree + location->long_minute / 60;
+
+	return location->long_direction == 'E' ? longitudeDeg : -1 * longitudeDeg;
+}
+
+double gps_get_distance(Location *locationA, Location *locationB){
+	double latitudeA = getLatInDegrees(locationA);
+	double longitudeA = getLongInDegrees(locationA);
+
+	printf("A - Long: %lf Lat: %lf\n", longitudeA, latitudeA);
+
+	double latitudeB = getLatInDegrees(locationB);
+	double longitudeB = getLongInDegrees(locationB);
+
+	printf("B - Long: %lf Lat: %lf\n", longitudeB, latitudeB);
+
+	double dlon = (longitudeB - longitudeA) * M_PI / 180;
+	double dlat = (latitudeB - latitudeA) * M_PI / 180;
+
+	double a = pow(sin(dlat/2), 2) + cos(latitudeA * M_PI / 180) * cos(latitudeB * M_PI / 180) * pow( (sin(dlon/2)), 2);
+	double c = 2 * atan2( sqrt(a), sqrt(1-a) );
+
+	return c * 6378.137; // 6378.137 is radius of Earth in KM
+}
+
 
 //--------------------------End Location Functions---------------------------//
 
