@@ -68,22 +68,22 @@ void gps_send_command(const char *command);
 /**
  *
  */
-bool gps_retrieve_data_line(char *buffer, int buffer_size);
+boolean gps_retrieve_data_line(char *buffer, int buffer_size);
 
 /**
  *
  */
-bool gps_retrieve_data_dump(char **buffer, int buffer_size);
+boolean gps_retrieve_data_dump(char **buffer, int buffer_size);
 
 /**
  *
  */
-bool gps_get_gga_data(char *data_line, GGA_data *buffer);
+boolean gps_get_gga_data(char *data_line, GGA_data *buffer);
 
 /**
  *
  */
-bool gps_get_rmc_data(char *data_line, RMC_data *buffer);
+boolean gps_get_rmc_data(char *data_line, RMC_data *buffer);
 
 /**
  *
@@ -126,7 +126,7 @@ void gps_convert_rmc_to_location(RMC_data *RMC_data, Location *buffer);
  * Note: algorithm might not work if the the 2 locations are right on
  * the Equator or Prime Meridian
  */
-bool gps_has_arrived_at_destination(Location *current, Location *destination);
+boolean gps_has_arrived_at_destination(Location *current, Location *destination);
 
 /**
  *

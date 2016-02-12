@@ -37,14 +37,14 @@
 #define GRID_HEIGHT 480
 
 /* Static Functions */
-static bool digging_minigame_main();
+static boolean digging_minigame_main();
 static int digging_minigame_get_block_material();
 static int digging_minigame_get_pickaxe_material();
 static Box digging_minigame_block_initialize(int x, int y, int health);
-static bool digging_minigame_is_done(Box array[2][3]);
+static boolean digging_minigame_is_done(Box array[2][3]);
 static Box digging_minigame_damage_block(Box box, int damage);
 
-bool digging_minigame_play() {
+boolean digging_minigame_play() {
 	printf("Digging minigame started!\n");
 
 	/* Initialize everything */
@@ -57,7 +57,7 @@ bool digging_minigame_play() {
 /*
  * Gets the health of the blocks based on the material type
  */
-static bool digging_minigame_main() {
+static boolean digging_minigame_main() {
 	int i, j;
 	int blockHealth = digging_minigame_get_block_material();
 	int damage = digging_minigame_get_pickaxe_material();
@@ -79,7 +79,7 @@ static bool digging_minigame_main() {
 		touchscreen_get_press(&touch);
 		printf("Touch coordinates {%d, %d}!\n", touch.x, touch.y);
 
-		bool blockFound = false;
+		boolean blockFound = FALSE;
 
 		for (i = 0; i < 2; i++) {
 			for (j = 0; j < 3; j++) {
@@ -90,7 +90,7 @@ static bool digging_minigame_main() {
 						BOX_SIZE)) {
 					gridArray[i][j] = digging_minigame_damage_block(
 							gridArray[i][j], damage);
-					blockFound = true;
+					blockFound = TRUE;
 					printf("Block damaged! Grid health updated:\n");
 					printf("[%d][%d][%d]\n", gridArray[0][0].health,
 							gridArray[0][1].health, gridArray[0][2].health);
@@ -105,7 +105,7 @@ static bool digging_minigame_main() {
 	}
 
 	printf("Digging minigame finished!\n");
-	return true;
+	return TRUE;
 }
 
 /*
@@ -142,7 +142,7 @@ static Box digging_minigame_block_initialize(int x, int y, int health) {
 /*
  * Checks the combined health of the boxes to see if they have all been cleared
  */
-static bool digging_minigame_is_done(Box array[2][3]) {
+static boolean digging_minigame_is_done(Box array[2][3]) {
 	int sum = 0;
 	int i, j;
 
@@ -153,8 +153,8 @@ static bool digging_minigame_is_done(Box array[2][3]) {
 	}
 
 	if (sum == 0)
-		return true;
-	return false;
+		return TRUE;
+	return FALSE;
 }
 
 /*

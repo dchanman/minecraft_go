@@ -12,7 +12,7 @@
 
 #define EXIT_OK 0
 
-typedef enum { false, true } bool;
+typedef enum { FALSE, TRUE } boolean;
 
 #define DEBUGGING
 

@@ -16,12 +16,12 @@
 #define CREEP_PIXEL_HEIGHT	(GRAPHICS_PIXEL_HEIGHT/2)
 
 /* Static Functions */
-static bool creep_encounter_main(int *player_health);
+static boolean creep_encounter_main(int *player_health);
 static void creep_encounter_draw_creep(Pixel creep_location);
 static void creep_encounter_erase_creep(Pixel creep_location);
 static void creep_encounter_draw_creep_helper(Pixel creep_location, int colour);
 
-bool minigame_creep_encounter(int *player_health) {
+boolean minigame_creep_encounter(int *player_health) {
 	DEBUG("Started Creep Minigame!\n");
 	DEBUG("Parameters:\n\tCREEP_STARTING_HEALTH: %d\n\tCREEP_PIXEL_WIDTH: %d\n\tCREEP_PIXEL_HEIGHT: %d\n",
 			CREEP_STARTING_HEALTH, CREEP_PIXEL_WIDTH, CREEP_PIXEL_HEIGHT);
@@ -34,7 +34,7 @@ bool minigame_creep_encounter(int *player_health) {
 	return creep_encounter_main(player_health);
 }
 
-static bool creep_encounter_main(int *player_health) {
+static boolean creep_encounter_main(int *player_health) {
 	int creep_health = CREEP_STARTING_HEALTH;
 	Pixel creep_location;
 	Pixel touch_location;
@@ -69,10 +69,10 @@ static bool creep_encounter_main(int *player_health) {
 	/* Determine whether the player won or lost */
 	if (creep_health <= 0) {
 		DEBUG("You won!\n");
-		return true;
+		return TRUE;
 	} else {
 		DEBUG("You lost!\n");
-		return false;
+		return FALSE;
 	}
 }
 
