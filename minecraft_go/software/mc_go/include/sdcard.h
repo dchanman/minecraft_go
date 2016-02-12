@@ -30,15 +30,35 @@ int sdcard_open(short int * filehandle, char * filename);
  *
  * @param filehandle - an open filehandle
  */
-int sdcard_close(short int * filehandle);
+int sdcard_close(short int filehandle);
 
 /**
  * Writes to the opened file on the sdcard
  *
  * @param filehandle - an open filehandle
- * @data - data to write to the file
- * @data_length - length of the data
+ * @param data - data to write to the file
+ * @param data_length - length of the data
  */
-int sdcard_write(const short int * filehandle, const char * data, const int data_length);
+int sdcard_write(const short int filehandle, const char * buffer, const int buffer_length);
+
+/**
+ * Reads from an opened file on the sdcard
+ *
+ * @param filehandle - an open filehandle
+ * @param buffer - buffer to store the read data
+ * @param num - amount to read into the buffer
+ * @returns - number of bytes read from file
+ */
+int sdcard_read(const short int filehandle, char * buffer, const int num);
+
+/**
+ * Reads a line from an opened file on the sdcard
+ *
+ * @param filehandle - an open filehandle
+ * @param buffer - buffer to store the read data
+ * @param buffer_size - the max number of bytes to read into the buffer
+ * @returns - number of bytes read from file
+ */
+int sdcard_readln(const short int filehandle, char * buffer, const int buffer_size);
 
 #endif /* SDCARD_H_ */
