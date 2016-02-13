@@ -9,9 +9,22 @@
 #include <stdint.h>
 #include <stdio.h>
 #include "touchscreen.h"
+#include "block.h"
 
 void touchscreen_test() {
 	touchscreen_init();
+
+	clear_block(100, 0);
+	wood_block_generator(100, 0);
+
+	clear_block(340, 0);
+	stone_block_generator(340, 0);
+
+	clear_block(100, 240);
+	iron_block_generator(100, 240);
+
+	clear_block(340, 240);
+	diamond_block_generator(340, 240);
 
 	touchscreen_wait_for_touch();
 

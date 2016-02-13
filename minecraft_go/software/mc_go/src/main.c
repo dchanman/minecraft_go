@@ -18,7 +18,7 @@ int main() {
 	//rs232_test_single_char();
 	//sdcard_test_open();
 	//sdcard_test();
-	savefile_test();
+	//savefile_test();
 	//gps_test();
 	//minecraft_rpc_test_main();
 	//minecraft_rpc_test_protocol_msg();
@@ -28,7 +28,7 @@ int main() {
 	//graphics_test();
 	//int health = 500;
 	//minigame_creep_encounter(&health);
-	//digging_minigame_play();
+	digging_minigame_play();
 
 	return 0;
 }
