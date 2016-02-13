@@ -10,6 +10,9 @@
 #include "serial.h"
 #include "touchscreen.h"
 #include "minigames.h"
+#include "Colours.h"
+#include "graphics.h"
+#include "block.h"
 
 //health based on material
 #define WOOD_HEALTH 3
@@ -41,8 +44,9 @@ static boolean digging_minigame_main();
 static int digging_minigame_get_block_material();
 static int digging_minigame_get_pickaxe_material();
 static Box digging_minigame_block_initialize(int x, int y, int health);
+static void digging_minigame_graphics_generator(int x, int y, int health);
+static void digging_minigame_damage_block(Box *box, int damage);
 static boolean digging_minigame_is_done(Box array[2][3]);
-static Box digging_minigame_damage_block(Box box, int damage);
 
 boolean digging_minigame_play() {
 	printf("Digging minigame started!\n");
@@ -83,19 +87,20 @@ static boolean digging_minigame_main() {
 
 		for (i = 0; i < 2; i++) {
 			for (j = 0; j < 3; j++) {
+
 				box.x = gridArray[i][j].x;
 				box.y = gridArray[i][j].y;
 
-				if (touchscreen_is_touch_in_box(touch, box, BOX_SIZE,
-						BOX_SIZE)) {
-					gridArray[i][j] = digging_minigame_damage_block(
-							gridArray[i][j], damage);
+				if (touchscreen_is_touch_in_box(touch, box, BOX_SIZE, BOX_SIZE)) {
+					digging_minigame_damage_block(&gridArray[i][j], damage);
 					blockFound = TRUE;
+
 					printf("Block damaged! Grid health updated:\n");
 					printf("[%d][%d][%d]\n", gridArray[0][0].health,
 							gridArray[0][1].health, gridArray[0][2].health);
 					printf("[%d][%d][%d]\n\n", gridArray[1][0].health,
 							gridArray[1][1].health, gridArray[1][2].health);
+
 					break;
 				}
 			}
@@ -114,6 +119,9 @@ static boolean digging_minigame_main() {
 static int digging_minigame_get_block_material() {
 	//TODO: Implement function
 	return WOOD_HEALTH;
+	//return STONE_HEALTH;
+	//return IRON_HEALTH;
+	//return DIAMOND_HEALTH;
 }
 
 /*
@@ -127,7 +135,6 @@ static int digging_minigame_get_pickaxe_material() {
 /*
  * Creates a block based on pixel coordinates
  * (x1,y1) is the top left corner of the box
- * (x2,y2) is the bottom right corner of the box
  */
 static Box digging_minigame_block_initialize(int x, int y, int health) {
 	Box tempBox;
@@ -136,7 +143,48 @@ static Box digging_minigame_block_initialize(int x, int y, int health) {
 	tempBox.y = y;
 	tempBox.health = health;
 
+	digging_minigame_graphics_generator(x, y, health);
+
 	return tempBox;
+}
+
+/*
+ * Generates the graphics for a block based on pixel coordinates
+ * (x1,y1) is the top left corner of the box
+ */
+static void digging_minigame_graphics_generator(int x, int y, int health) {
+	switch (health) {
+	case WOOD_HEALTH:
+		wood_block_generator(x, y);
+		break;
+
+	case STONE_HEALTH:
+		stone_block_generator(x, y);
+		break;
+
+	case IRON_HEALTH:
+		iron_block_generator(x, y);
+		break;
+
+	case DIAMOND_HEALTH:
+		diamond_block_generator(x, y);
+		break;
+
+	default:
+		clear_block(x, y);
+		break;
+	}
+}
+
+/*
+ * Updates health of block based on damage taken
+ */
+static void digging_minigame_damage_block(Box *box, int damage) {
+	if (box->health <= damage) {
+		clear_block(box->x, box->y);
+		box->health = 0;
+	} else
+		box->health -= damage;
 }
 
 /*
@@ -155,16 +203,4 @@ static boolean digging_minigame_is_done(Box array[2][3]) {
 	if (sum == 0)
 		return TRUE;
 	return FALSE;
-}
-
-/*
- * Updates health of block based on damage taken
- */
-static Box digging_minigame_damage_block(Box box, int damage) {
-	if (box.health <= damage)
-		box.health = 0;
-	else
-		box.health -= damage;
-
-	return box;
 }
