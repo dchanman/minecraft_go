@@ -48,6 +48,7 @@ static void digging_minigame_graphics_generator(int x, int y, int health);
 static void digging_minigame_damage_block(Box *box, int damage);
 static boolean digging_minigame_is_done(Box array[2][3]);
 
+
 boolean digging_minigame_play() {
 	printf("Digging minigame started!\n");
 

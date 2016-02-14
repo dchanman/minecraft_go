@@ -10,21 +10,34 @@
 #include <stdio.h>
 #include "touchscreen.h"
 #include "block.h"
+#include "creeper.h"
+#include "heart.h"
 
 void touchscreen_test() {
 	touchscreen_init();
 
-	clear_block(100, 0);
-	wood_block_generator(100, 0);
+	//clear screen
+	clear_block(0, 0);
+	clear_block(0, 240);
+	clear_block(240, 0);
+	clear_block(240, 240);
+	clear_block(480, 0);
+	clear_block(480, 240);
+	clear_block(720, 0);
+	clear_block(720, 240);
 
-	clear_block(340, 0);
-	stone_block_generator(340, 0);
+	// block generator test
+	wood_block_generator(0, 0);
+	stone_block_generator(242, 0);
+	iron_block_generator(0, 241);
+	diamond_block_generator(242, 241);
 
-	clear_block(100, 240);
-	iron_block_generator(100, 240);
+	// creeper generator test
+	creeper_generator(500, 250, 100);
 
-	clear_block(340, 240);
-	diamond_block_generator(340, 240);
+	// heart generator test
+	heart_draw(500, 10, 50);
+	heart_draw(500, 60, 100);
 
 	touchscreen_wait_for_touch();
 
