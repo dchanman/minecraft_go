@@ -32,7 +32,7 @@
 
 //y coordinate for grid
 #define Y_COORD_INIT 0
-#define Y_COORD_INCREMENT 300
+#define Y_COORD_INCREMENT 240
 
 //length of the sides of digging minigame boxes
 #define BOX_SIZE 240
@@ -54,6 +54,9 @@ boolean digging_minigame_play() {
 
 	/* Initialize everything */
 	touchscreen_init();
+
+	/* Clear the screen */
+	graphics_clear_screen();
 
 	/* Start the game */
 	return digging_minigame_main();
