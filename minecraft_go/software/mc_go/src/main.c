@@ -23,11 +23,11 @@ int main() {
 	//minecraft_rpc_test_main();
 	//minecraft_rpc_test_protocol_msg();
 	//bluetooth_test();
-	touchscreen_test();
+	//touchscreen_test();
 	//sprint1_demo();
 	//graphics_test();
-	//int health = 500;
-	//minigame_creep_encounter(&health);
+	int health = 5;
+	minigame_creeper_encounter(&health);
 	//digging_minigame_play();
 
 	return 0;

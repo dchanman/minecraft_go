@@ -36,7 +36,7 @@
 #define LENGTH 15
 
 void clear_block(int x, int y) {
-	graphics_draw_rectangle_filled(x, y, 240, 240, WHITE);
+	graphics_draw_rectangle_filled(x, y, 240, 240, GRAPHICS_BACKGROUND_COLOUR);
 }
 
 /**************************************************************
