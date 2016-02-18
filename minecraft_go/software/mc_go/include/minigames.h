@@ -48,7 +48,7 @@ boolean digging_minigame_play();
 /*
  *
  */
-boolean minigame_creep_encounter(int *player_heath);
+boolean minigame_creeper_encounter(int *player_heath);
 
 
 #endif /* MINIGAMES_H_ */

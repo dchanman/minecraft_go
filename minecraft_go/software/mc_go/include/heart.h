@@ -10,11 +10,19 @@
 #define HEART_H_
 
 /*
- * generates a heart
+ * Draws a heart
  * x - top left x coordinate
  * y - top left y coordinate
  * width - width of the base of the creeper
  */
 void heart_draw(int x, int y, int width);
+
+/*
+ * Erases a heart
+ * x - top left x coordinate
+ * y - top left y coordinate
+ * width - width of the base of the creeper
+ */
+void heart_erase(int x, int y, int width);
 
 #endif /* HEART_H_ */
