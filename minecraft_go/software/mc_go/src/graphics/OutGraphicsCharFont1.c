@@ -1,5 +1,5 @@
 #define YRES 480
-#define XRES 640
+#define XRES 800
 #define TRUE 1
 #define FALSE 0
 
