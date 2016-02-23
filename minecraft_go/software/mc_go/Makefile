@@ -161,6 +161,7 @@ C_SRCS += src/graphics/Fonts.c
 C_SRCS += src/graphics/OutGraphicsCharFont1.c
 C_SRCS += src/graphics/OutGraphicsCharFont2.c
 C_SRCS += src/minigames/creep_encounter.c
+C_SRCS += src/minigames/digging_minigame.c
 C_SRCS += test/rs232_test.c
 C_SRCS += test/sdcard_test.c
 C_SRCS += test/gps_test.c
@@ -169,7 +170,7 @@ C_SRCS += test/bluetooth_test.c
 C_SRCS += test/touchscreen_test.c
 C_SRCS += test/sprint1_demo.c
 C_SRCS += test/graphics/graphics_test.c
-C_SRCS += src/minigames/digging_minigame.c
+C_SRCS += test/project1_demo.c
 CXX_SRCS :=
 ASM_SRCS :=
 

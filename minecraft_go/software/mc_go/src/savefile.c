@@ -41,6 +41,49 @@ boolean savefile_load(savedata_t * data)
 		goto error;
 	data->health = atoi(buffer);
 
+	result = sdcard_readln(fd, buffer, sizeof(buffer));
+	if (result < 0)
+		goto error;
+	snprintf(data->dest_latitude, sizeof(data->dest_latitude), "%s", buffer);
+
+	result = sdcard_readln(fd, buffer, sizeof(buffer));
+	if (result < 0)
+		goto error;
+	snprintf(data->dest_longitude, sizeof(data->dest_longitude), "%s", buffer);
+
+	/* DateTime */
+
+	result = sdcard_readln(fd, buffer, sizeof(buffer));
+	if (result < 0)
+		goto error;
+	data->start_time.year = atoi(buffer);
+
+	result = sdcard_readln(fd, buffer, sizeof(buffer));
+	if (result < 0)
+		goto error;
+	data->start_time.month = atoi(buffer);
+
+	result = sdcard_readln(fd, buffer, sizeof(buffer));
+	if (result < 0)
+		goto error;
+	data->start_time.day = atoi(buffer);
+
+	result = sdcard_readln(fd, buffer, sizeof(buffer));
+	if (result < 0)
+		goto error;
+	data->start_time.hour = atoi(buffer);
+
+	result = sdcard_readln(fd, buffer, sizeof(buffer));
+	if (result < 0)
+		goto error;
+	data->start_time.minute = atoi(buffer);
+
+	result = sdcard_readln(fd, buffer, sizeof(buffer));
+	if (result < 0)
+		goto error;
+	data->start_time.second = atoi(buffer);
+
+
 	sdcard_close(fd);
 	return TRUE;
 
@@ -65,7 +108,7 @@ boolean savefile_save(const savedata_t data)
 	}
 
 
-	/* Write data in alphabetical order */
+	/* Write data in struct order */
 	snprintf(buffer, sizeof(buffer), "%d", data.creeps_defeated);
 	result = sdcard_writeln(fd, buffer, strlen(buffer));
 	if (result != 0)
@@ -73,6 +116,50 @@ boolean savefile_save(const savedata_t data)
 
 	snprintf(buffer, sizeof(buffer), "%d", data.health);
 	result = sdcard_writeln(fd, buffer, strlen(buffer));
+	if (result != 0)
+		goto error;
+
+	snprintf(buffer, sizeof(buffer), "%s", data.dest_latitude);
+	result = sdcard_writeln(fd, buffer, strlen(buffer));
+	if (result != 0)
+		goto error;
+
+	snprintf(buffer, sizeof(buffer), "%s", data.dest_longitude);
+	result = sdcard_writeln(fd, buffer, strlen(buffer));
+	if (result != 0)
+		goto error;
+
+	/* DateTime */
+
+	snprintf(buffer, sizeof(buffer), "%d", data.start_time.year);
+	result = sdcard_writeln(fd, buffer, strlen(buffer));
+	if (result != 0)
+		goto error;
+
+	snprintf(buffer, sizeof(buffer), "%d", data.start_time.month);
+	result = sdcard_writeln(fd, buffer, strlen(buffer));
+	if (result != 0)
+		goto error;
+
+	snprintf(buffer, sizeof(buffer), "%d", data.start_time.day);
+	result = sdcard_writeln(fd, buffer, strlen(buffer));
+	if (result != 0)
+		goto error;
+
+	snprintf(buffer, sizeof(buffer), "%d", data.start_time.hour);
+	result = sdcard_writeln(fd, buffer, strlen(buffer));
+	if (result != 0)
+		goto error;
+
+	snprintf(buffer, sizeof(buffer), "%d", data.start_time.minute);
+	result = sdcard_writeln(fd, buffer, strlen(buffer));
+	if (result != 0)
+		goto error;
+
+	snprintf(buffer, sizeof(buffer), "%d", data.start_time.second);
+	result = sdcard_writeln(fd, buffer, strlen(buffer));
+	if (result != 0)
+		goto error;
 
 	sdcard_close(fd);
 

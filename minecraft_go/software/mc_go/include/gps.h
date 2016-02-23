@@ -6,7 +6,7 @@
  */
 #include "general.h"
 
-#ifndef GSP_H_
+#ifndef GPS_H_
 #define GPS_H_
 
 #define GPS_DEFAULT_DATA_LINE_SIZE 300
@@ -29,21 +29,6 @@ typedef struct RMC_data {
 	char speed[5]; // knots
 	char date[7]; //ddmmyy
 } RMC_data;
-
-typedef struct DateTime {
-	int year;
-	int month;
-	int day;
-	int hour;
-	int minute;
-	int second;
-} DateTime;
-
-typedef struct Time {
-	unsigned long hour;
-	int minute;
-	int second;
-} Time;
 
 typedef struct Location {
 	int lat_degree;
