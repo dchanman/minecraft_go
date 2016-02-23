@@ -2,6 +2,7 @@
 #include <stdio.h>
 
 #include "minigames.h"
+#include "project1_demo.h"
 
 /* Comment this #define out when we're done testing */
 #define TESTING
@@ -26,9 +27,12 @@ int main() {
 	//touchscreen_test();
 	//sprint1_demo();
 	//graphics_test();
-	int health = 5;
-	minigame_creeper_encounter(&health);
+	//int health = 5;
+	//minigame_creeper_encounter(&health);
 	//digging_minigame_play();
+
+	project1_demo_initialize_savefile();
+	project1_demo_main();
 
 	return 0;
 }

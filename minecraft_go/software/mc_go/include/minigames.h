@@ -39,7 +39,7 @@ typedef struct {
  * Starts the digging minigame.
  * @return true when the game completes, false if the player didn't complete the game
  */
-boolean digging_minigame_play();
+boolean minigame_digging();
 
 
 /**************************************************************************
