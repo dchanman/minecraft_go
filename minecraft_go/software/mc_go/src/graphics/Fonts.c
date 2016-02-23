@@ -111,7 +111,7 @@ const unsigned char Font5x7[95][7] = {
 								{0,0x8,0x15,2,0,0,0},					// '~'
 							   } ;
 /************************************************************************************************************/
-const unsigned short int Font10x14[95][14] = {
+const unsigned short int Font10x14[][14] = {
 	{0,0,0,0,0,0,0,0,0,0,0,0,0,0},	 															// ' '
 	{0x30,0x30,0x30,0x30,0x30,0x30,0x30,0x30,0x30,0x30,0,0,0x30,0x30}, 								// '!'
 	{0xcc,0xcc,0xcc,0xcc,0,0,0,0,0,0,0,0,0,0}, 													// '"'
@@ -215,7 +215,7 @@ const unsigned short int Font10x14[95][14] = {
 //  Font data for Consolas 16pt 27 rows by 16
 //
 
-const unsigned char Font16x27[95][27] = {
+const unsigned char Font16x27[] = {
 
 			// @0 ' ' (16 pixels wide)
 			0x00, 0x00, //
