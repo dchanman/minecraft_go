@@ -11,8 +11,7 @@
 typedef struct savedata {
 	int health;
 	int creeps_defeated;
-	char dest_latitude[10];
-	char dest_longitude[11];
+	Location destination;
 	DateTime start_time;
 } savedata_t;
 

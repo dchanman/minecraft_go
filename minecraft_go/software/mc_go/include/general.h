@@ -31,6 +31,16 @@ typedef struct Time {
 
 #define PLAYER_MAX_HEALTH	5
 
+typedef struct Location {
+	int lat_degree;
+	double lat_minute;
+	char lat_direction;
+
+	int long_degree;
+	double long_minute;
+	char long_direction;
+} Location;
+
 #define DEBUGGING
 
 #ifdef DEBUGGING

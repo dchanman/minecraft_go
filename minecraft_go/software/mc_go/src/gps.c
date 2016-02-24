@@ -401,12 +401,12 @@ double gps_get_distance(Location *locationA, Location *locationB){
 	double latitudeA = getLatInDegrees(locationA);
 	double longitudeA = getLongInDegrees(locationA);
 
-	printf("A - Long: %lf Lat: %lf\n", longitudeA, latitudeA);
+	//DEBUG("A - Long: %lf Lat: %lf\n", longitudeA, latitudeA);
 
 	double latitudeB = getLatInDegrees(locationB);
 	double longitudeB = getLongInDegrees(locationB);
 
-	printf("B - Long: %lf Lat: %lf\n", longitudeB, latitudeB);
+	//DEBUG("B - Long: %lf Lat: %lf\n", longitudeB, latitudeB);
 
 	double dlon = (longitudeB - longitudeA) * M_PI / 180;
 	double dlat = (latitudeB - latitudeA) * M_PI / 180;

@@ -15,6 +15,7 @@
 #include "savefile.h"
 #include "minigames.h"
 #include "minecraft_rpc.h"
+#include "graphics.h"
 
 void project1_demo_initialize_savefile() {
 	savedata_t data;
@@ -24,14 +25,8 @@ void project1_demo_initialize_savefile() {
 	/* Initialize data */
 	data.creeps_defeated = 0;
 	data.health = PLAYER_MAX_HEALTH;
-	data.start_time.year = 0;
-	data.start_time.month = 0;
-	data.start_time.day = 0;
-	data.start_time.hour = 0;
-	data.start_time.minute = 0;
-	data.start_time.second = 0;
-	memset(data.dest_latitude, '\0', sizeof(data.dest_latitude));
-	memset(data.dest_longitude, '\0', sizeof(data.dest_longitude));
+	memset(&data.start_time, 0, sizeof(data.start_time));
+	memset(&data.destination, 0, sizeof(data.destination));
 
 	/* Commit to SD Card */
 	savefile_save(data);
@@ -40,7 +35,6 @@ void project1_demo_initialize_savefile() {
 void project1_demo_main() {
 	savedata_t data;
 	char sw;
-	DateTime end_time;
 	Time elapsed_time;
 	unsigned long elapsed_time_seconds;
 	boolean result;
@@ -49,6 +43,7 @@ void project1_demo_main() {
 	savefile_init();
 	minecraft_rpc_init();
 	gps_init();
+	graphics_clear_screen();
 
 	/* Load from savefile */
 	savefile_init();
@@ -68,16 +63,19 @@ void project1_demo_main() {
 			/* Get coordinates from Minecraft Server */
 			DEBUG("Getting coordinates from Minecraft Server\n");
 			minecraft_rpc_hi();
-			result = minecraft_rpc_receive_coordinates(data.dest_latitude,
-					sizeof(data.dest_latitude), data.dest_longitude,
-					sizeof(data.dest_longitude));
+			result = minecraft_rpc_receive_coordinates(&data.destination);
 			if (result == FALSE)
 				printf("Error receiving coordinates from Minecraft server\n");
 
 			printf("Savedata loaded:"
 					"\n\thealth: <%d>"
 					"\n\tcreeps defeated: <%d>"
-					"\n\tlatitude: <%s>"
+					"\n\tdestination.lat_degree: <%d>"
+					"\n\tdestination.lat_minute: <%lf>"
+					"\n\tdestination.lat_direction: <%c>"
+					"\n\tdestination.long_minute: <%d>"
+					"\n\tdestination.long_degree: <%lf>"
+					"\n\tdestination.long_direction: <%c>"
 					"\n\tlongitude: <%s>"
 					"\n\tstart_time.year: <%d>"
 					"\n\tstart_time.month: <%d>"
@@ -85,14 +83,17 @@ void project1_demo_main() {
 					"\n\tstart_time.hour: <%d>"
 					"\n\tstart_time.minute: <%d>"
 					"\n\tstart_time.second: <%d>"
-					"\n", data.health, data.creeps_defeated, data.dest_latitude,
-					data.dest_longitude, data.start_time.year,
+					"\n", data.health, data.creeps_defeated,
+					data.destination.lat_degree, data.destination.lat_minute, data.destination.lat_direction,
+					data.destination.long_degree, data.destination.long_minute, data.destination.long_direction,
+					data.start_time.year,
 					data.start_time.month, data.start_time.day,
 					data.start_time.hour, data.start_time.minute,
 					data.start_time.second);
 
 			/* TODO: Start journey */
-			//gps_start_timer(&data.start_time);
+			gps_start_timer(&data.start_time);
+			printf("Started timer, good to go\n");
 			break;
 
 		case 0x02:
@@ -131,15 +132,7 @@ void project1_demo_main() {
 			minecraft_rpc_hi();
 
 			/* TODO: Calculate elapsed time */
-			//gps_stop_timer(&end_time);
-			end_time.year = 0;
-			end_time.month = 1;
-			end_time.day = 1;
-			end_time.hour = 1;
-			end_time.minute = 1;
-			end_time.second = 1;
-			elapsed_time_seconds = gps_get_elapsed_seconds(&data.start_time,
-					&end_time);
+			elapsed_time_seconds = gps_stop_timer(&data.start_time);
 			gps_convert_seconds_to_time(&elapsed_time, elapsed_time_seconds);
 
 			minecraft_rpc_journey_complete(elapsed_time.hour,

@@ -24,7 +24,7 @@ int main() {
 	//savefile_test();
 	//gps_test();
 	//minecraft_rpc_test_main();
-	//minecraft_rpc_test_protocol_msg();
+	minecraft_rpc_test_protocol_msg();
 	//bluetooth_test();
 	//touchscreen_test();
 	//sprint1_demo();

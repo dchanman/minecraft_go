@@ -30,16 +30,6 @@ typedef struct RMC_data {
 	char date[7]; //ddmmyy
 } RMC_data;
 
-typedef struct Location {
-	int lat_degree;
-	double lat_minute;
-	char lat_direction;
-
-	int long_degree;
-	double long_minute;
-	char long_direction;
-} Location;
-
 /**
  *
  */
