@@ -17,7 +17,7 @@
 #define COLOUR_4 RED
 #define COLOUR_5 FIREBRICK
 #define COLOUR_6 -1
-#define COLOUR_7 GREY
+#define COLOUR_7 GRAY
 
 //pixel width of heart bitmap
 #define HEART_PIXEL_WIDTH 13
@@ -71,7 +71,7 @@ static void heart_generator(int x, int y, int pixelSize) {
 	}
 }
 
-void heart_erase(int x, int y, int width) {
+void heart_erase(int x, int y, int pixelSize) {
 	int i, j;
 	int tempX = x;
 

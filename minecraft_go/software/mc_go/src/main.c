@@ -34,7 +34,7 @@ int main() {
 	//digging_minigame_play();
 	//int health = 5;
 	//minigame_creeper_encounter(&health);
-	//digging_minigame_play();
+	minigame_digging();
 
 	//project1_demo_initialize_savefile();
 	//project1_demo_main();
