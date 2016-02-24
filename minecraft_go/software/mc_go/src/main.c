@@ -19,6 +19,8 @@ int main() {
 	//rs232_test_single_char();
 	//sdcard_test_open();
 	//sdcard_test();
+	gps_test();
+
 	//savefile_test();
 	//gps_test();
 	//minecraft_rpc_test_main();
@@ -27,12 +29,15 @@ int main() {
 	//touchscreen_test();
 	//sprint1_demo();
 	//graphics_test();
+	//int health = 500;
+	//minigame_creep_encounter(&health);
+	//digging_minigame_play();
 	//int health = 5;
 	//minigame_creeper_encounter(&health);
 	//digging_minigame_play();
 
-	project1_demo_initialize_savefile();
-	project1_demo_main();
+	//project1_demo_initialize_savefile();
+	//project1_demo_main();
 
 	return 0;
 }

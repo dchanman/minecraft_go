@@ -9,10 +9,51 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
+#include <general.h>
 #include "rs232.h"
 #include "gps.h"
 
 void gps_test() {
+	/*
+	int lat_degree;
+	double lat_minute;
+	char lat_direction; N +
+
+	int long_degree;
+	double long_minute;
+	char long_direction; E +
+	*/
+
+	// dist b/w A and B should be 0.549KM
+	Location A = {38, 0.898556 * 60, 'N', 77, 0.037852 * 60, 'W'};
+	Location B = {38, 0.897147 * 60, 'N', 77, 0.043934 * 60, 'W'};
+
+	Location C = {38, 54.2, 'N', 77, 0.31, 'W'};
+	Location D = {38, 55, 'N', 77, 0.42, 'W'};
+	Location E = {38, 56, 'N', 77, 0.68, 'W'};
+	Location destination = {38, 57, 'N', 77, 0.74, 'W'};
+
+	Location positions[] = {A, B, C, D, E, destination};
+
+	int pos_count = 0;
+	bool hasArrive = false;
+	while (!hasArrive){
+		hasArrive = gps_has_arrived_at_destination(&(positions[pos_count]), &destination);
+
+		if (!hasArrive){
+			double distKM = gps_get_distance(&(positions[pos_count]), &destination);
+			printf("Distance from destination is: %lf km\n", distKM);
+			usleep(3000000);
+			pos_count++;
+		} else {
+			printf("You have arrived at the destionation.\n");
+			break;
+		}
+	}
+
+
+	/*
 	gps_init();
 
 	//gps_send_command(GPS_STOP_DATA_LOG);
@@ -86,7 +127,7 @@ void gps_test() {
 																  testTime.minute,
 																  testTime.second);
 
-
+	*/
 
 
 
@@ -109,6 +150,7 @@ void gps_test() {
 	 checksum(array, 9);
 	 */
 }
+
 
 void print_test_data(char ** test_data) {
 	int counter = 0;
