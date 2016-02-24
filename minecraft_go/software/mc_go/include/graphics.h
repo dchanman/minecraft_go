@@ -19,5 +19,11 @@ void graphics_draw_rectangle_border(int x, int y, int width, int height, int col
 void graphics_draw_rectangle_filled(int x, int y, int width, int height, int colour);
 void graphics_clear_screen();
 
+void OutGraphicsCharFont1(int x, int y, int fontcolour, int backgroundcolour, int c, int Erase);
+void OutGraphicsCharFont2a(int x, int y, int colour, int backgroundcolour, int c, int Erase);
+void OutGraphicsCharFont3(int x, int y, int fontcolour, int backgroundcolour, int c, int Erase);
+void OutGraphicsCharFont4(int x, int y, int fontcolour, int backgroundcolour, int c, int Erase);
+void OutGraphicsCharFont5(int x, int y, int fontcolour, int backgroundcolour, int c, int Erase);
+
 
 #endif /* GRAPHICS_H_ */

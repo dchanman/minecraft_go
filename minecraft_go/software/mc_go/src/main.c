@@ -19,7 +19,7 @@ int main() {
 	//rs232_test_single_char();
 	//sdcard_test_open();
 	//sdcard_test();
-	gps_test();
+	//gps_test();
 
 	//savefile_test();
 	//gps_test();
@@ -38,6 +38,7 @@ int main() {
 
 	//project1_demo_initialize_savefile();
 	//project1_demo_main();
+	journey_display_test();
 
 	return 0;
 }

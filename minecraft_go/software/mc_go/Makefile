@@ -152,6 +152,7 @@ C_SRCS += src/minecraft_rpc.c
 C_SRCS += src/touchscreen.c
 C_SRCS += src/hw.c
 C_SRCS += src/savefile.c
+C_SRCS += src/journey_display.c
 C_SRCS += src/graphics/block.c
 C_SRCS += src/graphics/creeper.c
 C_SRCS += src/graphics/heart.c
@@ -171,6 +172,7 @@ C_SRCS += test/touchscreen_test.c
 C_SRCS += test/sprint1_demo.c
 C_SRCS += test/graphics/graphics_test.c
 C_SRCS += test/project1_demo.c
+C_SRCS += test/journey_display_test.c
 CXX_SRCS :=
 ASM_SRCS :=
 
