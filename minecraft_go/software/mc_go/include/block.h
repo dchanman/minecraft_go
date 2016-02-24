@@ -15,6 +15,16 @@
 void clear_block(int x, int y);
 
 /*
+ * generates small cracks over a block using the top left coordinate (x, y)
+ */
+void small_cracks_generator(int x, int y);
+
+/*
+ * generates large cracks over a block using the top left coordinate (x, y)
+ */
+void large_cracks_generator(int x, int y);
+
+/*
  * generates a wood block using the top left coordinate (x, y)
  */
 void wood_block_generator(int x, int y);

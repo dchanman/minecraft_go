@@ -49,7 +49,7 @@ static boolean digging_minigame_main();
 static int digging_minigame_generate_block_material();
 static int digging_minigame_get_pickaxe_material();
 static Box digging_minigame_block_initialize(int x, int y, block_type_t block_type);
-static void digging_minigame_draw_block(int x, int y, block_type_t block_type);
+static void digging_minigame_draw_block(int x, int y, block_type_t block_type, int health);
 static void digging_minigame_damage_block(Box *box, int damage);
 static boolean digging_minigame_is_done(Box array[2][3]);
 
@@ -114,7 +114,7 @@ static boolean digging_minigame_main() {
 						gridArray[i][j].block_type = BLOCK_TYPE_DEAD;
 
 						/* Redraw the block */
-						digging_minigame_draw_block(gridArray[i][j].x, gridArray[i][j].y, gridArray[i][j].block_type);
+						digging_minigame_draw_block(gridArray[i][j].x, gridArray[i][j].y, gridArray[i][j].block_type, gridArray[i][j].health);
 					}
 
 					DEBUG("Block damaged! Grid health updated:\n");
@@ -140,11 +140,6 @@ static boolean digging_minigame_main() {
  */
 static int digging_minigame_generate_block_material() {
 	return (rand() % (BLOCK_TYPE_NUM_TYPES - 1)) + 1;
-	//TODO: Implement function
-	//return BLOCK_TYPE_WOOD;
-	//return STONE_HEALTH;
-	//return IRON_HEALTH;
-	//return DIAMOND_HEALTH;
 }
 
 /*
@@ -152,7 +147,10 @@ static int digging_minigame_generate_block_material() {
  */
 static int digging_minigame_get_pickaxe_material() {
 	//TODO: Implement function
-	return 1;
+	//return WOOD_BUFF;
+	return STONE_BUFF;
+	//return IRON_BUFF;
+	//return DIAMOND_BUFF;
 }
 
 /*
@@ -166,7 +164,7 @@ static Box digging_minigame_block_initialize(int x, int y, block_type_t block_ty
 	tempBox.y = y;
 	tempBox.health = block_type_starting_health[block_type];
 
-	digging_minigame_draw_block(x, y, block_type);
+	digging_minigame_draw_block(x, y, block_type, tempBox.health);
 
 	return tempBox;
 }
@@ -175,22 +173,38 @@ static Box digging_minigame_block_initialize(int x, int y, block_type_t block_ty
  * Generates the graphics for a block based on pixel coordinates
  * (x1,y1) is the top left corner of the box
  */
-static void digging_minigame_draw_block(int x, int y, block_type_t block_type) {
+static void digging_minigame_draw_block(int x, int y, block_type_t block_type, int health) {
 	switch (block_type) {
 	case BLOCK_TYPE_WOOD:
 		wood_block_generator(x, y);
+		if(health <= block_type_starting_health[block_type] * (1 / 3))
+			large_crack_generator(x, y);
+		else if(health <= block_type_starting_health[block_type] * (2 / 3))
+			small_crack_generator(x, y);
 		break;
 
 	case BLOCK_TYPE_STONE:
 		stone_block_generator(x, y);
+		if(health <= block_type_starting_health[block_type] * (1 / 3))
+			large_crack_generator(x, y);
+		else if(health <= block_type_starting_health[block_type] * (2 / 3))
+			small_crack_generator(x, y);
 		break;
 
 	case BLOCK_TYPE_IRON:
 		iron_block_generator(x, y);
+		if(health <= block_type_starting_health[block_type] * (1 / 3))
+			large_crack_generator(x, y);
+		else if(health <= block_type_starting_health[block_type] * (2 / 3))
+			small_crack_generator(x, y);
 		break;
 
 	case BLOCK_TYPE_DIAMOND:
 		diamond_block_generator(x, y);
+		if(health <= block_type_starting_health[block_type] * (1 / 3))
+			large_crack_generator(x, y);
+		else if(health <= block_type_starting_health[block_type] * (2 / 3))
+			small_crack_generator(x, y);
 		break;
 
 	default:
