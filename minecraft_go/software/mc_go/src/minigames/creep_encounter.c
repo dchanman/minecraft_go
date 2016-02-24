@@ -29,7 +29,7 @@ static void creeper_encounter_draw_creeper(Pixel creeper_location);
 static void creeper_encounter_erase_creeper(Pixel creeper_location);
 static void creeper_encounter_draw_creep_helper(Pixel creeper_location, int colour);
 static void creeper_encounter_erase_hearts();
-static void creeper_encounter_draw_hearts(int num_hearts);
+static void creeper_encounter_draw_hearts(int num_hearts, int num_empty_hearts);
 
 boolean minigame_creeper_encounter(int *player_health) {
 	DEBUG("Started Creeper Minigame!\n");
@@ -57,14 +57,11 @@ static boolean creeper_encounter_main(int *player_health) {
 		DEBUG("Creeper at (%d, %d)\nCreeper health: %d\nPlayer health: %d\n",
 				creeper_location.x, creeper_location.y, creeper_health, *player_health);
 
-		/* Erase old hearts */
-		creeper_encounter_erase_hearts();
-
 		/* Draw the creeper */
 		creeper_encounter_draw_creeper(creeper_location);
 
 		/* Draw hearts (hearts displayed in front of creeper) */
-		creeper_encounter_draw_hearts(*player_health);
+		creeper_encounter_draw_hearts(*player_health, PLAYER_MAX_HEALTH);
 
 		/* Wait for touch */
 		touchscreen_get_press(&touch_location);
@@ -84,7 +81,7 @@ static boolean creeper_encounter_main(int *player_health) {
 	}
 
 	/* Draw hearts */
-	creeper_encounter_draw_hearts(*player_health);
+	creeper_encounter_draw_hearts(*player_health, PLAYER_MAX_HEALTH);
 
 	/* Determine whether the player won or lost */
 	if (creeper_health <= 0) {
@@ -103,11 +100,15 @@ static void creeper_encounter_erase_hearts() {
 		heart_erase(CREEPER_HEART_WIDTH*i, CREEPER_HEART_Y_VAL, CREEPER_HEART_WIDTH);
 }
 
-static void creeper_encounter_draw_hearts(int num_hearts) {
+static void creeper_encounter_draw_hearts(int num_hearts, int num_empty_hearts) {
 	int i;
+	int j;
 
 	for (i = 0; i < num_hearts && i < CREEPER_HEART_MAX_NUM; i++)
 		heart_draw(CREEPER_HEART_WIDTH*i, CREEPER_HEART_Y_VAL, CREEPER_HEART_WIDTH);
+
+	for (j = 0; (i+j) < num_empty_hearts && (i+j) < CREEPER_HEART_MAX_NUM; j++)
+		heart_draw_empty(CREEPER_HEART_WIDTH*(i+j), CREEPER_HEART_Y_VAL, CREEPER_HEART_WIDTH);
 }
 
 static void creeper_encounter_draw_creeper(Pixel creeper_location) {

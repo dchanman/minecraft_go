@@ -37,7 +37,7 @@ void gps_test() {
 	Location positions[] = {A, B, C, D, E, destination};
 
 	int pos_count = 0;
-	bool hasArrive = false;
+	boolean hasArrive = FALSE;
 	while (!hasArrive){
 		hasArrive = gps_has_arrived_at_destination(&(positions[pos_count]), &destination);
 

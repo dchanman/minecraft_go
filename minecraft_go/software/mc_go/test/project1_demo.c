@@ -9,6 +9,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "general.h"
 #include "hw.h"
 #include "gps.h"
 #include "savefile.h"
@@ -22,7 +23,7 @@ void project1_demo_initialize_savefile() {
 
 	/* Initialize data */
 	data.creeps_defeated = 0;
-	data.health = 10;
+	data.health = PLAYER_MAX_HEALTH;
 	data.start_time.year = 0;
 	data.start_time.month = 0;
 	data.start_time.day = 0;
