@@ -24,17 +24,17 @@ int main() {
 	//savefile_test();
 	//gps_test();
 	//minecraft_rpc_test_main();
-	minecraft_rpc_test_protocol_msg();
+	//minecraft_rpc_test_protocol_msg();
 	//bluetooth_test();
 	//touchscreen_test();
 	//sprint1_demo();
 	//graphics_test();
-	int health = PLAYER_MAX_HEALTH;
-	minigame_creeper_encounter(&health);
+	//int health = PLAYER_MAX_HEALTH;
+	//minigame_creeper_encounter(&health);
 	//minigame_digging();
 
-	//project1_demo_initialize_savefile();
-	//project1_demo_main();
+	project1_demo_initialize_savefile();
+	project1_demo_main();
 
 	return 0;
 }

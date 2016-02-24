@@ -32,6 +32,14 @@ void project1_demo_initialize_savefile() {
 	savefile_save(data);
 }
 
+/**
+ * Controls:
+ * SW0: Get coordinates from Minecraft Server
+ * SW1: Creeper Encounter
+ * SW2: Fake getting closer to destination
+ * SW3: Arrive at destination
+ * SW4: Return home and upload to Minecraft Server
+ */
 void project1_demo_main() {
 	savedata_t data;
 	char sw;
@@ -52,8 +60,8 @@ void project1_demo_main() {
 	/* Demo loop */
 	while (1) {
 		/* Hardware controls */
-
 		sw = hw_switches_get();
+
 		switch (sw) {
 		case 0x00:
 			/* Do nothing */
