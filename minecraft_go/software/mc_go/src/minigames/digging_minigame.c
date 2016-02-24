@@ -110,12 +110,13 @@ static boolean digging_minigame_main() {
 					digging_minigame_damage_block(&gridArray[i][j], damage);
 
 					/* Update the block graphic */
-					if (gridArray[i][j].health <= 0) {
+					if (gridArray[i][j].health <= 0)
 						gridArray[i][j].block_type = BLOCK_TYPE_DEAD;
 
-						/* Redraw the block */
-						digging_minigame_draw_block(gridArray[i][j].x, gridArray[i][j].y, gridArray[i][j].block_type, gridArray[i][j].health);
-					}
+					/* Redraw the block */
+					digging_minigame_draw_block(gridArray[i][j].x,
+							gridArray[i][j].y, gridArray[i][j].block_type,
+							gridArray[i][j].health);
 
 					DEBUG("Block damaged! Grid health updated:\n");
 					DEBUG("[%d][%d][%d]\n", gridArray[0][0].health,
@@ -147,8 +148,9 @@ static int digging_minigame_generate_block_material() {
  */
 static int digging_minigame_get_pickaxe_material() {
 	//TODO: Implement function
+	return 1;
 	//return WOOD_BUFF;
-	return STONE_BUFF;
+	//return STONE_BUFF;
 	//return IRON_BUFF;
 	//return DIAMOND_BUFF;
 }
@@ -163,6 +165,7 @@ static Box digging_minigame_block_initialize(int x, int y, block_type_t block_ty
 	tempBox.x = x;
 	tempBox.y = y;
 	tempBox.health = block_type_starting_health[block_type];
+	tempBox.block_type = block_type;
 
 	digging_minigame_draw_block(x, y, block_type, tempBox.health);
 
@@ -177,34 +180,42 @@ static void digging_minigame_draw_block(int x, int y, block_type_t block_type, i
 	switch (block_type) {
 	case BLOCK_TYPE_WOOD:
 		wood_block_generator(x, y);
-		if(health <= block_type_starting_health[block_type] * (1 / 3))
-			large_crack_generator(x, y);
-		else if(health <= block_type_starting_health[block_type] * (2 / 3))
-			small_crack_generator(x, y);
+		if (health <= block_type_starting_health[block_type] * 2 / 3) {
+			if (health <= block_type_starting_health[block_type] / 3)
+				large_crack_generator(x, y);
+			else
+				small_crack_generator(x, y);
+		}
 		break;
 
 	case BLOCK_TYPE_STONE:
 		stone_block_generator(x, y);
-		if(health <= block_type_starting_health[block_type] * (1 / 3))
-			large_crack_generator(x, y);
-		else if(health <= block_type_starting_health[block_type] * (2 / 3))
-			small_crack_generator(x, y);
+		if (health <= block_type_starting_health[block_type] * 2 / 3) {
+			if (health <= block_type_starting_health[block_type] / 3)
+				large_crack_generator(x, y);
+			else
+				small_crack_generator(x, y);
+		}
 		break;
 
 	case BLOCK_TYPE_IRON:
 		iron_block_generator(x, y);
-		if(health <= block_type_starting_health[block_type] * (1 / 3))
-			large_crack_generator(x, y);
-		else if(health <= block_type_starting_health[block_type] * (2 / 3))
-			small_crack_generator(x, y);
+		if (health <= block_type_starting_health[block_type] * 2 / 3) {
+			if (health <= block_type_starting_health[block_type] / 3)
+				large_crack_generator(x, y);
+			else
+				small_crack_generator(x, y);
+		}
 		break;
 
 	case BLOCK_TYPE_DIAMOND:
 		diamond_block_generator(x, y);
-		if(health <= block_type_starting_health[block_type] * (1 / 3))
-			large_crack_generator(x, y);
-		else if(health <= block_type_starting_health[block_type] * (2 / 3))
-			small_crack_generator(x, y);
+		if (health <= block_type_starting_health[block_type] * 2 / 3) {
+			if (health <= block_type_starting_health[block_type] / 3)
+				large_crack_generator(x, y);
+			else
+				small_crack_generator(x, y);
+		}
 		break;
 
 	default:

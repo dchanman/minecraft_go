@@ -13,15 +13,23 @@
  * Draws a heart
  * x - top left x coordinate
  * y - top left y coordinate
- * width - width of the base of the creeper
+ * width - width of the base of the heart
  */
 void heart_draw(int x, int y, int width);
+
+/*
+ * Draws an empty heart
+ * x - top left x coordinate
+ * y - top left y coordinate
+ * width - width of the base of the heart
+ */
+void heart_draw_empty(int x, int y, int width);
 
 /*
  * Erases a heart
  * x - top left x coordinate
  * y - top left y coordinate
- * width - width of the base of the creeper
+ * width - width of the base of the heart
  */
 void heart_erase(int x, int y, int width);
 

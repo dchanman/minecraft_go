@@ -34,6 +34,12 @@ void heart_draw(int x, int y, int width) {
 	heart_generator(x, y, pixelSize);
 }
 
+void heart_draw_empty(int x, int y, int width) {
+	int pixelSize = width / HEART_PIXEL_WIDTH;
+
+	heart_empty_generator(x, y, pixelSize);
+}
+
 /*
  * generates a heart
  * x - top left x coordinate
@@ -71,7 +77,13 @@ static void heart_generator(int x, int y, int pixelSize) {
 	}
 }
 
-void heart_erase(int x, int y, int pixelSize) {
+void heart_erase(int x, int y, int width) {
+	int pixelSize = width / HEART_PIXEL_WIDTH;
+	graphics_draw_rectangle_filled(x, y, pixelSize * HEART_PIXEL_WIDTH,
+			pixelSize * HEART_PIXEL_HEIGHT, GRAPHICS_BACKGROUND_COLOUR);
+}
+
+void heart_empty_generator(int x, int y, int pixelSize) {
 	int i, j;
 	int tempX = x;
 

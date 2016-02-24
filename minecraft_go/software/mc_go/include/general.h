@@ -29,6 +29,8 @@ typedef struct Time {
 	int second;
 } Time;
 
+#define PLAYER_MAX_HEALTH	5
+
 #define DEBUGGING
 
 #ifdef DEBUGGING

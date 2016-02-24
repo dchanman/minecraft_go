@@ -29,12 +29,9 @@ int main() {
 	//touchscreen_test();
 	//sprint1_demo();
 	//graphics_test();
-	//int health = 500;
-	//minigame_creep_encounter(&health);
-	//digging_minigame_play();
-	//int health = 5;
-	//minigame_creeper_encounter(&health);
-	minigame_digging();
+	int health = PLAYER_MAX_HEALTH;
+	minigame_creeper_encounter(&health);
+	//minigame_digging();
 
 	//project1_demo_initialize_savefile();
 	//project1_demo_main();

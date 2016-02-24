@@ -44,4 +44,14 @@ void iron_block_generator(int x, int y);
  */
 void diamond_block_generator(int x, int y);
 
+/*
+ * generates a crack
+ */
+void small_crack_generator(int x, int y);
+
+/*
+ * generates a crack
+ */
+void large_crack_generator(int x, int y);
+
 #endif /* BLOCKS_H_ */

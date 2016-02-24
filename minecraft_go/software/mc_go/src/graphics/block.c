@@ -79,7 +79,7 @@ void small_crack_generator(int x, int y){
 	}
 }
 
-void large_crack_generator(int x, int y){
+void large_crack_generator(int x, int y) {
 	int i, j;
 	int tempX = x;
 
