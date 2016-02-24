@@ -44,12 +44,33 @@ boolean savefile_load(savedata_t * data)
 	result = sdcard_readln(fd, buffer, sizeof(buffer));
 	if (result < 0)
 		goto error;
-	snprintf(data->dest_latitude, sizeof(data->dest_latitude), "%s", buffer);
+	data->destination.lat_degree = atoi(buffer);
+
+	/* Location */
+	result = sdcard_readln(fd, buffer, sizeof(buffer));
+	if (result < 0)
+		goto error;
+	data->destination.lat_minute = atof(buffer);
 
 	result = sdcard_readln(fd, buffer, sizeof(buffer));
 	if (result < 0)
 		goto error;
-	snprintf(data->dest_longitude, sizeof(data->dest_longitude), "%s", buffer);
+	data->destination.lat_direction = buffer[0];
+
+	result = sdcard_readln(fd, buffer, sizeof(buffer));
+	if (result < 0)
+		goto error;
+	data->destination.long_degree = atoi(buffer);
+
+	result = sdcard_readln(fd, buffer, sizeof(buffer));
+	if (result < 0)
+		goto error;
+	data->destination.long_minute = atof(buffer);
+
+	result = sdcard_readln(fd, buffer, sizeof(buffer));
+	if (result < 0)
+		goto error;
+	data->destination.long_direction = buffer[0];
 
 	/* DateTime */
 
@@ -119,12 +140,33 @@ boolean savefile_save(const savedata_t data)
 	if (result != 0)
 		goto error;
 
-	snprintf(buffer, sizeof(buffer), "%s", data.dest_latitude);
+	/* Location */
+	snprintf(buffer, sizeof(buffer), "%d", data.destination.lat_degree);
 	result = sdcard_writeln(fd, buffer, strlen(buffer));
 	if (result != 0)
 		goto error;
 
-	snprintf(buffer, sizeof(buffer), "%s", data.dest_longitude);
+	snprintf(buffer, sizeof(buffer), "%.3lf", data.destination.lat_minute);
+	result = sdcard_writeln(fd, buffer, strlen(buffer));
+	if (result != 0)
+		goto error;
+
+	snprintf(buffer, sizeof(buffer), "%c", data.destination.lat_direction);
+	result = sdcard_writeln(fd, buffer, strlen(buffer));
+	if (result != 0)
+		goto error;
+
+	snprintf(buffer, sizeof(buffer), "%d", data.destination.long_degree);
+	result = sdcard_writeln(fd, buffer, strlen(buffer));
+	if (result != 0)
+		goto error;
+
+	snprintf(buffer, sizeof(buffer), "%.3lf", data.destination.long_minute);
+	result = sdcard_writeln(fd, buffer, strlen(buffer));
+	if (result != 0)
+		goto error;
+
+	snprintf(buffer, sizeof(buffer), "%c", data.destination.long_direction);
 	result = sdcard_writeln(fd, buffer, strlen(buffer));
 	if (result != 0)
 		goto error;

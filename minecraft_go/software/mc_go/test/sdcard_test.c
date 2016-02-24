@@ -47,8 +47,12 @@ void savefile_test() {
 	data_orig.start_time.hour = 4;
 	data_orig.start_time.minute = 5;
 	data_orig.start_time.second = 6;
-	snprintf(data_orig.dest_latitude, sizeof(data_orig.dest_latitude), "1234.1234");
-	snprintf(data_orig.dest_longitude, sizeof(data_orig.dest_longitude), "12345.1234");
+	data_orig.destination.lat_degree = 0.921;
+	data_orig.destination.lat_direction= 'E';
+	data_orig.destination.lat_minute = 1;
+	data_orig.destination.long_degree = 1.289;
+	data_orig.destination.long_minute = 4;
+	data_orig.destination.long_direction = 'W';
 
 	savefile_save(data_orig);
 	savefile_load(&data_loaded);
@@ -59,11 +63,23 @@ void savefile_test() {
 	if (data_orig.health != data_loaded.health)
 		printf("health: expected <%d>, actual <%d>\n", data_orig.health, data_loaded.health);
 
-	if (strcmp(data_orig.dest_latitude, data_loaded.dest_latitude) != 0)
-		printf("dest_latitude: expected <%s>, actual <%s>\n", data_orig.dest_latitude, data_loaded.dest_latitude);
+	if (data_orig.destination.lat_degree != data_loaded.destination.lat_degree)
+			printf("destination.lat_degree: expected <%d>, actual <%d>\n", data_orig.destination.lat_degree, data_loaded.destination.lat_degree);
 
-	if (strcmp(data_orig.dest_longitude, data_loaded.dest_longitude) != 0)
-		printf("dest_longitude: expected <%s>, actual <%s>\n", data_orig.dest_longitude, data_loaded.dest_longitude);
+	if (data_orig.destination.lat_minute != data_loaded.destination.lat_minute)
+			printf("destination.lat_minute: expected <%lf>, actual <%lf>\n", data_orig.destination.lat_minute, data_loaded.destination.lat_minute);
+
+	if (data_orig.destination.lat_direction != data_loaded.destination.lat_direction)
+			printf("destination.lat_direction: expected <%c>, actual <%c>\n", data_orig.destination.lat_direction, data_loaded.destination.lat_direction);
+
+	if (data_orig.destination.long_degree != data_loaded.destination.long_degree)
+			printf("destination.long_degree: expected <%d>, actual <%d>\n", data_orig.destination.long_degree, data_loaded.destination.long_degree);
+
+	if (data_orig.destination.long_minute != data_loaded.destination.long_minute)
+			printf("destination.long_minute: expected <%lf>, actual <%lf>\n", data_orig.destination.long_minute, data_loaded.destination.long_minute);
+
+	if (data_orig.destination.long_direction != data_loaded.destination.long_direction)
+			printf("destination.long_direction: expected <%c>, actual <%c>\n", data_orig.destination.long_direction, data_loaded.destination.long_direction);
 
 	if (data_orig.start_time.year != data_loaded.start_time.year)
 		printf("start_time.year: expected <%d>, actual <%d>\n", data_orig.start_time.year, data_loaded.start_time.year);
