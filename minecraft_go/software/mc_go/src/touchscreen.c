@@ -112,7 +112,7 @@ void touchscreen_pixel_conversion(const Point point_in, Pixel *pixel_out) {
 			((float)Y_MAX / (float)(REPORT_COORDINATE_MAX - REPORT_COORDINATE_MIN)));
 }
 
-bool touchscreen_is_touch_in_box(const Pixel touch, const Pixel box, const int box_width, const int box_height) {
+boolean touchscreen_is_touch_in_box(const Pixel touch, const Pixel box, const int box_width, const int box_height) {
     /* compares the coordinate pressed to the specified coordinate boundary */
 	if(touch.x >= box.x && touch.x <= box.x + box_width)
 		DEBUG("\tWithin X bounds\n");
@@ -126,9 +126,9 @@ bool touchscreen_is_touch_in_box(const Pixel touch, const Pixel box, const int b
 
     if((touch.x >= box.x && touch.x <= box.x + box_width) && (touch.y >= box.y && touch.y <= box.y + box_height)) {
     	printf("Touch was inside box!\n");
-        return true;
+        return TRUE;
     } else {
-        return false;
+        return FALSE;
     }
 }
 

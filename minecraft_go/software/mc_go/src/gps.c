@@ -38,7 +38,7 @@
 /* Static Declarations */
 static void gps_put_char(const unsigned char c);
 static unsigned char gps_get_char();
-static bool gps_get_current_rmc_data(RMC_data *buffer, int max_tries);
+static boolean gps_get_current_rmc_data(RMC_data *buffer, int max_tries);
 
 void gps_init() {
 	serial_init(GPS, BAUD_RATE_9600);
@@ -65,14 +65,14 @@ void gps_send_command(const char *command) {
 /*
  * Retrieves 1 line that is terminated by "\r\n" from GPS device
  */
-bool gps_retrieve_data_line(char *buffer, int buffer_size) {
+boolean gps_retrieve_data_line(char *buffer, int buffer_size) {
 	int char_count = 0;
 
 	while (1) {
 		if (char_count >= buffer_size - 1) {
 			printf("Warning: Buffer not large enough for GPS data line; Cutting data line prematurely.");
 			buffer[char_count] = '\0';
-			return false;
+			return FALSE;
 		}
 
 		char curr_char = gps_get_char();
@@ -87,7 +87,7 @@ bool gps_retrieve_data_line(char *buffer, int buffer_size) {
 	}
 
 	buffer[char_count] = '\0';
-	return true;
+	return TRUE;
 }
 
 /*
@@ -96,7 +96,7 @@ bool gps_retrieve_data_line(char *buffer, int buffer_size) {
  *
  * buffer - 2D array where each index will hold a data line
  */
-bool gps_retrieve_data_dump(char *buffer[GPS_DEFAULT_DATA_LINE_SIZE],
+boolean gps_retrieve_data_dump(char *buffer[GPS_DEFAULT_DATA_LINE_SIZE],
 		int buffer_size) {
 	int i;
 
@@ -108,14 +108,14 @@ bool gps_retrieve_data_dump(char *buffer[GPS_DEFAULT_DATA_LINE_SIZE],
 
 		if (i == buffer_size - 1) {
 			printf("Warning: Data dump reached max buffer size!\n");
-			return false;
+			return FALSE;
 		}
 	}
 
-	return true;
+	return TRUE;
 }
 
-bool gps_get_gga_data(char *data_line, GGA_data *buffer) {
+boolean gps_get_gga_data(char *data_line, GGA_data *buffer) {
 	const char delimiter[2] = ",";
 
 	// to prevent the original data line from being modified
@@ -126,7 +126,7 @@ bool gps_get_gga_data(char *data_line, GGA_data *buffer) {
 
 	if (strcmp(token, GGA_IDENTIFIER) != 0) {
 		//printf("Line is not in GGA format!\n");
-		return false;
+		return FALSE;
 	}
 
 	int count = 0;
@@ -160,10 +160,10 @@ bool gps_get_gga_data(char *data_line, GGA_data *buffer) {
 		count++;
 	}
 
-	return true;
+	return TRUE;
 }
 
-bool gps_get_rmc_data(char *data_line, RMC_data *buffer) {
+boolean gps_get_rmc_data(char *data_line, RMC_data *buffer) {
 	const char delimiter[2] = ",";
 
 	// to prevent the original data line from being modified
@@ -174,7 +174,7 @@ bool gps_get_rmc_data(char *data_line, RMC_data *buffer) {
 
 	if (strcmp(token, RMC_IDENTIFIER) != 0) {
 		//printf("Line is not in GGA format!\n");
-		return false;
+		return FALSE;
 	}
 
 	int count = 0;
@@ -211,7 +211,7 @@ bool gps_get_rmc_data(char *data_line, RMC_data *buffer) {
 		count++;
 	}
 
-	return true;
+	return TRUE;
 }
 
 /*
@@ -221,7 +221,7 @@ bool gps_get_rmc_data(char *data_line, RMC_data *buffer) {
  *  working and a value of 20 should be enough unless we are in the middle of
  *  a large data dump.
  */
-static bool gps_get_current_rmc_data(RMC_data *buffer, int max_tries) {
+static boolean gps_get_current_rmc_data(RMC_data *buffer, int max_tries) {
 	char data_line_buffer[GPS_DEFAULT_DATA_LINE_SIZE];
 
 	int num_tries = 0;
@@ -230,7 +230,7 @@ static bool gps_get_current_rmc_data(RMC_data *buffer, int max_tries) {
 		gps_retrieve_data_line(data_line_buffer, GPS_DEFAULT_DATA_LINE_SIZE);
 	} while (!gps_get_rmc_data(data_line_buffer, buffer) && num_tries < max_tries);
 
-	return num_tries >= max_tries ? false : true;
+	return num_tries >= max_tries ? FALSE : TRUE;
 }
 
 //---------------------------Timer Functions------------------------------//
@@ -364,11 +364,11 @@ void gps_convert_rmc_to_location(RMC_data *RMC_data, Location *buffer) {
  * Note: algorithm might not work if the the 2 locations are right on
  * 		the Equator or Prime Meridian
  */
-bool gps_has_arrived_at_destination(Location *current, Location *destination) {
+boolean gps_has_arrived_at_destination(Location *current, Location *destination) {
 	// this will work for North America, re-implement part later if needed
 	if (current->lat_direction != destination->lat_direction
 			|| current->long_direction != destination->long_direction)
-		return false;
+		return FALSE;
 
 	double currLatInMinutes = current->lat_degree * 60 + current->lat_minute;
 	double destLatInMinutes = destination->lat_degree * 60
@@ -380,9 +380,9 @@ bool gps_has_arrived_at_destination(Location *current, Location *destination) {
 
 	if (abs(currLatInMinutes - destLatInMinutes) < GPS_LAT_EPSILON
 			&& abs(currLongInMinutes - destLongInMinutes) < GPS_LONG_EPSILON)
-		return true;
+		return TRUE;
 	else
-		return false;
+		return FALSE;
 }
 
 static double getLatInDegrees(Location *location){

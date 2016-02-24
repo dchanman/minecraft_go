@@ -6,7 +6,7 @@
  */
 #include "general.h"
 
-#ifndef GSP_H_
+#ifndef GPS_H_
 #define GPS_H_
 
 #define GPS_DEFAULT_DATA_LINE_SIZE 300
@@ -29,21 +29,6 @@ typedef struct RMC_data {
 	char speed[5]; // knots
 	char date[7]; //ddmmyy
 } RMC_data;
-
-typedef struct DateTime {
-	int year;
-	int month;
-	int day;
-	int hour;
-	int minute;
-	int second;
-} DateTime;
-
-typedef struct Time {
-	unsigned long hour;
-	int minute;
-	int second;
-} Time;
 
 typedef struct Location {
 	int lat_degree;
@@ -68,22 +53,22 @@ void gps_send_command(const char *command);
 /**
  *
  */
-bool gps_retrieve_data_line(char *buffer, int buffer_size);
+boolean gps_retrieve_data_line(char *buffer, int buffer_size);
 
 /**
  *
  */
-bool gps_retrieve_data_dump(char **buffer, int buffer_size);
+boolean gps_retrieve_data_dump(char **buffer, int buffer_size);
 
 /**
  *
  */
-bool gps_get_gga_data(char *data_line, GGA_data *buffer);
+boolean gps_get_gga_data(char *data_line, GGA_data *buffer);
 
 /**
  *
  */
-bool gps_get_rmc_data(char *data_line, RMC_data *buffer);
+boolean gps_get_rmc_data(char *data_line, RMC_data *buffer);
 
 /**
  *
@@ -128,7 +113,7 @@ double gps_get_distance(Location *, Location *);
  * Note: algorithm might not work if the the 2 locations are right on
  * the Equator or Prime Meridian
  */
-bool gps_has_arrived_at_destination(Location *current, Location *destination);
+boolean gps_has_arrived_at_destination(Location *current, Location *destination);
 
 /**
  *

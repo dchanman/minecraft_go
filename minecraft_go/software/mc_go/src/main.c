@@ -2,6 +2,7 @@
 #include <stdio.h>
 
 #include "minigames.h"
+#include "project1_demo.h"
 
 /* Comment this #define out when we're done testing */
 #define TESTING
@@ -19,6 +20,9 @@ int main() {
 	//sdcard_test_open();
 	//sdcard_test();
 	gps_test();
+
+	//savefile_test();
+	//gps_test();
 	//minecraft_rpc_test_main();
 	//minecraft_rpc_test_protocol_msg();
 	//bluetooth_test();
@@ -28,6 +32,12 @@ int main() {
 	//int health = 500;
 	//minigame_creep_encounter(&health);
 	//digging_minigame_play();
+	//int health = 5;
+	//minigame_creeper_encounter(&health);
+	//digging_minigame_play();
+
+	//project1_demo_initialize_savefile();
+	//project1_demo_main();
 
 	return 0;
 }

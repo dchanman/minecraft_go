@@ -12,7 +12,22 @@
 
 #define EXIT_OK 0
 
-typedef enum { false, true } bool;
+typedef enum { FALSE, TRUE } boolean;
+
+typedef struct DateTime {
+	int year;
+	int month;
+	int day;
+	int hour;
+	int minute;
+	int second;
+} DateTime;
+
+typedef struct Time {
+	unsigned long hour;
+	int minute;
+	int second;
+} Time;
 
 #define DEBUGGING
 
