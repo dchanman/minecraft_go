@@ -19,7 +19,7 @@ int main() {
 	//rs232_test_single_char();
 	//sdcard_test_open();
 	//sdcard_test();
-	gps_test();
+	//gps_test();
 
 	//savefile_test();
 	//gps_test();
