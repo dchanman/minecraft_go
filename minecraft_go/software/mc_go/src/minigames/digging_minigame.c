@@ -48,7 +48,7 @@ static int block_type_starting_health[BLOCK_TYPE_NUM_TYPES] =
 static boolean digging_minigame_main();
 static int digging_minigame_generate_block_material();
 static int digging_minigame_get_pickaxe_material();
-static Box digging_minigame_block_initialize(int x, int y, block_type_t block_type);
+static void digging_minigame_block_initialize(Box *box, int x, int y, block_type_t block_type);
 static void digging_minigame_draw_block(int x, int y, block_type_t block_type, int health);
 static void digging_minigame_damage_block(Box *box, int damage);
 static boolean digging_minigame_is_done(Box array[2][3]);
@@ -85,7 +85,7 @@ static boolean digging_minigame_main() {
 			block_type_t block_type = digging_minigame_generate_block_material();
 
 			/* Create the block */
-			gridArray[i][j] = digging_minigame_block_initialize(
+			digging_minigame_block_initialize(&gridArray[i][j],
 					X_COORD_INIT + (j * X_COORD_INCREMENT),
 					Y_COORD_INIT + (i * Y_COORD_INCREMENT), block_type);
 		}
@@ -159,17 +159,15 @@ static int digging_minigame_get_pickaxe_material() {
  * Creates a block based on pixel coordinates
  * (x1,y1) is the top left corner of the box
  */
-static Box digging_minigame_block_initialize(int x, int y, block_type_t block_type) {
+static void digging_minigame_block_initialize(Box *box, int x, int y, block_type_t block_type) {
 	Box tempBox;
 
-	tempBox.x = x;
-	tempBox.y = y;
-	tempBox.health = block_type_starting_health[block_type];
-	tempBox.block_type = block_type;
+	box->x = x;
+	box->y = y;
+	box->health = block_type_starting_health[block_type];
+	box->block_type = block_type;
 
-	digging_minigame_draw_block(x, y, block_type, tempBox.health);
-
-	return tempBox;
+	digging_minigame_draw_block(x, y, block_type, box->health);
 }
 
 /*
