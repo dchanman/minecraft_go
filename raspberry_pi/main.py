@@ -1,13 +1,13 @@
 import serial
 import time
-#from mcpi.minecraft import Minecraft
-from mock import Minecraft
+from mcpi.minecraft import Minecraft
+#from mock import Minecraft
 
 #######################################
 # Initialize ports 
 #######################################
 mc = Minecraft.create()
-port = serial.Serial("/dev/ttyUSB0", baudrate=115200, timeout = 2.0)
+port = serial.Serial("/dev/ttyUSB0", baudrate=115200, timeout = 3.0)
 
 
 #######################################
@@ -30,6 +30,7 @@ def _send_and_check(byte, length):
 	port.write(byte)
 	rcv = port.read(length)
 	if (rcv != byte):
+		print("_send_and_check: expected <" + byte.decode("utf-8") + "> got <" + rcv.decode("utf-8") + ">")
 		return False
 	else:
 		return True
@@ -64,15 +65,35 @@ def rpc_recv_coordinates(rpc_code):
 	# Echo #rc
 	port.write(rpc_code)
 	
-	# Send latitude[9]
-	new_latitude = "ddmm.mmmm".encode('utf-8')
-	if not _send_and_check(new_latitude, 9):
-		print("Error sending new_latitude")
-	
-	# Send longitude[10]
-	new_longitude = "dddmm.mmmm".encode('utf-8')
-	if not _send_and_check(new_longitude, 10):
-		print("Error sending new_longitude")
+	# Send lat_minute
+	lat_minute = "12.3456".encode('utf-8')
+	if not _send_and_check(lat_minute, 7):
+		print("Error sending lat_minute")
+
+	# Send lat_degree
+	lat_degree = "78".encode('utf-8')
+	if not _send_and_check(lat_degree, 2):
+		print("Error sending lat_degree")
+
+	# Send lat_direction
+	lat_direction = "N".encode('utf-8')
+	if not _send_and_check(lat_direction, 1):
+		print("Error sending lat_direction")
+
+	# Send long_minute
+	long_minute = "23.4567".encode('utf-8')
+	if not _send_and_check(long_minute, 7):
+		print("Error sending long_minute")
+
+	# Send long_degree
+	long_degree = "890".encode('utf-8')
+	if not _send_and_check(long_degree, 3):
+		print("Error sending long_degree")
+
+	# Send long_direction
+	long_direction = "W".encode('utf-8')
+	if not _send_and_check(long_direction, 1):
+		print("Error sending long_direction")
 	
 	# Wait for #rc
 	rcv = port.read(3)
@@ -86,7 +107,7 @@ def rpc_recv_coordinates(rpc_code):
 	# Processing Steps
 	###################################
 	mc.postToChat("New GPS coordinates uploaded!")
-	print("New GPS coordinates uploaded: Latitude: <{0}> Longitude: <{1}>".format(new_latitude, new_longitude))
+	print("New GPS coordinates uploaded")
 	
 #######################################
 # rpc_journey_complete
