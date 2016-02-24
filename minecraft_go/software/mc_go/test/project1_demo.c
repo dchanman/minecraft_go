@@ -25,12 +25,7 @@ void project1_demo_initialize_savefile() {
 	/* Initialize data */
 	data.creeps_defeated = 0;
 	data.health = PLAYER_MAX_HEALTH;
-	data.start_time.year = 0;
-	data.start_time.month = 0;
-	data.start_time.day = 0;
-	data.start_time.hour = 0;
-	data.start_time.minute = 0;
-	data.start_time.second = 0;
+	memset(&data.start_time, 0, sizeof(data.start_time));
 	memset(&data.destination, 0, sizeof(data.destination));
 
 	/* Commit to SD Card */
@@ -43,8 +38,6 @@ void project1_demo_main() {
 	Time elapsed_time;
 	unsigned long elapsed_time_seconds;
 	boolean result;
-	char longitude[16];
-	char latitude[16];
 
 	/* Initialize everything */
 	savefile_init();
@@ -70,9 +63,7 @@ void project1_demo_main() {
 			/* Get coordinates from Minecraft Server */
 			DEBUG("Getting coordinates from Minecraft Server\n");
 			minecraft_rpc_hi();
-			result = minecraft_rpc_receive_coordinates(latitude,
-					sizeof(latitude), longitude,
-					sizeof(longitude));
+			result = minecraft_rpc_receive_coordinates(&data.destination);
 			if (result == FALSE)
 				printf("Error receiving coordinates from Minecraft server\n");
 

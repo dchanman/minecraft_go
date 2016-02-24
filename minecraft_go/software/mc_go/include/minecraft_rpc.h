@@ -19,7 +19,7 @@
 void minecraft_rpc_init();
 
 boolean minecraft_rpc_hi();
-boolean minecraft_rpc_receive_coordinates(char *latitude, const int latitude_length, char *longitude, const int longitude_length);
+boolean minecraft_rpc_receive_coordinates(Location *location);
 boolean minecraft_rpc_journey_complete(const int elapsed_hours, const int elapsed_min, const int elapsed_sec, const int creep_encs);
 
 

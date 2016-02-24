@@ -5,6 +5,7 @@
  *      Author: derek
  */
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include "general.h"
 #include "minecraft_rpc.h"
@@ -86,16 +87,13 @@ boolean minecraft_rpc_hi() {
 	return TRUE;
 }
 
-boolean minecraft_rpc_receive_coordinates(char *latitude, const int latitude_length, char *longitude, const int longitude_length)
+boolean minecraft_rpc_receive_coordinates(Location *location)
 {
-	/* Validate Inputs */
-	if (latitude_length < 10) {
-		printf("Error: Latitude buffer needs minimum length <%d>, only <%d> provided\n", 10, latitude_length);
-		return FALSE;
-	}
+	unsigned char buffer[16];
 
-	if (longitude_length < 11) {
-		printf("Error: Longitude buffer needs minimum length <%d>, only <%d> provided\n", 11, latitude_length);
+	/* Validate Inputs */
+	if (location == NULL) {
+		printf("Error: location was NULL\n");
 		return FALSE;
 	}
 
@@ -105,23 +103,66 @@ boolean minecraft_rpc_receive_coordinates(char *latitude, const int latitude_len
 		return FALSE;
 	}
 
-	/* Get Latitude */
-	DEBUG("[%s]: Getting latitude...\n", __func__);
-	memset(latitude, '\0', latitude_length);
-	if (!minecraft_rpc_receive_and_echo((unsigned char *)(latitude), latitude_length - 1)) {
-		printf("Error: Problem receiving latitude");
+	/* Get lat_minute */
+	DEBUG("[%s]: Getting lat_minute...\n", __func__);
+	memset(buffer, '\0', sizeof(buffer));
+	if (!minecraft_rpc_receive_and_echo(buffer, 7)) {
+		printf("Error: Problem receiving lat_minute");
 		return FALSE;
 	}
-	DEBUG("[%s]: Received Latitude: <%s>\n", __func__, latitude);
+	location->lat_minute = atof(buffer);
+	DEBUG("[%s]: Received lat_minute: <%lf>\n", __func__, location->lat_minute);
 
-	/* Get Longitude */
-	DEBUG("[%s]: Getting longitude...\n", __func__);
-	memset(longitude, '\0', longitude_length);
-	if (!minecraft_rpc_receive_and_echo((unsigned char *)(longitude), longitude_length - 1)) {
-		printf("Error: Problem receiving longitude");
+	/* Get lat_degree */
+	DEBUG("[%s]: Getting lat_degree...\n", __func__);
+	memset(buffer, '\0', sizeof(buffer));
+	if (!minecraft_rpc_receive_and_echo(buffer, 2)) {
+		printf("Error: Problem receiving lat_degree");
 		return FALSE;
 	}
-	DEBUG("[%s]: Received Longitude: <%s>\n", __func__, longitude);
+	location->lat_degree = atoi(buffer);
+	DEBUG("[%s]: Received lat_degree: <%d>\n", __func__, location->lat_degree);
+
+	/* Get lat_direction */
+	DEBUG("[%s]: Getting lat_direction...\n", __func__);
+	memset(buffer, '\0', sizeof(buffer));
+	if (!minecraft_rpc_receive_and_echo(buffer, 1)) {
+		printf("Error: Problem receiving lat_direction");
+		return FALSE;
+	}
+	location->lat_direction = (char)buffer[0];
+	DEBUG("[%s]: Received lat_direction: <%c>\n", __func__, location->lat_direction);
+
+	/* Get long_minute */
+	DEBUG("[%s]: Getting long_minute...\n", __func__);
+	memset(buffer, '\0', sizeof(buffer));
+	if (!minecraft_rpc_receive_and_echo(buffer, 7)) {
+		printf("Error: Problem receiving long_minute");
+		return FALSE;
+	}
+	location->long_minute = atof(buffer);
+	DEBUG("[%s]: Received long_minute: <%lf>\n", __func__, location->long_minute);
+
+	/* Get long_degree */
+	DEBUG("[%s]: Getting long_degree...\n", __func__);
+	memset(buffer, '\0', sizeof(buffer));
+	if (!minecraft_rpc_receive_and_echo(buffer, 3)) {
+		printf("Error: Problem receiving long_degree");
+		return FALSE;
+	}
+	location->long_degree = atoi(buffer);
+	DEBUG("[%s]: Received long_degree: <%d>\n", __func__, location->long_degree);
+
+	/* Get long_direction */
+	DEBUG("[%s]: Getting long_direction...\n", __func__);
+	memset(buffer, '\0', sizeof(buffer));
+	if (!minecraft_rpc_receive_and_echo(buffer, 1)) {
+		printf("Error: Problem receiving long_direction");
+		return FALSE;
+	}
+	location->long_direction = (char)buffer[0];
+	DEBUG("[%s]: Received long_direction: <%c>\n", __func__, location->long_direction);
+
 
 	/* Send #rc to close */
 	if (!minecraft_rpc_send_cmd(MINECRAFT_RPC_RECV_COORDINATES)) {
