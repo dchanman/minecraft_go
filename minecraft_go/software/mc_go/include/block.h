@@ -14,6 +14,10 @@
  */
 void clear_block(int x, int y);
 
+void soil_block_generator(int x, int y);
+
+void grass_block_generator(int x, int y);
+
 /*
  * generates a wood block using the top left coordinate (x, y)
  */
