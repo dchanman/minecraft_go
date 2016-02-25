@@ -104,6 +104,12 @@ boolean savefile_load(savedata_t * data)
 		goto error;
 	data->start_time.second = atoi(buffer);
 
+	/* Other flags */
+	result = sdcard_readln(fd, buffer, sizeof(buffer));
+	if (result < 0)
+		goto error;
+	data->journey_complete = atoi(buffer);
+
 
 	sdcard_close(fd);
 	return TRUE;
@@ -199,6 +205,11 @@ boolean savefile_save(const savedata_t data)
 		goto error;
 
 	snprintf(buffer, sizeof(buffer), "%d", data.start_time.second);
+	result = sdcard_writeln(fd, buffer, strlen(buffer));
+	if (result != 0)
+		goto error;
+
+	snprintf(buffer, sizeof(buffer), "%d", data.journey_complete);
 	result = sdcard_writeln(fd, buffer, strlen(buffer));
 	if (result != 0)
 		goto error;

@@ -188,6 +188,24 @@ void displayTextBox(char* text, int text_color, int border_color, int box_color)
 	}
 }
 
+void displayTouchPrompt() {
+	char buffer[100];
+
+	graphics_draw_rectangle_filled(175, 150, 13 * 32, 200, WHITE);
+	graphics_draw_rectangle_border(175, 150, 13 * 32, 200, CYAN);
+
+	sprintf(buffer, "Touch to start!");
+
+	int i = 0;
+
+	while (buffer[i]) {
+		printf("%c", buffer[i]);
+		OutGraphicsCharFont3(200 + i * 24, 225, YELLOW,
+				GRAPHICS_BACKGROUND_COLOUR, buffer[i], FALSE);
+		i++;
+	}
+}
+
 void displayBackground() {
 
 	int i;

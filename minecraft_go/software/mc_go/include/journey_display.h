@@ -20,6 +20,7 @@ void displaySmash();
 void displayWin();
 void displayLose();
 void displayTextBox(char* text, int text_color, int border_color, int box_color);
+void displayTouchPrompt();
 void displayBackground();
 
 #endif /* JOURNEY_DISPLAY_H_ */
