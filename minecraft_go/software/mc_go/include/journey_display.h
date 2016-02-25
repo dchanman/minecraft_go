@@ -15,6 +15,7 @@ void displayDestDistance(double dist_km,  int start_x_coord, int y_coord);
 void displaySpeed(float speed_km_h,  int start_x_coord, int y_coord);
 void displayKillCount(int creeper_kill, int start_x_coord, int y_coord);
 void displayMenu(Time *time1, double distance, float speed, int kill_count);
+void displayMenuQuickRefresh(Time *time1, double distance, float speed);
 void displayFight();
 void displaySmash();
 void displayWin();

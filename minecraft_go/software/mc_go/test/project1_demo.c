@@ -28,6 +28,7 @@ void project1_demo_initialize_savefile() {
 	data.health = PLAYER_MAX_HEALTH;
 	memset(&data.start_time, 0, sizeof(data.start_time));
 	memset(&data.destination, 0, sizeof(data.destination));
+	data.journey_complete = FALSE;
 
 	/* Commit to SD Card */
 	savefile_save(data);

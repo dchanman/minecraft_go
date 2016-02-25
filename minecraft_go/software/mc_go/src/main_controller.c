@@ -36,6 +36,31 @@ static state_t main_controller_state_arrived_at_destination(savedata_t *data);
 static state_t main_controller_state_report_results(savedata_t *data);
 static state_t main_controller_journey_menu_buttons(const savedata_t data);
 
+static void main_controller_journey_display(Time * current_time, double distance_to_destination, float speed, int creeps_defeated);
+static void main_controller_journey_display_quick_refresh(Time * current_time, double distance_to_destination, float speed);
+
+static Pixel creeper_minigame_hitbox = {600, 200};
+
+static Pixel connect_hitbox = {600, 300};
+
+static int button_width = 100;
+static int button_height = 50;
+
+static boolean need_full_refresh = TRUE;
+
+static void main_controller_journey_display(Time * current_time, double distance_to_destination, float speed, int creeps_defeated) {
+	displayBackground();
+	displayMenu(current_time, distance_to_destination, speed, creeps_defeated);
+	graphics_draw_rectangle_filled(creeper_minigame_hitbox.x,
+			creeper_minigame_hitbox.y, button_width, button_height, MAGENTA);
+	graphics_draw_rectangle_filled(connect_hitbox.x, connect_hitbox.y,
+			button_width, button_height, TEAL);
+}
+
+static void main_controller_journey_display_quick_refresh(Time * current_time, double distance_to_destination, float speed) {
+	displayMenuQuickRefresh(current_time, distance_to_destination, speed);
+}
+
 void main_controller_run() {
 	savedata_t data;
 	state_t current_state = STATE_JOURNEY;
@@ -46,38 +71,45 @@ void main_controller_run() {
 	minecraft_rpc_init();
 	gps_init();
 	graphics_clear_screen();
+	touchscreen_init();
 
 	/* Load data from SD Card */
 	savefile_init();
 	savefile_load(&data);
 
+	/* Start in the journey state */
+	current_state = main_controller_state_journey(&data);
+
 	/* Main loop */
 	while (1) {
+		prev_state = current_state;
+
 		switch (current_state) {
 		case STATE_JOURNEY:
 			current_state = main_controller_state_journey(&data);
 			break;
 		case STATE_RECEIVE_COORDINATES:
 			current_state = main_controller_state_receive_coordinates(&data);
+			need_full_refresh = TRUE;
 			break;
 		case STATE_CREEPER_MINIGAME:
 			current_state = main_controller_state_creeper_minigame(&data);
+			need_full_refresh = TRUE;
 			break;
 		case STATE_ARRIVED_AT_DESTINATION:
 			current_state = main_controller_state_arrived_at_destination(&data);
+			need_full_refresh = TRUE;
 			break;
 		case STATE_REPORT_RESULTS:
 			current_state = main_controller_state_report_results(&data);
+			need_full_refresh = TRUE;
 			break;
 		}
 
 		/* If we're changing states, do some cleanup */
 		if (current_state != prev_state) {
-			graphics_clear_screen();
 			savefile_save(data);
 		}
-
-		prev_state = current_state;
 	}
 }
 
@@ -97,13 +129,19 @@ static state_t main_controller_state_journey(savedata_t *data) {
 	long journey_time = gps_stop_timer(&data->start_time);
 	gps_convert_seconds_to_time(&current_time, journey_time);
 
+	distance_to_destination = 99;
+
 	/* Check if we've arrived at our destination */
 	if (!data->journey_complete && distance_to_destination < DISTANCE_TO_DESTINATION_THRESHOLD)
 		return STATE_ARRIVED_AT_DESTINATION;
 
 	/* Update journey display */
-	displayBackground();
-	displayMenu(&current_time, distance_to_destination, speed, data->creeps_defeated);
+	if (need_full_refresh != STATE_JOURNEY) {
+		need_full_refresh = FALSE;
+		main_controller_journey_display(&current_time, distance_to_destination, speed, data->creeps_defeated);
+	} else {
+		main_controller_journey_display_quick_refresh(&current_time, distance_to_destination, speed);
+	}
 
 	/* Poll for user input */
 	return main_controller_journey_menu_buttons(*data);
@@ -190,23 +228,12 @@ static state_t main_controller_journey_menu_buttons(const savedata_t data) {
 	Pixel touch_location;
 	boolean touch_result;
 
-	static Pixel creeper_minigame_hitbox;
-	creeper_minigame_hitbox.x = 600;
-	creeper_minigame_hitbox.y = 200;
 
-	static Pixel connect_hitbox;
-	connect_hitbox.x = 600;
-	connect_hitbox.y = 300;
-
-	static int button_width = 100;
-	static int button_height = 50;
 
 	touch_result = touchscreen_get_press(&touch_location, 800);
+	printf("Touch result: %s | Touch location: %d, %d\n", touch_result ? "true" : "false", touch_location.x, touch_location.y);
 
 	if (touch_result) {
-		graphics_draw_rectangle_filled(creeper_minigame_hitbox.x, creeper_minigame_hitbox.y, button_width, button_height, MAGENTA);
-		graphics_draw_rectangle_filled(connect_hitbox.x, connect_hitbox.y, button_width, button_height, TEAL);
-
 		if (touchscreen_is_touch_in_box(touch_location, creeper_minigame_hitbox, button_width, button_height)) {
 			return STATE_CREEPER_MINIGAME;
 		} else if (touchscreen_is_touch_in_box(touch_location, connect_hitbox, button_width, button_height)) {

@@ -98,6 +98,16 @@ void displayMenu(Time *time1, double distance, float speed, int kill_count) {
 
 }
 
+void displayMenuQuickRefresh(Time *time1, double distance, float speed) {
+	int start_x_coord = 90;
+	int y_coord = 100;
+
+	displayElapsedTime(time1, start_x_coord + 10, y_coord + 100);
+	displayDestDistance(distance, start_x_coord + 10, y_coord + 150);
+	displaySpeed(speed, start_x_coord + 10, y_coord + 200);
+
+}
+
 void displayFight() {
 	char buffer[100];
 
