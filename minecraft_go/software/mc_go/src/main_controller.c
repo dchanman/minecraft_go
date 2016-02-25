@@ -51,10 +51,8 @@ static boolean need_full_refresh = TRUE;
 static void main_controller_journey_display(Time * current_time, double distance_to_destination, float speed, int creeps_defeated) {
 	displayBackground();
 	displayMenu(current_time, distance_to_destination, speed, creeps_defeated);
-	graphics_draw_rectangle_filled(creeper_minigame_hitbox.x,
-			creeper_minigame_hitbox.y, button_width, button_height, MAGENTA);
-	graphics_draw_rectangle_filled(connect_hitbox.x, connect_hitbox.y,
-			button_width, button_height, TEAL);
+	displayConnect();
+	displayFight();
 }
 
 static void main_controller_journey_display_quick_refresh(Time * current_time, double distance_to_destination, float speed) {

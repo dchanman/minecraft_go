@@ -111,20 +111,39 @@ void displayMenuQuickRefresh(Time *time1, double distance, float speed) {
 void displayFight() {
 	char buffer[100];
 
-	graphics_draw_rectangle_filled(225, 150, 11 * 32, 200, WHITE);
-	graphics_draw_rectangle_border(225, 150, 11 * 32, 200, BLACK);
+	graphics_draw_rectangle_filled(600, 150, 13 * 12, 50, MAGENTA);
+	graphics_draw_rectangle_border(200, 150, 13 * 12, 50, CYAN);
 
-	sprintf(buffer, "FIGHT!!!!");
+	sprintf(buffer, "FIGHT!!");
 
 	int i = 0;
 
 	while (buffer[i]) {
 		printf("%c", buffer[i]);
-		OutGraphicsCharFont5(250 + i * 32, 225, GREEN,
+		OutGraphicsCharFont1(600 + i * 10, 225, GREEN,
 				GRAPHICS_BACKGROUND_COLOUR, buffer[i], FALSE);
 		i++;
 	}
 }
+
+void displayConnect() {
+	char buffer[100];
+
+	graphics_draw_rectangle_filled(600, 150, 13 * 12, 50, TEAL);
+	graphics_draw_rectangle_border(300, 150, 13 * 12, 50, CYAN);
+
+	sprintf(buffer, "FIGHT!!");
+
+	int i = 0;
+
+	while (buffer[i]) {
+		printf("%c", buffer[i]);
+		OutGraphicsCharFont1(600 + i * 10, 325, BLACK,
+				GRAPHICS_BACKGROUND_COLOUR, buffer[i], FALSE);
+		i++;
+	}
+}
+
 
 void displaySmash() {
 	char buffer[100];
@@ -215,6 +234,9 @@ void displayTouchPrompt() {
 		i++;
 	}
 }
+
+
+
 
 void displayBackground() {
 
