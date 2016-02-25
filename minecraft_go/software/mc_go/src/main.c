@@ -15,6 +15,7 @@
 int main() {
 	printf("Minecraft GO\n");
 
+#ifdef TESTING
 	/* Uncomment the feature you want to test */
 	//rs232_test_multi_char();
 	//rs232_test_single_char();
@@ -39,6 +40,7 @@ int main() {
 	//project1_demo_initialize_savefile();
 	//project1_demo_main();
 	//journey_display_test();
+#endif
 
 	main_controller_run();
 
