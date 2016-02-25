@@ -13,6 +13,7 @@ typedef struct savedata {
 	int creeps_defeated;
 	Location destination;
 	DateTime start_time;
+	boolean journey_complete;
 } savedata_t;
 
 void savefile_init();

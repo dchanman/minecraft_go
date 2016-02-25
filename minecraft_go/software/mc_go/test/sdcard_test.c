@@ -53,6 +53,7 @@ void savefile_test() {
 	data_orig.destination.long_degree = 1.289;
 	data_orig.destination.long_minute = 4;
 	data_orig.destination.long_direction = 'W';
+	data_orig.journey_complete = TRUE;
 
 	savefile_save(data_orig);
 	savefile_load(&data_loaded);
@@ -98,6 +99,9 @@ void savefile_test() {
 
 	if (data_orig.start_time.second != data_loaded.start_time.second)
 		printf("start_time.second: expected <%d>, actual <%d>\n", data_orig.start_time.second, data_loaded.start_time.second);
+
+	if (data_orig.journey_complete != data_loaded.journey_complete)
+			printf("journey_complete: expected <%d>, actual <%d>\n", data_orig.journey_complete, data_loaded.journey_complete);
 
 	printf("Tests complete!\n");
 }

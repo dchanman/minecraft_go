@@ -154,6 +154,7 @@ C_SRCS += src/hw.c
 C_SRCS += src/savefile.c
 C_SRCS += src/journey_display.c
 C_SRCS += src/timer.c
+C_SRCS += src/main_controller.c
 C_SRCS += src/graphics/block.c
 C_SRCS += src/graphics/creeper.c
 C_SRCS += src/graphics/heart.c
