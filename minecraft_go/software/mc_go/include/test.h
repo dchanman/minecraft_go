@@ -19,6 +19,7 @@ void minecraft_rpc_test_protocol_msg();
 void bluetooth_test();
 void sprint1_demo();
 void savefile_test();
+void timer_test();
 
 
 #endif /* TEST_H_ */
