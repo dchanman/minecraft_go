@@ -11,6 +11,7 @@
 #include "graphics.h"
 #include "creeper.h"
 #include "heart.h"
+#include "journey_display.h"
 
 /* Defines */
 #define CREEPER_STARTING_HEALTH	20
@@ -23,8 +24,11 @@
 #define CREEPER_HEART_MAX_NUM	15
 #define CREEPER_HEART_WIDTH	(GRAPHICS_PIXEL_WIDTH/CREEPER_HEART_MAX_NUM)
 
+#define CREEPER_MAX_DODGE_COUNT	2
+
 /* Static Functions */
 static boolean creeper_encounter_main(int *player_health);
+static void creeper_encounter_damage_player(int * player_health);
 static void creeper_encounter_draw_creeper(Pixel creeper_location);
 static void creeper_encounter_erase_creeper(Pixel creeper_location);
 static void creeper_encounter_draw_creep_helper(Pixel creeper_location, int colour);
@@ -41,14 +45,22 @@ boolean minigame_creeper_encounter(int *player_health) {
 	graphics_clear_screen();
 
 	/* Start the game */
+	printf("Starting game\n");
 	return creeper_encounter_main(player_health);
 }
 
 static boolean creeper_encounter_main(int *player_health) {
+	boolean touched;
+	int dodgecount;
 	int creeper_health = CREEPER_STARTING_HEALTH;
 	Pixel creeper_location;
 	Pixel touch_location;
 
+	displayTextBox("Touch to start!", WHITE, BLACK, BLACK);
+	touchscreen_get_press(&touch_location, 1500);
+	graphics_clear_screen();
+
+	dodgecount = 0;
 	while (creeper_health > 0 && *player_health > 0) {
 		/* Update creep location */
 		creeper_location.x = rand() % (GRAPHICS_PIXEL_WIDTH - CREEPER_PIXEL_WIDTH);
@@ -64,16 +76,32 @@ static boolean creeper_encounter_main(int *player_health) {
 		creeper_encounter_draw_hearts(*player_health, PLAYER_MAX_HEALTH);
 
 		/* Wait for touch */
-		touchscreen_get_press(&touch_location);
-		DEBUG("Touched (%d, %d)\n", touch_location.x, touch_location.y);
+		int time = rand()%400 + 200;
+		touched = touchscreen_get_press(&touch_location, time);
+		dodgecount++;
 
-		/* Update health */
-		if (touchscreen_is_touch_in_box(touch_location, creeper_location, CREEPER_PIXEL_WIDTH, CREEPER_PIXEL_HEIGHT)) {
-			DEBUG("Hit the creep!\n");
-			creeper_health--;
+		if (!touched) {
+			/* Timeout */
+			DEBUG("Took too long!\n");
 		} else {
-			DEBUG("Missed the creep!\n");
-			(*player_health)--;
+			/* Registered touch */
+			DEBUG("Touched (%d, %d)\n", touch_location.x, touch_location.y);
+
+
+
+			if (touchscreen_is_touch_in_box(touch_location, creeper_location, CREEPER_PIXEL_WIDTH, CREEPER_PIXEL_HEIGHT)) {
+				DEBUG("Hit the creep!\n");
+				creeper_health--;
+				dodgecount = 0;
+			} else {
+				DEBUG("Missed the creep!\n");
+				//creeper_encounter_damage_player(player_health);
+			}
+		}
+
+		if (dodgecount > CREEPER_MAX_DODGE_COUNT) {
+			creeper_encounter_damage_player(player_health);
+			dodgecount = 0;
 		}
 
 		/* Erase previous creep */
@@ -86,11 +114,22 @@ static boolean creeper_encounter_main(int *player_health) {
 	/* Determine whether the player won or lost */
 	if (creeper_health <= 0) {
 		DEBUG("You won!\n");
+		displayWin();
+		usleep(2000000);
 		return TRUE;
 	} else {
 		DEBUG("You lost!\n");
+		displayLose();
+		usleep(2000000);
 		return FALSE;
 	}
+}
+
+static void creeper_encounter_damage_player(int * player_health) {
+	//graphics_fill_screen(RED);
+	//usleep(400000);
+	//graphics_clear_screen();
+	(*player_health)--;
 }
 
 static void creeper_encounter_erase_hearts() {

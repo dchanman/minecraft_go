@@ -36,7 +36,7 @@ void journey_display_test(){
 			if(first_try == 0){
 				displayBackground();
 				first_try = 1;
-				displayMenu(140, 141);
+				//displayMenu(140, 141);
 			}
 
 
@@ -47,7 +47,7 @@ void journey_display_test(){
 			if(first_try == 0){
 						displayBackground();
 						first_try = 1;
-						displayMenu(90, 100);
+						//displayMenu(90, 100);
 									displayElapsedTime(&time1, 100, 200);
 									displayDestDistance(54.35, 100, 250);
 									displaySpeed(3.12,  100, 300);
