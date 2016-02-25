@@ -178,12 +178,12 @@ boolean minecraft_rpc_journey_complete(const int elapsed_hours, const int elapse
 	unsigned char elapsed_time_buffer[10] = {'\0'};
 	unsigned char creep_encs_buffer[4] = {'\0'};
 
-	/* Validate Inputs */
-	if (elapsed_hours > 1000 || elapsed_min > 100 || elapsed_sec > 100 || creep_encs > 1000) {
-		printf("Error: Invalid input parameters: hhh: <%03d> mm:<%02d> ss:<%02d> creep_encs:<%02d>\n",
-				elapsed_hours, elapsed_min, elapsed_sec, creep_encs);
-		return FALSE;
-	}
+//	/* Validate Inputs */
+//	if (elapsed_hours > 1000 || elapsed_min > 100 || elapsed_sec > 100 || creep_encs > 1000) {
+//		printf("Error: Invalid input parameters: hhh: <%03d> mm:<%02d> ss:<%02d> creep_encs:<%02d>\n",
+//				elapsed_hours, elapsed_min, elapsed_sec, creep_encs);
+//		return FALSE;
+//	}
 
 	/* Send #rc to connect */
 	if (!minecraft_rpc_send_cmd(MINECRAFT_RPC_JOURNEY_COMPLETE)) {

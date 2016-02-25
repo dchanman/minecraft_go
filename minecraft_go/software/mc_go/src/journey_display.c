@@ -111,8 +111,8 @@ void displayMenuQuickRefresh(Time *time1, double distance, float speed) {
 void displayFight() {
 	char buffer[100];
 
-	graphics_draw_rectangle_filled(600, 150, 13 * 12, 50, MAGENTA);
-	graphics_draw_rectangle_border(200, 150, 13 * 12, 50, CYAN);
+	graphics_draw_rectangle_filled(600, 200, 100, 50, MAGENTA);
+	graphics_draw_rectangle_border(600, 200, 100, 50, CYAN);
 
 	sprintf(buffer, "FIGHT!!");
 
@@ -120,7 +120,7 @@ void displayFight() {
 
 	while (buffer[i]) {
 		printf("%c", buffer[i]);
-		OutGraphicsCharFont1(600 + i * 10, 225, GREEN,
+		OutGraphicsCharFont1(625 + i * 10, 225, GREEN,
 				GRAPHICS_BACKGROUND_COLOUR, buffer[i], FALSE);
 		i++;
 	}
@@ -129,16 +129,16 @@ void displayFight() {
 void displayConnect() {
 	char buffer[100];
 
-	graphics_draw_rectangle_filled(600, 150, 13 * 12, 50, TEAL);
-	graphics_draw_rectangle_border(300, 150, 13 * 12, 50, CYAN);
+	graphics_draw_rectangle_filled(600, 300, 100, 50, TEAL);
+	graphics_draw_rectangle_border(600, 300, 100, 50, CYAN);
 
-	sprintf(buffer, "FIGHT!!");
+	sprintf(buffer, "CONNECT");
 
 	int i = 0;
 
 	while (buffer[i]) {
 		printf("%c", buffer[i]);
-		OutGraphicsCharFont1(600 + i * 10, 325, BLACK,
+		OutGraphicsCharFont1(615 + i * 10, 325, BLACK,
 				GRAPHICS_BACKGROUND_COLOUR, buffer[i], FALSE);
 		i++;
 	}
