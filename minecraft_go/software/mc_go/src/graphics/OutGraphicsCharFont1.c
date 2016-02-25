@@ -1,3 +1,5 @@
+#include "graphics.h"
+
 #define YRES 480
 #define XRES 800
 #define TRUE 1

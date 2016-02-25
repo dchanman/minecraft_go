@@ -32,9 +32,9 @@ int main() {
 	//int health = PLAYER_MAX_HEALTH;
 	//minigame_creeper_encounter(&health);
 	//minigame_digging();
-
-	project1_demo_initialize_savefile();
-	project1_demo_main();
+	//project1_demo_initialize_savefile();
+	//project1_demo_main();
+	journey_display_test();
 
 	return 0;
 }
