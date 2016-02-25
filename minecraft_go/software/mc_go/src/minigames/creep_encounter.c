@@ -56,7 +56,7 @@ static boolean creeper_encounter_main(int *player_health) {
 	Pixel creeper_location;
 	Pixel touch_location;
 
-	displayTextBox("Touch to start!", WHITE, BLACK, BLACK);
+	displayTouchPrompt();
 	touchscreen_get_press(&touch_location, 1500);
 	graphics_clear_screen();
 
