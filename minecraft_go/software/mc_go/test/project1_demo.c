@@ -16,6 +16,7 @@
 #include "minigames.h"
 #include "minecraft_rpc.h"
 #include "graphics.h"
+#include "journey_display.h"
 
 void project1_demo_initialize_savefile() {
 	savedata_t data;
@@ -108,6 +109,7 @@ void project1_demo_main() {
 
 			/* Encounter creepers */
 			DEBUG("Playing creeper minigame\n");
+			data.health = PLAYER_MAX_HEALTH;
 			result = minigame_creeper_encounter(&data.health);
 
 			if (result == FALSE) {
@@ -153,8 +155,13 @@ void project1_demo_main() {
 			break;
 		}
 
-		/* TODO: Display journey menu */
-
+		/* Display journey menu */
+		Time time;
+		time.hour = 12;
+		time.minute = 4;
+		time.second = 2;
+		displayBackground();
+		displayMenu(&time, 12.3, 77.12, data.creeps_defeated);
 
 		/* Save data every time */
 		savefile_save(data);

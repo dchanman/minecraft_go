@@ -272,6 +272,10 @@ void graphics_clear_screen() {
 	graphics_draw_rectangle_filled(0, 0, GRAPHICS_PIXEL_WIDTH, GRAPHICS_PIXEL_HEIGHT, GRAPHICS_BACKGROUND_COLOUR);
 }
 
+void graphics_fill_screen(int colour) {
+	graphics_draw_rectangle_filled(0, 0, GRAPHICS_PIXEL_WIDTH, GRAPHICS_PIXEL_HEIGHT, colour);
+}
+
 void FillRectangleWBorder(int x1, int y1, int x2, int y2, int x3, int y3, int x4, int y4, int Colour)
 {
 

@@ -74,8 +74,10 @@ void displayKillCount(int creeper_kill, int start_x_coord, int y_coord) {
 	}
 }
 
-void displayMenu(int start_x_coord, int y_coord) {
+void displayMenu(Time *time1, double distance, float speed, int kill_count) {
 	char buffer[100];
+	int start_x_coord = 90;
+	int y_coord = 100;
 
 	sprintf(buffer, "Minecraft GO");
 
@@ -88,6 +90,12 @@ void displayMenu(int start_x_coord, int y_coord) {
 		i++;
 	}
 	HLine(start_x_coord, y_coord + 55, start_x_coord + 9 * 32, WHITE);
+
+	displayElapsedTime(time1, start_x_coord + 10, y_coord + 100);
+	displayDestDistance(distance, start_x_coord + 10, y_coord + 150);
+	displaySpeed(speed, start_x_coord + 10, y_coord + 200);
+	displayKillCount(kill_count, start_x_coord + 10, y_coord + 250);
+
 }
 
 void displayFight() {
@@ -139,7 +147,7 @@ void displayWin() {
 	while (buffer[i]) {
 		printf("%c", buffer[i]);
 		OutGraphicsCharFont5(250 + i * 32, 225, GREEN,
-				GRAPHICS_BACKGROUND_COLOUR, buffer[i], TRUE);
+				GRAPHICS_BACKGROUND_COLOUR, buffer[i], FALSE);
 		i++;
 	}
 }
@@ -157,7 +165,7 @@ void displayLose() {
 	while (buffer[i]) {
 		printf("%c", buffer[i]);
 		OutGraphicsCharFont5(250 + i * 32, 225, RED, GRAPHICS_BACKGROUND_COLOUR,
-				buffer[i], TRUE);
+				buffer[i], FALSE);
 		i++;
 	}
 }
@@ -175,7 +183,7 @@ void displayTextBox(char* text, int text_color, int border_color, int box_color)
 	while (buffer[i]) {
 		printf("%c", buffer[i]);
 		OutGraphicsCharFont5(250 + i * 32, 225, text_color,
-				GRAPHICS_BACKGROUND_COLOUR, buffer[i], TRUE);
+				GRAPHICS_BACKGROUND_COLOUR, buffer[i], FALSE);
 		i++;
 	}
 }
@@ -192,4 +200,6 @@ void displayBackground() {
 	grass_block_generator(560, 0);
 
 }
+
+
 

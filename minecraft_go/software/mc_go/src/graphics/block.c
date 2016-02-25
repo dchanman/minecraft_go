@@ -215,85 +215,85 @@ void wood_block_generator(int x, int y) {
  **************************************************************/
 void grass_block_generator(int x, int y) {
     //column 1
-    graphics_draw_rectangle_filled(x + 0, y + 0, WIDTH, 45, GRASS_COLOUR_2);
-    graphics_draw_rectangle_filled(x + 0, y + 45, WIDTH, 105, GRASS_COLOUR_1);
-    graphics_draw_rectangle_filled(x + 0, y + 150, WIDTH, 75, GRASS_COLOUR_2);
-    graphics_draw_rectangle_filled(x + 0, y + 225, WIDTH, 15, GRASS_COLOUR_1);
+    graphics_draw_rectangle_filled(x + 0, y + 0, PIXEL_SIZE, 45, GRASS_COLOUR_2);
+    graphics_draw_rectangle_filled(x + 0, y + 45, PIXEL_SIZE, 105, GRASS_COLOUR_1);
+    graphics_draw_rectangle_filled(x + 0, y + 150, PIXEL_SIZE, 75, GRASS_COLOUR_2);
+    graphics_draw_rectangle_filled(x + 0, y + 225, PIXEL_SIZE, 15, GRASS_COLOUR_1);
 
     //column 2
-    graphics_draw_rectangle_filled(x + 15, y + 0, WIDTH, 45, GRASS_COLOUR_1);
-    graphics_draw_rectangle_filled(x + 15, y + 45, WIDTH, 30, GRASS_COLOUR_2);
-    graphics_draw_rectangle_filled(x + 15, y + 75, WIDTH, 165, GRASS_COLOUR_1);
+    graphics_draw_rectangle_filled(x + 15, y + 0, PIXEL_SIZE, 45, GRASS_COLOUR_1);
+    graphics_draw_rectangle_filled(x + 15, y + 45, PIXEL_SIZE, 30, GRASS_COLOUR_2);
+    graphics_draw_rectangle_filled(x + 15, y + 75, PIXEL_SIZE, 165, GRASS_COLOUR_1);
 
     //column 3
-    graphics_draw_rectangle_filled(x + 30, y + 0, WIDTH, 105, GRASS_COLOUR_1);
-    graphics_draw_rectangle_filled(x + 30, y + 105, WIDTH, 90, GRASS_COLOUR_2);
-    graphics_draw_rectangle_filled(x + 30, y + 195, WIDTH, 45, GRASS_COLOUR_1);
+    graphics_draw_rectangle_filled(x + 30, y + 0, PIXEL_SIZE, 105, GRASS_COLOUR_1);
+    graphics_draw_rectangle_filled(x + 30, y + 105, PIXEL_SIZE, 90, GRASS_COLOUR_2);
+    graphics_draw_rectangle_filled(x + 30, y + 195, PIXEL_SIZE, 45, GRASS_COLOUR_1);
 
     //column 4
-    graphics_draw_rectangle_filled(x + 45, y + 0, WIDTH, 15, GRASS_COLOUR_1);
-    graphics_draw_rectangle_filled(x + 45, y + 15, WIDTH, 45, GRASS_COLOUR_2);
-    graphics_draw_rectangle_filled(x + 45, y + 60, WIDTH, 180, GRASS_COLOUR_1);
+    graphics_draw_rectangle_filled(x + 45, y + 0, PIXEL_SIZE, 15, GRASS_COLOUR_1);
+    graphics_draw_rectangle_filled(x + 45, y + 15, PIXEL_SIZE, 45, GRASS_COLOUR_2);
+    graphics_draw_rectangle_filled(x + 45, y + 60, PIXEL_SIZE, 180, GRASS_COLOUR_1);
 
     //column 5
-    graphics_draw_rectangle_filled(x + 60, y + 0, WIDTH, 30, GRASS_COLOUR_2);
-    graphics_draw_rectangle_filled(x + 60, y + 30, WIDTH, 210, GRASS_COLOUR_1);
+    graphics_draw_rectangle_filled(x + 60, y + 0, PIXEL_SIZE, 30, GRASS_COLOUR_2);
+    graphics_draw_rectangle_filled(x + 60, y + 30, PIXEL_SIZE, 210, GRASS_COLOUR_1);
 
     //column 6
-    graphics_draw_rectangle_filled(x + 75, y + 0, WIDTH, 105, GRASS_COLOUR_1);
-    graphics_draw_rectangle_filled(x + 75, y + 105, WIDTH, 30, GRASS_COLOUR_2);
-    graphics_draw_rectangle_filled(x + 75, y + 135, WIDTH, 105, GRASS_COLOUR_1);
+    graphics_draw_rectangle_filled(x + 75, y + 0, PIXEL_SIZE, 105, GRASS_COLOUR_1);
+    graphics_draw_rectangle_filled(x + 75, y + 105, PIXEL_SIZE, 30, GRASS_COLOUR_2);
+    graphics_draw_rectangle_filled(x + 75, y + 135, PIXEL_SIZE, 105, GRASS_COLOUR_1);
 
     //column 7
-    graphics_draw_rectangle_filled(x + 90, y + 0, WIDTH, 15, GRASS_COLOUR_1);
-    graphics_draw_rectangle_filled(x + 90, y + 15, WIDTH, 45, GRASS_COLOUR_2);
-    graphics_draw_rectangle_filled(x + 90, y + 60, WIDTH, 75, GRASS_COLOUR_1);
-    graphics_draw_rectangle_filled(x + 90, y + 135, WIDTH, 90, GRASS_COLOUR_2);
-    graphics_draw_rectangle_filled(x + 90, y + 225, WIDTH, 15, GRASS_COLOUR_1);
+    graphics_draw_rectangle_filled(x + 90, y + 0, PIXEL_SIZE, 15, GRASS_COLOUR_1);
+    graphics_draw_rectangle_filled(x + 90, y + 15, PIXEL_SIZE, 45, GRASS_COLOUR_2);
+    graphics_draw_rectangle_filled(x + 90, y + 60, PIXEL_SIZE, 75, GRASS_COLOUR_1);
+    graphics_draw_rectangle_filled(x + 90, y + 135, PIXEL_SIZE, 90, GRASS_COLOUR_2);
+    graphics_draw_rectangle_filled(x + 90, y + 225, PIXEL_SIZE, 15, GRASS_COLOUR_1);
 
     //column 8
-    graphics_draw_rectangle_filled(x + 105, y + 0, WIDTH, 15, GRASS_COLOUR_2);
-    graphics_draw_rectangle_filled(x + 105, y + 15, WIDTH, 75, GRASS_COLOUR_1);
-    graphics_draw_rectangle_filled(x + 105, y + 90, WIDTH, 45, GRASS_COLOUR_2);
-    graphics_draw_rectangle_filled(x + 105, y + 135, WIDTH, 75, GRASS_COLOUR_1);
-    graphics_draw_rectangle_filled(x + 105, y + 210, WIDTH, 30, GRASS_COLOUR_2);
+    graphics_draw_rectangle_filled(x + 105, y + 0, PIXEL_SIZE, 15, GRASS_COLOUR_2);
+    graphics_draw_rectangle_filled(x + 105, y + 15, PIXEL_SIZE, 75, GRASS_COLOUR_1);
+    graphics_draw_rectangle_filled(x + 105, y + 90, PIXEL_SIZE, 45, GRASS_COLOUR_2);
+    graphics_draw_rectangle_filled(x + 105, y + 135, PIXEL_SIZE, 75, GRASS_COLOUR_1);
+    graphics_draw_rectangle_filled(x + 105, y + 210, PIXEL_SIZE, 30, GRASS_COLOUR_2);
 
     //column 9
-    graphics_draw_rectangle_filled(x + 120, y + 0, WIDTH, 150, GRASS_COLOUR_1);
-    graphics_draw_rectangle_filled(x + 120, y + 150, WIDTH, 45, GRASS_COLOUR_2);
-    graphics_draw_rectangle_filled(x + 120, y + 195, WIDTH, 45, GRASS_COLOUR_1);
+    graphics_draw_rectangle_filled(x + 120, y + 0, PIXEL_SIZE, 150, GRASS_COLOUR_1);
+    graphics_draw_rectangle_filled(x + 120, y + 150, PIXEL_SIZE, 45, GRASS_COLOUR_2);
+    graphics_draw_rectangle_filled(x + 120, y + 195, PIXEL_SIZE, 45, GRASS_COLOUR_1);
 
     //column 10
-    graphics_draw_rectangle_filled(x + 135, y + 0, WIDTH, 15, GRASS_COLOUR_1);
-    graphics_draw_rectangle_filled(x + 135, y + 15, WIDTH, 135, GRASS_COLOUR_2);
-    graphics_draw_rectangle_filled(x + 135, y + 150, WIDTH, 90, GRASS_COLOUR_1);
+    graphics_draw_rectangle_filled(x + 135, y + 0, PIXEL_SIZE, 15, GRASS_COLOUR_1);
+    graphics_draw_rectangle_filled(x + 135, y + 15, PIXEL_SIZE, 135, GRASS_COLOUR_2);
+    graphics_draw_rectangle_filled(x + 135, y + 150, PIXEL_SIZE, 90, GRASS_COLOUR_1);
 
     //column 11
-    graphics_draw_rectangle_filled(x + 150, y + 0, WIDTH, 240, GRASS_COLOUR_1);
+    graphics_draw_rectangle_filled(x + 150, y + 0, PIXEL_SIZE, 240, GRASS_COLOUR_1);
 
     //column 12
-    graphics_draw_rectangle_filled(x + 165, y + 0, WIDTH, 90, GRASS_COLOUR_1);
-    graphics_draw_rectangle_filled(x + 165, y + 90, WIDTH, 150, GRASS_COLOUR_2);
+    graphics_draw_rectangle_filled(x + 165, y + 0, PIXEL_SIZE, 90, GRASS_COLOUR_1);
+    graphics_draw_rectangle_filled(x + 165, y + 90, PIXEL_SIZE, 150, GRASS_COLOUR_2);
 
     //column 13
-    graphics_draw_rectangle_filled(x + 180, y + 0, WIDTH, 15, GRASS_COLOUR_1);
-    graphics_draw_rectangle_filled(x + 180, y + 15, WIDTH, 90, GRASS_COLOUR_2);
-    graphics_draw_rectangle_filled(x + 180, y + 105, WIDTH, 135, GRASS_COLOUR_1);
+    graphics_draw_rectangle_filled(x + 180, y + 0, PIXEL_SIZE, 15, GRASS_COLOUR_1);
+    graphics_draw_rectangle_filled(x + 180, y + 15, PIXEL_SIZE, 90, GRASS_COLOUR_2);
+    graphics_draw_rectangle_filled(x + 180, y + 105, PIXEL_SIZE, 135, GRASS_COLOUR_1);
 
     //column 14
-    graphics_draw_rectangle_filled(x + 195, y + 0, WIDTH, 240, GRASS_COLOUR_1);
+    graphics_draw_rectangle_filled(x + 195, y + 0, PIXEL_SIZE, 240, GRASS_COLOUR_1);
 
     //column 15
-    graphics_draw_rectangle_filled(x + 210, y + 0, WIDTH, 15, GRASS_COLOUR_1);
-    graphics_draw_rectangle_filled(x + 210, y + 15, WIDTH, 180, GRASS_COLOUR_2);
-    graphics_draw_rectangle_filled(x + 210, y + 195, WIDTH, 15, GRASS_COLOUR_1);
-    graphics_draw_rectangle_filled(x + 210, y + 210, WIDTH, 15, GRASS_COLOUR_2);
-    graphics_draw_rectangle_filled(x + 210, y + 225, WIDTH, 15, GRASS_COLOUR_1);
+    graphics_draw_rectangle_filled(x + 210, y + 0, PIXEL_SIZE, 15, GRASS_COLOUR_1);
+    graphics_draw_rectangle_filled(x + 210, y + 15, PIXEL_SIZE, 180, GRASS_COLOUR_2);
+    graphics_draw_rectangle_filled(x + 210, y + 195, PIXEL_SIZE, 15, GRASS_COLOUR_1);
+    graphics_draw_rectangle_filled(x + 210, y + 210, PIXEL_SIZE, 15, GRASS_COLOUR_2);
+    graphics_draw_rectangle_filled(x + 210, y + 225, PIXEL_SIZE, 15, GRASS_COLOUR_1);
 
     //column 16
-    graphics_draw_rectangle_filled(x + 225, y + 0, WIDTH, 195, GRASS_COLOUR_1);
-    graphics_draw_rectangle_filled(x + 225, y + 195, WIDTH, 15, GRASS_COLOUR_2);
-    graphics_draw_rectangle_filled(x + 225, y + 210, WIDTH, 30, GRASS_COLOUR_1);
+    graphics_draw_rectangle_filled(x + 225, y + 0, PIXEL_SIZE, 195, GRASS_COLOUR_1);
+    graphics_draw_rectangle_filled(x + 225, y + 195, PIXEL_SIZE, 15, GRASS_COLOUR_2);
+    graphics_draw_rectangle_filled(x + 225, y + 210, PIXEL_SIZE, 30, GRASS_COLOUR_1);
 }
 
 /**************************************************************
@@ -301,85 +301,85 @@ void grass_block_generator(int x, int y) {
  **************************************************************/
 void soil_block_generator(int x, int y) {
     //column 1
-    graphics_draw_rectangle_filled(x + 0, y + 0, WIDTH, 45, SOIL_COLOUR_2);
-    graphics_draw_rectangle_filled(x + 0, y + 45, WIDTH, 105, SOIL_COLOUR_1);
-    graphics_draw_rectangle_filled(x + 0, y + 150, WIDTH, 75, SOIL_COLOUR_2);
-    graphics_draw_rectangle_filled(x + 0, y + 225, WIDTH, 15, SOIL_COLOUR_1);
+    graphics_draw_rectangle_filled(x + 0, y + 0, PIXEL_SIZE, 45, SOIL_COLOUR_2);
+    graphics_draw_rectangle_filled(x + 0, y + 45, PIXEL_SIZE, 105, SOIL_COLOUR_1);
+    graphics_draw_rectangle_filled(x + 0, y + 150, PIXEL_SIZE, 75, SOIL_COLOUR_2);
+    graphics_draw_rectangle_filled(x + 0, y + 225, PIXEL_SIZE, 15, SOIL_COLOUR_1);
 
     //column 2
-    graphics_draw_rectangle_filled(x + 15, y + 0, WIDTH, 45, SOIL_COLOUR_1);
-    graphics_draw_rectangle_filled(x + 15, y + 45, WIDTH, 30, SOIL_COLOUR_2);
-    graphics_draw_rectangle_filled(x + 15, y + 75, WIDTH, 165, SOIL_COLOUR_1);
+    graphics_draw_rectangle_filled(x + 15, y + 0, PIXEL_SIZE, 45, SOIL_COLOUR_1);
+    graphics_draw_rectangle_filled(x + 15, y + 45, PIXEL_SIZE, 30, SOIL_COLOUR_2);
+    graphics_draw_rectangle_filled(x + 15, y + 75, PIXEL_SIZE, 165, SOIL_COLOUR_1);
 
     //column 3
-    graphics_draw_rectangle_filled(x + 30, y + 0, WIDTH, 105, SOIL_COLOUR_1);
-    graphics_draw_rectangle_filled(x + 30, y + 105, WIDTH, 90, SOIL_COLOUR_2);
-    graphics_draw_rectangle_filled(x + 30, y + 195, WIDTH, 45, SOIL_COLOUR_1);
+    graphics_draw_rectangle_filled(x + 30, y + 0, PIXEL_SIZE, 105, SOIL_COLOUR_1);
+    graphics_draw_rectangle_filled(x + 30, y + 105, PIXEL_SIZE, 90, SOIL_COLOUR_2);
+    graphics_draw_rectangle_filled(x + 30, y + 195, PIXEL_SIZE, 45, SOIL_COLOUR_1);
 
     //column 4
-    graphics_draw_rectangle_filled(x + 45, y + 0, WIDTH, 15, SOIL_COLOUR_1);
-    graphics_draw_rectangle_filled(x + 45, y + 15, WIDTH, 45, SOIL_COLOUR_2);
-    graphics_draw_rectangle_filled(x + 45, y + 60, WIDTH, 180, SOIL_COLOUR_1);
+    graphics_draw_rectangle_filled(x + 45, y + 0, PIXEL_SIZE, 15, SOIL_COLOUR_1);
+    graphics_draw_rectangle_filled(x + 45, y + 15, PIXEL_SIZE, 45, SOIL_COLOUR_2);
+    graphics_draw_rectangle_filled(x + 45, y + 60, PIXEL_SIZE, 180, SOIL_COLOUR_1);
 
     //column 5
-    graphics_draw_rectangle_filled(x + 60, y + 0, WIDTH, 30, SOIL_COLOUR_2);
-    graphics_draw_rectangle_filled(x + 60, y + 30, WIDTH, 210, SOIL_COLOUR_1);
+    graphics_draw_rectangle_filled(x + 60, y + 0, PIXEL_SIZE, 30, SOIL_COLOUR_2);
+    graphics_draw_rectangle_filled(x + 60, y + 30, PIXEL_SIZE, 210, SOIL_COLOUR_1);
 
     //column 6
-    graphics_draw_rectangle_filled(x + 75, y + 0, WIDTH, 105, SOIL_COLOUR_1);
-    graphics_draw_rectangle_filled(x + 75, y + 105, WIDTH, 30, SOIL_COLOUR_2);
-    graphics_draw_rectangle_filled(x + 75, y + 135, WIDTH, 105, SOIL_COLOUR_1);
+    graphics_draw_rectangle_filled(x + 75, y + 0, PIXEL_SIZE, 105, SOIL_COLOUR_1);
+    graphics_draw_rectangle_filled(x + 75, y + 105, PIXEL_SIZE, 30, SOIL_COLOUR_2);
+    graphics_draw_rectangle_filled(x + 75, y + 135, PIXEL_SIZE, 105, SOIL_COLOUR_1);
 
     //column 7
-    graphics_draw_rectangle_filled(x + 90, y + 0, WIDTH, 15, SOIL_COLOUR_1);
-    graphics_draw_rectangle_filled(x + 90, y + 15, WIDTH, 45, SOIL_COLOUR_2);
-    graphics_draw_rectangle_filled(x + 90, y + 60, WIDTH, 75, SOIL_COLOUR_1);
-    graphics_draw_rectangle_filled(x + 90, y + 135, WIDTH, 90, SOIL_COLOUR_2);
-    graphics_draw_rectangle_filled(x + 90, y + 225, WIDTH, 15, SOIL_COLOUR_1);
+    graphics_draw_rectangle_filled(x + 90, y + 0, PIXEL_SIZE, 15, SOIL_COLOUR_1);
+    graphics_draw_rectangle_filled(x + 90, y + 15, PIXEL_SIZE, 45, SOIL_COLOUR_2);
+    graphics_draw_rectangle_filled(x + 90, y + 60, PIXEL_SIZE, 75, SOIL_COLOUR_1);
+    graphics_draw_rectangle_filled(x + 90, y + 135, PIXEL_SIZE, 90, SOIL_COLOUR_2);
+    graphics_draw_rectangle_filled(x + 90, y + 225, PIXEL_SIZE, 15, SOIL_COLOUR_1);
 
     //column 8
-    graphics_draw_rectangle_filled(x + 105, y + 0, WIDTH, 15, SOIL_COLOUR_2);
-    graphics_draw_rectangle_filled(x + 105, y + 15, WIDTH, 75, SOIL_COLOUR_1);
-    graphics_draw_rectangle_filled(x + 105, y + 90, WIDTH, 45, SOIL_COLOUR_2);
-    graphics_draw_rectangle_filled(x + 105, y + 135, WIDTH, 75, SOIL_COLOUR_1);
-    graphics_draw_rectangle_filled(x + 105, y + 210, WIDTH, 30, SOIL_COLOUR_2);
+    graphics_draw_rectangle_filled(x + 105, y + 0, PIXEL_SIZE, 15, SOIL_COLOUR_2);
+    graphics_draw_rectangle_filled(x + 105, y + 15, PIXEL_SIZE, 75, SOIL_COLOUR_1);
+    graphics_draw_rectangle_filled(x + 105, y + 90, PIXEL_SIZE, 45, SOIL_COLOUR_2);
+    graphics_draw_rectangle_filled(x + 105, y + 135, PIXEL_SIZE, 75, SOIL_COLOUR_1);
+    graphics_draw_rectangle_filled(x + 105, y + 210, PIXEL_SIZE, 30, SOIL_COLOUR_2);
 
     //column 9
-    graphics_draw_rectangle_filled(x + 120, y + 0, WIDTH, 150, SOIL_COLOUR_1);
-    graphics_draw_rectangle_filled(x + 120, y + 150, WIDTH, 45, SOIL_COLOUR_2);
-    graphics_draw_rectangle_filled(x + 120, y + 195, WIDTH, 45, SOIL_COLOUR_1);
+    graphics_draw_rectangle_filled(x + 120, y + 0, PIXEL_SIZE, 150, SOIL_COLOUR_1);
+    graphics_draw_rectangle_filled(x + 120, y + 150, PIXEL_SIZE, 45, SOIL_COLOUR_2);
+    graphics_draw_rectangle_filled(x + 120, y + 195, PIXEL_SIZE, 45, SOIL_COLOUR_1);
 
     //column 10
-    graphics_draw_rectangle_filled(x + 135, y + 0, WIDTH, 15, SOIL_COLOUR_1);
-    graphics_draw_rectangle_filled(x + 135, y + 15, WIDTH, 135, SOIL_COLOUR_2);
-    graphics_draw_rectangle_filled(x + 135, y + 150, WIDTH, 90, SOIL_COLOUR_1);
+    graphics_draw_rectangle_filled(x + 135, y + 0, PIXEL_SIZE, 15, SOIL_COLOUR_1);
+    graphics_draw_rectangle_filled(x + 135, y + 15, PIXEL_SIZE, 135, SOIL_COLOUR_2);
+    graphics_draw_rectangle_filled(x + 135, y + 150, PIXEL_SIZE, 90, SOIL_COLOUR_1);
 
     //column 11
-    graphics_draw_rectangle_filled(x + 150, y + 0, WIDTH, 240, SOIL_COLOUR_1);
+    graphics_draw_rectangle_filled(x + 150, y + 0, PIXEL_SIZE, 240, SOIL_COLOUR_1);
 
     //column 12
-    graphics_draw_rectangle_filled(x + 165, y + 0, WIDTH, 90, SOIL_COLOUR_1);
-    graphics_draw_rectangle_filled(x + 165, y + 90, WIDTH, 150, SOIL_COLOUR_2);
+    graphics_draw_rectangle_filled(x + 165, y + 0, PIXEL_SIZE, 90, SOIL_COLOUR_1);
+    graphics_draw_rectangle_filled(x + 165, y + 90, PIXEL_SIZE, 150, SOIL_COLOUR_2);
 
     //column 13
-    graphics_draw_rectangle_filled(x + 180, y + 0, WIDTH, 15, SOIL_COLOUR_1);
-    graphics_draw_rectangle_filled(x + 180, y + 15, WIDTH, 90, SOIL_COLOUR_2);
-    graphics_draw_rectangle_filled(x + 180, y + 105, WIDTH, 135, SOIL_COLOUR_1);
+    graphics_draw_rectangle_filled(x + 180, y + 0, PIXEL_SIZE, 15, SOIL_COLOUR_1);
+    graphics_draw_rectangle_filled(x + 180, y + 15, PIXEL_SIZE, 90, SOIL_COLOUR_2);
+    graphics_draw_rectangle_filled(x + 180, y + 105, PIXEL_SIZE, 135, SOIL_COLOUR_1);
 
     //column 14
-    graphics_draw_rectangle_filled(x + 195, y + 0, WIDTH, 240, SOIL_COLOUR_1);
+    graphics_draw_rectangle_filled(x + 195, y + 0, PIXEL_SIZE, 240, SOIL_COLOUR_1);
 
     //column 15
-    graphics_draw_rectangle_filled(x + 210, y + 0, WIDTH, 15, SOIL_COLOUR_1);
-    graphics_draw_rectangle_filled(x + 210, y + 15, WIDTH, 180, SOIL_COLOUR_2);
-    graphics_draw_rectangle_filled(x + 210, y + 195, WIDTH, 15, SOIL_COLOUR_1);
-    graphics_draw_rectangle_filled(x + 210, y + 210, WIDTH, 15, SOIL_COLOUR_2);
-    graphics_draw_rectangle_filled(x + 210, y + 225, WIDTH, 15, SOIL_COLOUR_1);
+    graphics_draw_rectangle_filled(x + 210, y + 0, PIXEL_SIZE, 15, SOIL_COLOUR_1);
+    graphics_draw_rectangle_filled(x + 210, y + 15, PIXEL_SIZE, 180, SOIL_COLOUR_2);
+    graphics_draw_rectangle_filled(x + 210, y + 195, PIXEL_SIZE, 15, SOIL_COLOUR_1);
+    graphics_draw_rectangle_filled(x + 210, y + 210, PIXEL_SIZE, 15, SOIL_COLOUR_2);
+    graphics_draw_rectangle_filled(x + 210, y + 225, PIXEL_SIZE, 15, SOIL_COLOUR_1);
 
     //column 16
-    graphics_draw_rectangle_filled(x + 225, y + 0, WIDTH, 195, SOIL_COLOUR_1);
-    graphics_draw_rectangle_filled(x + 225, y + 195, WIDTH, 15, SOIL_COLOUR_2);
-    graphics_draw_rectangle_filled(x + 225, y + 210, WIDTH, 30, SOIL_COLOUR_1);
+    graphics_draw_rectangle_filled(x + 225, y + 0, PIXEL_SIZE, 195, SOIL_COLOUR_1);
+    graphics_draw_rectangle_filled(x + 225, y + 195, PIXEL_SIZE, 15, SOIL_COLOUR_2);
+    graphics_draw_rectangle_filled(x + 225, y + 210, PIXEL_SIZE, 30, SOIL_COLOUR_1);
 }
 
 
