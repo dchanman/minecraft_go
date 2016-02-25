@@ -98,7 +98,7 @@ static state_t main_controller_state_journey(savedata_t *data) {
 	gps_convert_seconds_to_time(&current_time, journey_time);
 
 	/* Check if we've arrived at our destination */
-	if (distance_to_destination < DISTANCE_TO_DESTINATION_THRESHOLD)
+	if (!data->journey_complete && distance_to_destination < DISTANCE_TO_DESTINATION_THRESHOLD)
 		return STATE_ARRIVED_AT_DESTINATION;
 
 	/* Update journey display */
