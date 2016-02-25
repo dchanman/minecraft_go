@@ -42,7 +42,7 @@ void sprint1_demo() {
 		box.y = 450;
 
 		Pixel touch;
-		touchscreen_get_press(&touch);
+		touchscreen_get_press(&touch, -1);
 
 		if (touchscreen_is_touch_in_box(touch, box, 300, 300)) {
 			/* Say Hi to Minecraft Pi */

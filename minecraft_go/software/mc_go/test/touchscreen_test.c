@@ -55,11 +55,25 @@ void touchscreen_test() {
     	box.y = 450;
 
     	Pixel touch;
-    	touchscreen_get_press(&touch);
+    	touchscreen_get_press(&touch, -1);
 
     	boolean result = touchscreen_is_touch_in_box(touch, box, 300, 300);
     	printf("Touch %s in box\n", (result ? "is" : "is not"));
     }
 
     printf("Touch screen test is complete!\n");
+}
+
+void touchscreen_test_timeout() {
+	printf("[%s]\n", __func__);
+	touchscreen_init();
+	while (1) {
+		Pixel touch;
+		boolean result = touchscreen_get_press(&touch, 3000);
+
+		if (!result)
+			printf("Timed out!\n");
+		else
+			printf("Pressed (%d, %d)\n", touch.x, touch.y);
+	}
 }

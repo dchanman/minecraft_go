@@ -92,7 +92,7 @@ static boolean digging_minigame_main() {
 	}
 
 	while (!digging_minigame_is_done(gridArray)) {
-		touchscreen_get_press(&touch);
+		touchscreen_get_press(&touch, -1);
 		DEBUG("Touch coordinates {%d, %d}!\n", touch.x, touch.y);
 
 		boolean block_found = FALSE;

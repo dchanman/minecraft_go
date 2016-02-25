@@ -10,19 +10,32 @@
 #include "general.h"
 #include "serial.h"
 #include "touchscreen.h"
+#include "timer.h"
 
 #define TOUCHSCREEN	((volatile unsigned char *)(0x84000230))
 #define TOUCHSCREEN_FRAME_SIZE	5
 #define TOUCHSCREEN_DEBOUNCE 200000
 
+#define TOUCHSCREEN_TIMER_ID	1
+
 static unsigned char ENABLE[] = { 0x55, 0x01, 0x12 };
+
+static boolean timeout_flag;
 
 static void touchscreen_get_report_packet(unsigned char *buffer, unsigned char touchStatus);
 static void touchscreen_clear_buffer();
+static void touchscreen_timeout_isr();
+
+static void touchscreen_timeout_isr() {
+	timer_clear(TOUCHSCREEN_TIMER_ID);
+	timeout_flag = TRUE;
+}
 
 void touchscreen_init(void) {
 	serial_init(TOUCHSCREEN, BAUD_RATE_9600);
 	serial_put_n_char(TOUCHSCREEN, ENABLE, 3);
+
+	timer_init(TOUCHSCREEN_TIMER_ID, TIMER_ONESHOT, touchscreen_timeout_isr);
 
 	if (serial_test_for_received_data(TOUCHSCREEN))
 		printf("Touch Screen Initialized\n");
@@ -40,10 +53,26 @@ void touchscreen_wait_for_touch(void) {
 	touchscreen_screen_touched();
 }
 
-void touchscreen_get_press(Pixel *pixel) {
+boolean touchscreen_get_press(Pixel *pixel, const int timeout_millis) {
 	Point point;
 
 	unsigned char buffer[TOUCHSCREEN_FRAME_SIZE] = { '\0' };
+
+	/* Set up the timer */
+	timer_stop(TOUCHSCREEN_TIMER_ID);
+	if (timeout_millis > 0) {
+		timer_set(TOUCHSCREEN_TIMER_ID, timeout_millis);
+		timer_start(TOUCHSCREEN_TIMER_ID);
+	}
+
+	timeout_flag = FALSE;
+	while (timeout_flag == FALSE && serial_test_for_received_data(TOUCHSCREEN) == FALSE)
+		/* Poll until an event or until we time out */;
+
+	/* If timeout */
+	if (timeout_flag == TRUE) {
+		return FALSE;
+	}
 
 	touchscreen_get_report_packet(buffer, TOUCHSCREEN_PRESS);
 
@@ -58,6 +87,7 @@ void touchscreen_get_press(Pixel *pixel) {
 
 	/* Wait until the user releases the screen */
 	touchscreen_clear_buffer();
+	return TRUE;
 }
 
 #ifdef FALSE

@@ -64,7 +64,7 @@ static boolean creeper_encounter_main(int *player_health) {
 		creeper_encounter_draw_hearts(*player_health, PLAYER_MAX_HEALTH);
 
 		/* Wait for touch */
-		touchscreen_get_press(&touch_location);
+		touchscreen_get_press(&touch_location, -1);
 		DEBUG("Touched (%d, %d)\n", touch_location.x, touch_location.y);
 
 		/* Update health */

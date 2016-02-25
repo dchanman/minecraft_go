@@ -52,9 +52,12 @@ void touchscreen_wait_for_touch(void);
 
 /**
  * Waits for a touch, then returns an X,Y coordinate.
- * NOTE: this function stalls until the user releases the touchscreen
+ *
+ * @param pixel - where the touch output is stored
+ * @param timeout_millis - timeout value in milliseconds. Set to -1 for no timeout
+ * @return TRUE if touch, FALSE if timeout
  */
-void touchscreen_get_press(Pixel *pixel);
+boolean touchscreen_get_press(Pixel *pixel, const int timeout_millis);
 
 /**
  * Waits for a release, then returns an X,Y coordinate

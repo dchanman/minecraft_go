@@ -27,12 +27,13 @@ int main() {
 	//minecraft_rpc_test_protocol_msg();
 	//bluetooth_test();
 	//touchscreen_test();
+	touchscreen_test_timeout();
 	//sprint1_demo();
 	//graphics_test();
 	//int health = PLAYER_MAX_HEALTH;
 	//minigame_creeper_encounter(&health);
 	//minigame_digging();
-	timer_test();
+	//timer_test();
 
 	//project1_demo_initialize_savefile();
 	//project1_demo_main();
