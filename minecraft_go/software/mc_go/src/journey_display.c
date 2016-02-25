@@ -10,7 +10,7 @@
 #include "journey_display.h"
 #include "graphics.h"
 #include "gps.h"
-#include "colours.h"
+#include "Colours.h"
 
 
 
