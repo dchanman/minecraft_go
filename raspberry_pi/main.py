@@ -1,6 +1,7 @@
 import serial
 import time
 from mcpi.minecraft import Minecraft
+import rainbow
 #from mock import Minecraft
 
 #######################################
@@ -8,6 +9,7 @@ from mcpi.minecraft import Minecraft
 #######################################
 mc = Minecraft.create()
 port = serial.Serial("/dev/ttyUSB0", baudrate=115200, timeout = 3.0)
+rainbow.rainbow_delete(mc)
 
 
 #######################################
@@ -150,7 +152,8 @@ def rpc_journey_complete(rpc_code):
 		
 	mc.postToChat("Journey Statistics:")
 	mc.postToChat("Elapsed Time: {0}h {1}m {2}s".format(hours, minutes, seconds))
-	mc.postToChat("Creeps Encountered: {0}".format(creeps))
+	mc.postToChat("Creeps Defeated: {0}".format(creeps))
+	rainbow.rainbow_make(mc)
 	print("Journey Stats: Elapsed Time {0}h {1}m {2}s | Creeps {3}".format(hours, minutes, seconds, creeps))
 
 

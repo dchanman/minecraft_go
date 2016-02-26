@@ -124,6 +124,19 @@ static state_t main_controller_state_journey(savedata_t *data) {
 
 	/* Update GPS data */
 	// TODO: get gps location
+	RMC_data RMC_data_buf;
+	Location curr_location;
+
+	gps_get_current_rmc_data(&RMC_data_buf, 20);
+
+	speed = gps_get_speed_from_rmc(&RMC_data_buf);
+	gps_convert_rmc_to_location(&RMC_data_buf, &curr_location);
+
+	printf("Current Location: Lat Deg:%d Lat Min:%f Lat_Dir:%c - Long Deg:%d Long Min:%f Long Dir:%c",
+			curr_location.lat_degree, curr_location.lat_minute, curr_location.lat_direction,
+			curr_location.long_degree, curr_location.long_minute, curr_location.long_direction);
+
+
 	long journey_time = gps_stop_timer(&data->start_time);
 	gps_convert_seconds_to_time(&current_time, journey_time);
 
