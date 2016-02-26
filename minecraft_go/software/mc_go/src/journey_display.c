@@ -23,7 +23,7 @@ void displayElapsedTime(Time *elapsedTime, int start_x_coord, int y_coord) {
 
 	while (buffer[i]) {
 		printf("%c", buffer[i]);
-		OutGraphicsCharFont4(start_x_coord + i * 13, y_coord, RED,
+		OutGraphicsCharFont4(start_x_coord + i * 15, y_coord, RED,
 				GRAPHICS_BACKGROUND_COLOUR, buffer[i], TRUE);
 		i++;
 	}
@@ -38,7 +38,7 @@ void displayDestDistance(double dist_km, int start_x_coord, int y_coord) {
 
 	while (buffer[i]) {
 		printf("%c", buffer[i]);
-		OutGraphicsCharFont4(start_x_coord + i * 13, y_coord, RED,
+		OutGraphicsCharFont4(start_x_coord + i * 15, y_coord, RED,
 				GRAPHICS_BACKGROUND_COLOUR, buffer[i], TRUE);
 		i++;
 	}
@@ -53,7 +53,7 @@ void displaySpeed(float speed_km_h, int start_x_coord, int y_coord) {
 
 	while (buffer[i]) {
 		printf("%c", buffer[i]);
-		OutGraphicsCharFont4(start_x_coord + i * 13, y_coord, RED,
+		OutGraphicsCharFont4(start_x_coord + i * 15, y_coord, RED,
 				GRAPHICS_BACKGROUND_COLOUR, buffer[i], TRUE);
 		i++;
 	}
@@ -68,7 +68,7 @@ void displayKillCount(int creeper_kill, int start_x_coord, int y_coord) {
 
 	while (buffer[i]) {
 		printf("%c", buffer[i]);
-		OutGraphicsCharFont4(start_x_coord + i * 13, y_coord, RED,
+		OutGraphicsCharFont4(start_x_coord + i * 15, y_coord, RED,
 				GRAPHICS_BACKGROUND_COLOUR, buffer[i], TRUE);
 		i++;
 	}
@@ -108,11 +108,11 @@ void displayMenuQuickRefresh(Time *time1, double distance, float speed) {
 
 }
 
-void displayFight() {
+void displayFight(int x, int y) {
 	char buffer[100];
 
-	graphics_draw_rectangle_filled(600, 200, 100, 50, MAGENTA);
-	graphics_draw_rectangle_border(600, 200, 100, 50, CYAN);
+	graphics_draw_rectangle_filled(x, y, 100, 50, MAGENTA);
+	graphics_draw_rectangle_border(x, y, 100, 50, CYAN);
 
 	sprintf(buffer, "FIGHT!!");
 
@@ -120,17 +120,17 @@ void displayFight() {
 
 	while (buffer[i]) {
 		printf("%c", buffer[i]);
-		OutGraphicsCharFont1(625 + i * 10, 225, GREEN,
+		OutGraphicsCharFont1((x+25) + i * 10, (y+25), GREEN,
 				GRAPHICS_BACKGROUND_COLOUR, buffer[i], FALSE);
 		i++;
 	}
 }
 
-void displayConnect() {
+void displayConnect(int x, int y) {
 	char buffer[100];
 
-	graphics_draw_rectangle_filled(600, 300, 100, 50, TEAL);
-	graphics_draw_rectangle_border(600, 300, 100, 50, CYAN);
+	graphics_draw_rectangle_filled(x, y, 100, 50, TEAL);
+	graphics_draw_rectangle_border(x, y, 100, 50, CYAN);
 
 	sprintf(buffer, "CONNECT");
 
@@ -138,7 +138,7 @@ void displayConnect() {
 
 	while (buffer[i]) {
 		printf("%c", buffer[i]);
-		OutGraphicsCharFont1(615 + i * 10, 325, BLACK,
+		OutGraphicsCharFont1((x+15) + i * 10, (y+25), BLACK,
 				GRAPHICS_BACKGROUND_COLOUR, buffer[i], FALSE);
 		i++;
 	}
