@@ -97,6 +97,8 @@ void gps_convert_rmc_to_location(RMC_data *RMC_data, Location *buffer);
 
 double gps_get_distance(Location *, Location *);
 
+boolean gps_get_current_rmc_data(RMC_data *buffer, int max_tries);
+
 
 /**
  * Compares two location and if they are close enough, return true.
