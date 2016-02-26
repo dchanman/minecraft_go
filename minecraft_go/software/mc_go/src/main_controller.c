@@ -19,7 +19,7 @@
 #include "journey_display.h"
 #include "touchscreen.h"
 
-#define DISTANCE_TO_DESTINATION_THRESHOLD	5
+#define DISTANCE_TO_DESTINATION_THRESHOLD	1
 
 typedef enum {
 	STATE_JOURNEY = 0,
@@ -39,9 +39,9 @@ static state_t main_controller_journey_menu_buttons(const savedata_t data);
 static void main_controller_journey_display(Time * current_time, double distance_to_destination, float speed, int creeps_defeated);
 static void main_controller_journey_display_quick_refresh(Time * current_time, double distance_to_destination, float speed);
 
-static Pixel creeper_minigame_hitbox = {600, 200};
+static Pixel creeper_minigame_hitbox = {650, 300};
 
-static Pixel connect_hitbox = {600, 300};
+static Pixel connect_hitbox = {650, 400};
 
 static int button_width = 100;
 static int button_height = 50;
@@ -51,8 +51,8 @@ static boolean need_full_refresh = TRUE;
 static void main_controller_journey_display(Time * current_time, double distance_to_destination, float speed, int creeps_defeated) {
 	displayBackground();
 	displayMenu(current_time, distance_to_destination, speed, creeps_defeated);
-	displayConnect();
-	displayFight();
+	displayConnect(connect_hitbox.x, connect_hitbox.y);
+	displayFight(creeper_minigame_hitbox.x, creeper_minigame_hitbox.y);
 }
 
 static void main_controller_journey_display_quick_refresh(Time * current_time, double distance_to_destination, float speed) {
@@ -139,8 +139,7 @@ static state_t main_controller_state_journey(savedata_t *data) {
 
 	long journey_time = gps_stop_timer(&data->start_time);
 	gps_convert_seconds_to_time(&current_time, journey_time);
-
-	distance_to_destination = 99;
+	distance_to_destination = gps_get_distance(&curr_location, &data->destination);
 
 	/* Check if we've arrived at our destination */
 	if (!data->journey_complete && distance_to_destination < DISTANCE_TO_DESTINATION_THRESHOLD)

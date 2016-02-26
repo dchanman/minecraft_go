@@ -14,7 +14,7 @@
 #include "journey_display.h"
 
 /* Defines */
-#define CREEPER_STARTING_HEALTH	20
+#define CREEPER_STARTING_HEALTH	5
 #define CREEPER_PIXEL_WIDTH	(GRAPHICS_PIXEL_WIDTH/6)
 /* This height is a hack. The 24/14 ratio comes from looking at how the creeper is drawn in creeper.c */
 #define CREEPER_PIXEL_HEIGHT	(CREEPER_PIXEL_WIDTH*24/14)
