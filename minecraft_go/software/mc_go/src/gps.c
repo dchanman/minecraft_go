@@ -38,7 +38,6 @@
 /* Static Declarations */
 static void gps_put_char(const unsigned char c);
 static unsigned char gps_get_char();
-static boolean gps_get_current_rmc_data(RMC_data *buffer, int max_tries);
 
 void gps_init() {
 	serial_init(GPS, BAUD_RATE_9600);
@@ -221,7 +220,7 @@ boolean gps_get_rmc_data(char *data_line, RMC_data *buffer) {
  *  working and a value of 20 should be enough unless we are in the middle of
  *  a large data dump.
  */
-static boolean gps_get_current_rmc_data(RMC_data *buffer, int max_tries) {
+boolean gps_get_current_rmc_data(RMC_data *buffer, int max_tries) {
 	char data_line_buffer[GPS_DEFAULT_DATA_LINE_SIZE];
 
 	int num_tries = 0;
