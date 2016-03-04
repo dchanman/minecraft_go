@@ -48,11 +48,11 @@
 #define PIXEL_SIZE 15
 #define BLOCK_PIXEL_SIZE 16
 
-void clear_block(int x, int y) {
+void block_clear(int x, int y) {
 	graphics_draw_rectangle_filled(x, y, 240, 240, GRAPHICS_BACKGROUND_COLOUR);
 }
 
-void small_crack_generator(int x, int y){
+void block_small_crack_generator(int x, int y){
 	int i, j;
 	int tempX = x;
 
@@ -88,7 +88,7 @@ void small_crack_generator(int x, int y){
 	}
 }
 
-void large_crack_generator(int x, int y) {
+void block_large_crack_generator(int x, int y) {
 	int i, j;
 	int tempX = x;
 
@@ -127,7 +127,7 @@ void large_crack_generator(int x, int y) {
 /**************************************************************
  * Wood Block
  **************************************************************/
-void wood_block_generator(int x, int y) {
+void block_wood_generator(int x, int y) {
     //column 1
     graphics_draw_rectangle_filled(x + 0, y + 0, PIXEL_SIZE, 45, WOOD_COLOUR_2);
     graphics_draw_rectangle_filled(x + 0, y + 45, PIXEL_SIZE, 105, WOOD_COLOUR_1);
@@ -211,9 +211,9 @@ void wood_block_generator(int x, int y) {
 }
 
 /**************************************************************
- * GRASS BLOCK
+ * Grass Block
  **************************************************************/
-void grass_block_generator(int x, int y) {
+void block_grass_generator(int x, int y) {
     //column 1
     graphics_draw_rectangle_filled(x + 0, y + 0, PIXEL_SIZE, 45, GRASS_COLOUR_2);
     graphics_draw_rectangle_filled(x + 0, y + 45, PIXEL_SIZE, 105, GRASS_COLOUR_1);
@@ -297,9 +297,9 @@ void grass_block_generator(int x, int y) {
 }
 
 /**************************************************************
- * SOIL BLOCK
+ * Soil Block
  **************************************************************/
-void soil_block_generator(int x, int y) {
+void block_soil_generator(int x, int y) {
     //column 1
     graphics_draw_rectangle_filled(x + 0, y + 0, PIXEL_SIZE, 45, SOIL_COLOUR_2);
     graphics_draw_rectangle_filled(x + 0, y + 45, PIXEL_SIZE, 105, SOIL_COLOUR_1);
@@ -386,7 +386,7 @@ void soil_block_generator(int x, int y) {
 /**************************************************************
  * Stone Block
  **************************************************************/
-void stone_block_generator(int x, int y) {
+void block_stone_generator(int x, int y) {
     //row 1
     graphics_draw_rectangle_filled(x + 0, y + 0, 30, PIXEL_SIZE, STONE_COLOUR_1);
     graphics_draw_rectangle_filled(x + 30, y + 0, 15, PIXEL_SIZE, STONE_COLOUR_2);
@@ -597,7 +597,7 @@ void stone_block_generator(int x, int y) {
 /**************************************************************
  * Iron Block
  **************************************************************/
-void iron_block_generator(int x, int y) {
+void block_iron_generator(int x, int y) {
     //row 1
 	graphics_draw_rectangle_filled(x + 0, y + 0, 240, PIXEL_SIZE, IRON_COLOUR_1);
 
@@ -694,7 +694,7 @@ void iron_block_generator(int x, int y) {
 /**************************************************************
  * Diamond Block
  **************************************************************/
-void diamond_block_generator(int x, int y) {
+void block_diamond_generator(int x, int y) {
 	//row 1
 	graphics_draw_rectangle_filled(x + 0, y + 0, 240, PIXEL_SIZE, DIAMOND_COLOUR_1);
 

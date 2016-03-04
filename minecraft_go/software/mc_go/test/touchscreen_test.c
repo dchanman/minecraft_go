@@ -17,20 +17,20 @@ void touchscreen_test() {
 	touchscreen_init();
 
 	//clear screen
-	clear_block(0, 0);
-	clear_block(0, 240);
-	clear_block(240, 0);
-	clear_block(240, 240);
-	clear_block(480, 0);
-	clear_block(480, 240);
-	clear_block(720, 0);
-	clear_block(720, 240);
+	block_clear(0, 0);
+	block_clear(0, 240);
+	block_clear(240, 0);
+	block_clear(240, 240);
+	block_clear(480, 0);
+	block_clear(480, 240);
+	block_clear(720, 0);
+	block_clear(720, 240);
 
 	// block generator test
-	wood_block_generator(0, 0);
-	stone_block_generator(242, 0);
-	iron_block_generator(0, 241);
-	diamond_block_generator(242, 241);
+	block_wood_generator(0, 0);
+	block_stone_generator(242, 0);
+	block_iron_generator(0, 241);
+	block_diamond_generator(242, 241);
 
 	// creeper generator test
 	creeper_generator(500, 250, 100);

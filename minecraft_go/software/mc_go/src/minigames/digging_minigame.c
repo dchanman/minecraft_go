@@ -160,27 +160,27 @@ static void digging_minigame_block_initialize(Box *box, int x, int y, block_type
 static void digging_minigame_draw_block(int x, int y, block_type_t block_type, int health) {
 	switch (block_type) {
 	case BLOCK_TYPE_WOOD:
-		wood_block_generator(x, y);
+		block_wood_generator(x, y);
 		digging_minigame_crack_check(x, y, block_type, health);
 		break;
 
 	case BLOCK_TYPE_STONE:
-		stone_block_generator(x, y);
+		block_stone_generator(x, y);
 		digging_minigame_crack_check(x, y, block_type, health);
 		break;
 
 	case BLOCK_TYPE_IRON:
-		iron_block_generator(x, y);
+		block_iron_generator(x, y);
 		digging_minigame_crack_check(x, y, block_type, health);
 		break;
 
 	case BLOCK_TYPE_DIAMOND:
-		diamond_block_generator(x, y);
+		block_diamond_generator(x, y);
 		digging_minigame_crack_check(x, y, block_type, health);
 		break;
 
 	default:
-		clear_block(x, y);
+		block_clear(x, y);
 		break;
 	}
 }
@@ -191,9 +191,9 @@ static void digging_minigame_draw_block(int x, int y, block_type_t block_type, i
 static void digging_minigame_crack_check(int x, int y, block_type_t block_type, int health){
 	if (health <= block_type_starting_health[block_type] * 2 / 3) {
 		if (health <= block_type_starting_health[block_type] / 3)
-			large_crack_generator(x, y);
+			block_large_crack_generator(x, y);
 		else
-			small_crack_generator(x, y);
+			block_small_crack_generator(x, y);
 	}
 }
 
@@ -202,7 +202,7 @@ static void digging_minigame_crack_check(int x, int y, block_type_t block_type, 
  */
 static void digging_minigame_damage_block(Box *box, int damage) {
 	if (box->health <= damage) {
-		clear_block(box->x, box->y);
+		block_clear(box->x, box->y);
 		box->health = 0;
 	} else
 		box->health -= damage;
