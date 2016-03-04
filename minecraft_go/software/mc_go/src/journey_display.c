@@ -243,12 +243,12 @@ void displayBackground() {
 
 	int i;
 	for (i = 0; i < 3; i++) {
-		soil_block_generator(i * 240, 240);
-		grass_block_generator(i * 240, 0);
+		block_soil_generator(i * 240, 240);
+		block_grass_generator(i * 240, 0);
 	}
 
-	soil_block_generator(560, 240);
-	grass_block_generator(560, 0);
+	block_soil_generator(560, 240);
+	block_grass_generator(560, 0);
 
 }
 
