@@ -25,11 +25,8 @@ static int block_type_starting_health[BLOCK_TYPE_NUM_TYPES] =
 		14 /* BLOCK_TYPE_DIAMOND */
 };
 
-//increases the effectiveness of tools
-#define WOOD_BUFF 1
-#define STONE_BUFF 2
-#define IRON_BUFF 4
-#define DIAMOND_BUFF 6
+//damage per tap
+#define DAMAGE 1
 
 //x coordinate for grid
 #define X_COORD_INIT 40
@@ -47,9 +44,9 @@ static int block_type_starting_health[BLOCK_TYPE_NUM_TYPES] =
 /* Static Functions */
 static boolean digging_minigame_main();
 static int digging_minigame_generate_block_material();
-static int digging_minigame_get_pickaxe_material();
 static void digging_minigame_block_initialize(Box *box, int x, int y, block_type_t block_type);
 static void digging_minigame_draw_block(int x, int y, block_type_t block_type, int health);
+static void digging_minigame_crack_check(int x, int y, block_type_t block_type, int health);
 static void digging_minigame_damage_block(Box *box, int damage);
 static boolean digging_minigame_is_done(Box array[2][3]);
 
@@ -76,7 +73,7 @@ static boolean digging_minigame_main() {
 	Pixel touch;
 	Pixel box;
 
-	int damage = digging_minigame_get_pickaxe_material();
+	int damage = DAMAGE;
 
 	/* Initialize an array of boxes to create a grid */
 	for (i = 0; i < 2; i++) {
@@ -144,24 +141,10 @@ static int digging_minigame_generate_block_material() {
 }
 
 /*
- * Get the pickaxe buff based on the pickaxe in the users inventory
- */
-static int digging_minigame_get_pickaxe_material() {
-	//TODO: Implement function
-	return 1;
-	//return WOOD_BUFF;
-	//return STONE_BUFF;
-	//return IRON_BUFF;
-	//return DIAMOND_BUFF;
-}
-
-/*
  * Creates a block based on pixel coordinates
  * (x1,y1) is the top left corner of the box
  */
 static void digging_minigame_block_initialize(Box *box, int x, int y, block_type_t block_type) {
-	Box tempBox;
-
 	box->x = x;
 	box->y = y;
 	box->health = block_type_starting_health[block_type];
@@ -178,47 +161,39 @@ static void digging_minigame_draw_block(int x, int y, block_type_t block_type, i
 	switch (block_type) {
 	case BLOCK_TYPE_WOOD:
 		wood_block_generator(x, y);
-		if (health <= block_type_starting_health[block_type] * 2 / 3) {
-			if (health <= block_type_starting_health[block_type] / 3)
-				large_crack_generator(x, y);
-			else
-				small_crack_generator(x, y);
-		}
+		digging_minigame_crack_check(x, y, block_type, health);
 		break;
 
 	case BLOCK_TYPE_STONE:
 		stone_block_generator(x, y);
-		if (health <= block_type_starting_health[block_type] * 2 / 3) {
-			if (health <= block_type_starting_health[block_type] / 3)
-				large_crack_generator(x, y);
-			else
-				small_crack_generator(x, y);
-		}
+		digging_minigame_crack_check(x, y, block_type, health);
 		break;
 
 	case BLOCK_TYPE_IRON:
 		iron_block_generator(x, y);
-		if (health <= block_type_starting_health[block_type] * 2 / 3) {
-			if (health <= block_type_starting_health[block_type] / 3)
-				large_crack_generator(x, y);
-			else
-				small_crack_generator(x, y);
-		}
+		digging_minigame_crack_check(x, y, block_type, health);
 		break;
 
 	case BLOCK_TYPE_DIAMOND:
 		diamond_block_generator(x, y);
-		if (health <= block_type_starting_health[block_type] * 2 / 3) {
-			if (health <= block_type_starting_health[block_type] / 3)
-				large_crack_generator(x, y);
-			else
-				small_crack_generator(x, y);
-		}
+		digging_minigame_crack_check(x, y, block_type, health);
 		break;
 
 	default:
 		clear_block(x, y);
 		break;
+	}
+}
+
+/*
+ * Generates the graphics for the cracks in the block based on pixel coordinates and health
+ */
+static void digging_minigame_crack_check(int x, int y, block_type_t block_type, int health){
+	if (health <= block_type_starting_health[block_type] * 2 / 3) {
+		if (health <= block_type_starting_health[block_type] / 3)
+			large_crack_generator(x, y);
+		else
+			small_crack_generator(x, y);
 	}
 }
 
