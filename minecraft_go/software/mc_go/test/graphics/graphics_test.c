@@ -5,6 +5,7 @@
 #include "rs232.h"
 #include "Colours.h"
 #include "ColourPallette.h"
+#include "font.h"
 
 #define YRES 480
 #define XRES 800
@@ -48,11 +49,11 @@ int graphics_test() {
 	graphics_draw_rectangle_border(400, 200, 50, 10, OLIVE);
 
 //Fonts bigger than 5x7 are a work in progress
-	OutGraphicsCharFont2a(300, 100, BLUE, ORANGE, 'A', FALSE);
-	OutGraphicsCharFont3(300, 300, BLUE, ORANGE, 'A', FALSE);
+	fonts_char_2(300, 100, BLUE, ORANGE, 'A', FALSE);
+	fonts_char_3(300, 300, BLUE, ORANGE, 'A', FALSE);
 
-	OutGraphicsCharFont4(300, 300, BLUE, ORANGE, 'A', FALSE);
-	OutGraphicsCharFont5(300, 100, BLUE, ORANGE, 'A', FALSE);
+	fonts_char_4(300, 300, BLUE, ORANGE, 'A', FALSE);
+	fonts_char_5(300, 100, BLUE, ORANGE, 'A', FALSE);
 
 	return 0;
 }

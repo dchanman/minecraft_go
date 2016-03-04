@@ -12,6 +12,7 @@
 #include "graphics.h"
 #include "gps.h"
 #include "Colours.h"
+#include "font.h"
 
 void displayElapsedTime(Time *elapsedTime, int start_x_coord, int y_coord) {
 	char buffer[100];
@@ -23,7 +24,7 @@ void displayElapsedTime(Time *elapsedTime, int start_x_coord, int y_coord) {
 
 	while (buffer[i]) {
 		printf("%c", buffer[i]);
-		OutGraphicsCharFont4(start_x_coord + i * 15, y_coord, RED,
+		fonts_char_4(start_x_coord + i * 15, y_coord, RED,
 				GRAPHICS_BACKGROUND_COLOUR, buffer[i], TRUE);
 		i++;
 	}
@@ -38,7 +39,7 @@ void displayDestDistance(double dist_km, int start_x_coord, int y_coord) {
 
 	while (buffer[i]) {
 		printf("%c", buffer[i]);
-		OutGraphicsCharFont4(start_x_coord + i * 15, y_coord, RED,
+		fonts_char_4(start_x_coord + i * 15, y_coord, RED,
 				GRAPHICS_BACKGROUND_COLOUR, buffer[i], TRUE);
 		i++;
 	}
@@ -53,7 +54,7 @@ void displaySpeed(float speed_km_h, int start_x_coord, int y_coord) {
 
 	while (buffer[i]) {
 		printf("%c", buffer[i]);
-		OutGraphicsCharFont4(start_x_coord + i * 15, y_coord, RED,
+		fonts_char_4(start_x_coord + i * 15, y_coord, RED,
 				GRAPHICS_BACKGROUND_COLOUR, buffer[i], TRUE);
 		i++;
 	}
@@ -68,7 +69,7 @@ void displayKillCount(int creeper_kill, int start_x_coord, int y_coord) {
 
 	while (buffer[i]) {
 		printf("%c", buffer[i]);
-		OutGraphicsCharFont4(start_x_coord + i * 15, y_coord, RED,
+		fonts_char_4(start_x_coord + i * 15, y_coord, RED,
 				GRAPHICS_BACKGROUND_COLOUR, buffer[i], TRUE);
 		i++;
 	}
@@ -85,7 +86,7 @@ void displayMenu(Time *time1, double distance, float speed, int kill_count) {
 
 	while (buffer[i]) {
 		printf("%c", buffer[i]);
-		OutGraphicsCharFont5(start_x_coord + i * 32, y_coord, WHITE,
+		fonts_char_5(start_x_coord + i * 32, y_coord, WHITE,
 				GRAPHICS_BACKGROUND_COLOUR, buffer[i], TRUE);
 		i++;
 	}
@@ -120,7 +121,7 @@ void displayFight(int x, int y) {
 
 	while (buffer[i]) {
 		printf("%c", buffer[i]);
-		OutGraphicsCharFont1((x+25) + i * 10, (y+25), GREEN,
+		fonts_char_1((x+25) + i * 10, (y+25), GREEN,
 				GRAPHICS_BACKGROUND_COLOUR, buffer[i], FALSE);
 		i++;
 	}
@@ -138,7 +139,7 @@ void displayConnect(int x, int y) {
 
 	while (buffer[i]) {
 		printf("%c", buffer[i]);
-		OutGraphicsCharFont1((x+15) + i * 10, (y+25), BLACK,
+		fonts_char_1((x+15) + i * 10, (y+25), BLACK,
 				GRAPHICS_BACKGROUND_COLOUR, buffer[i], FALSE);
 		i++;
 	}
@@ -157,7 +158,7 @@ void displaySmash() {
 
 	while (buffer[i]) {
 		printf("%c", buffer[i]);
-		OutGraphicsCharFont5(250 + i * 32, 225, GREEN,
+		fonts_char_5(250 + i * 32, 225, GREEN,
 				GRAPHICS_BACKGROUND_COLOUR, buffer[i], TRUE);
 		i++;
 	}
@@ -175,7 +176,7 @@ void displayWin() {
 
 	while (buffer[i]) {
 		printf("%c", buffer[i]);
-		OutGraphicsCharFont5(250 + i * 32, 225, GREEN,
+		fonts_char_5(250 + i * 32, 225, GREEN,
 				GRAPHICS_BACKGROUND_COLOUR, buffer[i], FALSE);
 		i++;
 	}
@@ -193,7 +194,7 @@ void displayLose() {
 
 	while (buffer[i]) {
 		printf("%c", buffer[i]);
-		OutGraphicsCharFont5(250 + i * 32, 225, RED, GRAPHICS_BACKGROUND_COLOUR,
+		fonts_char_5(250 + i * 32, 225, RED, GRAPHICS_BACKGROUND_COLOUR,
 				buffer[i], FALSE);
 		i++;
 	}
@@ -211,7 +212,7 @@ void displayTextBox(char* text, int text_color, int border_color, int box_color)
 
 	while (buffer[i]) {
 		printf("%c", buffer[i]);
-		OutGraphicsCharFont5(250 + i * 32, 225, text_color,
+		fonts_char_5(250 + i * 32, 225, text_color,
 				GRAPHICS_BACKGROUND_COLOUR, buffer[i], FALSE);
 		i++;
 	}
@@ -229,7 +230,7 @@ void displayTouchPrompt() {
 
 	while (buffer[i]) {
 		printf("%c", buffer[i]);
-		OutGraphicsCharFont3(200 + i * 24, 225, YELLOW,
+		fonts_char_3(200 + i * 24, 225, YELLOW,
 				GRAPHICS_BACKGROUND_COLOUR, buffer[i], FALSE);
 		i++;
 	}

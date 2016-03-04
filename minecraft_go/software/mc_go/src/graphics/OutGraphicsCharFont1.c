@@ -1,4 +1,4 @@
-#include "graphics.h"
+#include "font.h"
 
 #define YRES 480
 #define XRES 800
@@ -17,7 +17,7 @@ extern const unsigned char Font5x7[95][7];
 **
 *************************************************************************************************/
 
-void OutGraphicsCharFont1(int x, int y, int fontcolour, int backgroundcolour, int c, int Erase)
+void fonts_char_1(int x, int y, int fontcolour, int backgroundcolour, int c, int Erase)
 {
 // using register variables (as opposed to stack based ones) may make execution faster
 // depends on compiler and CPU
