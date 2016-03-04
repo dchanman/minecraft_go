@@ -1,4 +1,4 @@
-#include "graphics.h"
+#include "font.h"
 
 #define YRES 480
 #define XRES 800
@@ -28,14 +28,14 @@ extern const unsigned char Font38x59[];
 ** no scroll, scale x,y= 1,1
 **
 ******************************************************************************************************************************/
-void OutGraphicsCharFont2a(int x, int y, int colour, int backgroundcolour, int c, int Erase)
+void graphics_char_font_2(int x, int y, int fontcolour, int backgroundcolour, int c, int Erase)
 {
 	register int 	row,
 					column,
 					theX = x,
 					theY = y ;
 	register int 	pixels ;
-	register char 	theColour = colour  ;
+	register char 	theColour = fontcolour;
 	register int 	BitMask,
 					theCharacter = c,
 					j,
@@ -68,7 +68,7 @@ void OutGraphicsCharFont2a(int x, int y, int colour, int backgroundcolour, int c
 	}
 }
 
-void OutGraphicsCharFont3(int x, int y, int fontcolour, int backgroundcolour, int c, int Erase)
+void graphics_char_font_3(int x, int y, int fontcolour, int backgroundcolour, int c, int Erase)
 {
 // using register variables (as opposed to stack based ones) may make execution faster
 // depends on compiler and CPU
@@ -119,7 +119,7 @@ void OutGraphicsCharFont3(int x, int y, int fontcolour, int backgroundcolour, in
 	}
 }
 
-void OutGraphicsCharFont4(int x, int y, int fontcolour, int backgroundcolour, int c, int Erase)
+void graphics_char_font_4(int x, int y, int fontcolour, int backgroundcolour, int c, int Erase)
 {
 // using register variables (as opposed to stack based ones) may make execution faster
 // depends on compiler and CPU
@@ -169,7 +169,7 @@ void OutGraphicsCharFont4(int x, int y, int fontcolour, int backgroundcolour, in
 	}
 }
 
-void OutGraphicsCharFont5(int x, int y, int fontcolour, int backgroundcolour, int c, int Erase)
+void graphics_char_font_5(int x, int y, int fontcolour, int backgroundcolour, int c, int Erase)
 {
 // using register variables (as opposed to stack based ones) may make execution faster
 // depends on compiler and CPU
