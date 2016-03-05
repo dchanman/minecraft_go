@@ -83,7 +83,7 @@ def rpc_recv_coordinates(rpc_code):
 		print("Error sending lat_direction")
 
 	# Send long_minute
-	long_minute = "15.9949".encode('utf-8')
+	long_minute = "14.9949".encode('utf-8')
 	if not _send_and_check(long_minute, 7):
 		print("Error sending long_minute")
 
@@ -112,7 +112,7 @@ def rpc_recv_coordinates(rpc_code):
 	print("New GPS coordinates uploaded")
 	mc.postToChat("")
 	mc.postToChat("Destination:")
-	mc.postToChat("Museum of Anthropology")
+	mc.postToChat("Fred Kaiser Building")
 	
 #######################################
 # rpc_journey_complete
