@@ -1,6 +1,6 @@
 # Message Sequences
 
-The message protocol is based off of TCP where there are distinct sections of data transfer:
+This reliable data transfer message protocol has three distinct sections of data transfer:
 * Connection
 * Data Transmission
 * Termination
@@ -46,4 +46,4 @@ Ack             |            | \#rc         | 3
 
 ## Error Handling
 
-The `!` character is reserved for error handling. It can be sent at any time to indicate an error has occurred. Both the Raspberry Pi server and the Altera DE2 client will restore to their state prior to the attempted communication.
+In the event of an error, both the Raspberry Pi server and the Altera DE2 client will restore to their state prior to the attempted communication.
