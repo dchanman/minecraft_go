@@ -51,6 +51,17 @@ int sdcard_write(const short int filehandle, const char * buffer, const int buff
 int sdcard_writeln(const short int filehandle, const char * data, const int data_length);
 
 /**
+ * Reads a string from an opened file on the sdcard.
+ * Automatically null terminates the buffer provided.
+ *
+ * @param filehandle - an open filehandle
+ * @param buffer - buffer to store the read data
+ * @param num - amount to read into the buffer
+ * @returns - number of bytes read from file
+ */
+int sdcard_readstr(const short int filehandle, char * buffer, const int num);
+
+/**
  * Reads from an opened file on the sdcard
  *
  * @param filehandle - an open filehandle
@@ -69,5 +80,17 @@ int sdcard_read(const short int filehandle, char * buffer, const int num);
  * @returns - number of bytes read from file
  */
 int sdcard_readln(const short int filehandle, char * buffer, const int buffer_size);
+
+/**
+ * Gets a list of files from a directory on the sdcard
+ *
+ * Note that filelist's indices will point to allocated memory that needs to be freed
+ * when no longer needed.
+ *
+ * @param[inout] filelist - list of file names
+ * @param[out] numfiles - number of files
+ * @param[in] directory - directory to search
+ */
+int sdcard_get_files(char ** filelist, int * numfiles, const char * directory);
 
 #endif /* SDCARD_H_ */

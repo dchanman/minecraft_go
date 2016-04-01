@@ -46,7 +46,7 @@ void fonts_char_1(int x, int y, int fontcolour, int backgroundcolour, int c, int
 
 // if a pixel in the character display it
 				if((pixels & BitMask))
-					WriteAPixel(theX+column, theY+row, theColour) ;
+					graphics_write_pixel(theX+column, theY+row, theColour) ;
 
 				else {
 					if(Erase == TRUE)
@@ -54,7 +54,7 @@ void fonts_char_1(int x, int y, int fontcolour, int backgroundcolour, int c, int
 // if pixel is part of background (not part of character)
 // erase the background to value of variable BackGroundColour
 
-						WriteAPixel(theX+column, theY+row, backgroundcolour) ;
+						graphics_write_pixel(theX+column, theY+row, backgroundcolour) ;
 				}
 				BitMask = BitMask >> 1 ;
 			}

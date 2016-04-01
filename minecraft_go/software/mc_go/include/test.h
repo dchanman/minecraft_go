@@ -21,6 +21,7 @@ void bluetooth_test();
 void sprint1_demo();
 void savefile_test();
 void timer_test();
+void picture_transfer_test();
 
 
 #endif /* TEST_H_ */

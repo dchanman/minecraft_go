@@ -69,13 +69,13 @@ void Fill(int _x, int _y, int _FillColour, int _BoundaryColour)
         PopPixel(&aPoint) ;                 // get a point from the stack
         x = aPoint.x ;
         y = aPoint.y ;
-        WriteAPixel(x, y, FillColour);     // fill the point in the fill colour
+        graphics_write_pixel(x, y, FillColour);     // fill the point in the fill colour
 
         // fill the span to the right of the seed value
         SaveX = x++ ;                  // save the x coord of the the point we just filled and move one pixel right
 
         while((char)(ReadAPixel(x,y)) != (char)(BoundaryColour))							// if new pixel is not the boundary colour
-            WriteAPixel(x++, y, FillColour);     											// fill it and keep moving right along a horizontal line
+            graphics_write_pixel(x++, y, FillColour);     											// fill it and keep moving right along a horizontal line
 
         // must have found the boundary colour when moving right
         XRight = x - 1 ;		// save X coord of the last filled pixel on this line when moving right
@@ -86,7 +86,7 @@ void Fill(int _x, int _y, int _FillColour, int _BoundaryColour)
         --x ;
 
         while((char)(ReadAPixel(x,y)) != (char)(BoundaryColour))						// if new pixel is not the boundary colour
-            WriteAPixel(x--, y, FillColour);    											// fill it and keep moving left along a horizontal line
+            graphics_write_pixel(x--, y, FillColour);    											// fill it and keep moving left along a horizontal line
 
         XLeft = x + 1 ;			// save X coord of the last filled pixel on this line when moving left
         x = SaveX ; 			// get original x coord for the seed back

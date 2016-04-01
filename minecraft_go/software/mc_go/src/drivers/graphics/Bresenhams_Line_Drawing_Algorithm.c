@@ -50,13 +50,13 @@
 * This function writes a single pixel to the x,y coords specified using the specified colour
 * Note colour is a byte and represents a palette number (0-255) not a 24 bit RGB value
 ********************************************************************************************/
-void WriteAPixel(int x, int y, int Colour)
+void graphics_write_pixel(int x, int y, int colour)
 {
 	WAIT_FOR_GRAPHICS;				// is graphics ready for new command
 
 	GraphicsX1Reg = x;				// write coords to x1, y1
 	GraphicsY1Reg = y;
-	GraphicsColourReg = Colour;			// set pixel colour
+	GraphicsColourReg = colour;			// set pixel colour
 	GraphicsCommandReg = PutAPixel;			// give graphics "write pixel" command
 }
 
@@ -84,12 +84,12 @@ int ReadAPixel(int x, int y)
 **
 ************************************************************************************/
 
-void ProgramPalette(int PaletteNumber, int RGB)
+void graphics_program_pallette(int pallette_number, int rgb)
 {
     WAIT_FOR_GRAPHICS;
-    GraphicsColourReg = PaletteNumber;
-    GraphicsX1Reg = RGB >> 16   ;        // program red value in ls.8 bit of X1 reg
-    GraphicsY1Reg = RGB ;                // program green and blue into ls 16 bit of Y1 reg
+    GraphicsColourReg = pallette_number;
+    GraphicsX1Reg = rgb >> 16   ;        // program red value in ls.8 bit of X1 reg
+    GraphicsY1Reg = rgb ;                // program green and blue into ls 16 bit of Y1 reg
     GraphicsCommandReg = ProgramPaletteColour; // issue command
 }
 
@@ -117,7 +117,7 @@ void VLine(int x1, int y1, int length, int Colour)
 	int i;
 
 	for(i = y1; i < y1+length; i++ )
-		WriteAPixel(x1, i, Colour);
+		graphics_write_pixel(x1, i, Colour);
 }
 
 void VLine2(int x1, int y1, int length, int Colour)
@@ -189,7 +189,7 @@ void Line(int x1, int y1, int x2, int y2, int Colour)
 
 // main loop
         for(i = 1; i <= dx; i++)    {
-            WriteAPixel(x, y, Colour);
+            graphics_write_pixel(x, y, Colour);
 
             while(error >= 0)   {
                 if(interchange == 1)
@@ -285,6 +285,3 @@ void FillRectangleWBorder(int x1, int y1, int x2, int y2, int x3, int y3, int x4
 	Line2(x3,y3,x4,y4,Colour);
 
 }
-
-
-

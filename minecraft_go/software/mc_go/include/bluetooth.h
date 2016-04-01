@@ -8,8 +8,8 @@
 #ifndef BLUETOOTH_H_
 #define BLUETOOTH_H_
 
-#define BLUETOOTH_NAME "Team21..."
-#define BLUETOOTH_PIN "1337" //"1234"
+#define BLUETOOTH_NAME "Team21"
+#define BLUETOOTH_PIN "4321" //"1234"
 
 
 // Bluetooth commands
@@ -21,10 +21,13 @@
 
 
 void bluetooth_init();
-int bluetooth_send_cmd_from_template(const char *, const char *);
-void bluetooth_send_command(const unsigned char *);
-void bluetooth_echo_back_data();
+void bluetooth_put_char(const unsigned char c);
 unsigned char bluetooth_get_char();
+void bluetooth_get_n_char(unsigned char *recv_msg, const int recv_msg_length);
+void bluetooth_send_command(const unsigned char *command);
+void bluetooth_send_data(const unsigned char *command, const int length);
+int bluetooth_send_cmd_from_template(const char *cmd_template, const char *value);
+void bluetooth_echo_back_data();
 
 
 #endif /* BLUETOOTH_H_ */
